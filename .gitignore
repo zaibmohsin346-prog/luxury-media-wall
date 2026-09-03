@@ -1,0 +1,24 @@
+# Generated on every build from index.html + assets/ — never edit dist/ by
+# hand, and no reason to version it.
+dist/
+
+# Build artefact for uploading to a host.
+media-wall-studio.zip
+*.zip
+
+# Local MCP server config. Points at a specific Supabase project, and this
+# repository is public — it is editor tooling, not part of the website.
+.mcp.json
+
+# Original camera/render files (~22 MB). The web derivatives in assets/img
+# are generated from these by tools/resize-images.ps1, and full-resolution
+# copies also live in the ImageKit media library. Delete these two lines if
+# you would rather version the masters here too.
+/*.jpeg
+/*.mp4
+
+# OS / editor noise
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.swp

@@ -1,0 +1,41 @@
+/* ==========================================================================
+   MEDIA WALL STUDIO - loading indicator
+   --------------------------------------------------------------------------
+   A thin champagne arc turning inside a faint ring. Same hairline weight and
+   gold as the section rules, project card underlines and process bars.
+
+   Used only by the film in "Watch the transformation", which streams from the
+   CDN and has a genuine wait on first play. Nothing else on the page blocks,
+   so nothing else needs one.
+   ========================================================================== */
+
+.loader {
+  position: absolute; inset: 0; z-index: 5;
+  display: grid; place-items: center; gap: 1.1rem;
+  grid-auto-flow: row;
+  background: rgba(9, 9, 9, .55);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  opacity: 0; visibility: hidden;
+  transition: opacity .45s var(--ease-soft), visibility .45s;
+}
+.loader.is-on { opacity: 1; visibility: visible; }
+
+.loader__label {
+  font-size: .6rem; font-weight: 600; letter-spacing: .3em; text-transform: uppercase;
+  color: rgba(255, 255, 255, .7);
+}
+
+.studio-spinner {
+  width: 3.4em; height: 3.4em; font-size: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-top-color: var(--champagne);
+  border-right-color: var(--champagne);
+  animation: studioSpin 1.1s cubic-bezier(.6, .1, .3, .9) infinite;
+}
+@keyframes studioSpin { to { transform: rotate(1turn); } }
+
+/* A spinner is decoration. Under reduced motion, hold it still. */
+@media (prefers-reduced-motion: reduce) {
+  .studio-spinner { animation: none; }
+}

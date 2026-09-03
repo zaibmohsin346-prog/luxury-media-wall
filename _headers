@@ -1,0 +1,30 @@
+# Netlify and Cloudflare Pages both read this file. Other hosts ignore it
+# harmlessly, so it is safe to upload anywhere.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# The HTML must always revalidate, otherwise visitors keep an old page after
+# you redeploy.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# CSS and JS filenames are not content-hashed, so they cannot be cached
+# forever. One hour, then revalidate - fast for repeat visits, but an update
+# still reaches people the same day.
+/assets/css/*
+  Cache-Control: public, max-age=3600, must-revalidate
+/assets/js/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+# These are only the local fallback copies; the live site serves media from
+# ImageKit. Their names are stable, so a long cache is safe.
+/assets/img/*
+  Cache-Control: public, max-age=604800
+/assets/video/*
+  Cache-Control: public, max-age=604800
