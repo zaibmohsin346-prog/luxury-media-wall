@@ -143,30 +143,68 @@
     }
   }
 
-  /* ================================================ 2. HERO VIDEO LOADING */
-  /* Only fetch the hero video where it genuinely improves things: a wide
-     screen, motion allowed, and not on a metered connection.              */
-  function initHeroVideo() {
-    const video = $('#heroVideo');
-    if (!video) return;
+  /* =============================================== 2. HERO IMAGE SEQUENCE */
+  /* The hero plays as a slow cross-fade between full-resolution photographs
+     rather than a video file. Three reasons it is done this way:
+
+       - Resolution. Each frame is the same 1800px master used everywhere
+         else on the site, so the hero is genuinely sharp on a retina phone.
+         A video would have to be re-encoded per breakpoint to match it.
+       - Reach. Autoplaying video is blocked or throttled on plenty of
+         phones and on Low Power Mode. An image cross-fade always runs.
+       - Weight. Four photographs stream in progressively; only the first
+         one blocks the largest paint.
+
+     Slide 1 is already in the markup. The rest are appended after the first
+     frame has painted, so they never compete with the LCP image.          */
+  function initHeroSlides() {
+    const media = $('#heroMedia');
+    if (!media || typeof HERO_SLIDES === 'undefined') return;
+
+    const first = media.querySelector('.hero__slide');
+    if (!first) return;
 
     const conn = navigator.connection || {};
     const cheap = conn.saveData === true || /2g/.test(conn.effectiveType || '');
-    const wide = window.matchMedia('(min-width: 1024px)').matches;
 
-    if (REDUCED || cheap || !wide) return;
+    /* One photograph, a still hero by request, reduced motion, or a metered
+       connection: leave the single frame exactly as the markup shipped it. */
+    if (HERO_SLIDES.length < 2 || REDUCED || cheap) return;
 
-    const source = document.createElement('source');
-    source.src = asset(video.dataset.src);
-    source.type = 'video/mp4';
-    video.appendChild(source);
-    video.load();
+    const rest = HERO_SLIDES.slice(1);
+    const slides = [first];
 
-    video.addEventListener('canplay', () => {
-      video.classList.add('is-ready');
-      const p = video.play();
-      if (p && p.catch) p.catch(() => video.classList.remove('is-ready'));
-    }, { once: true });
+    rest.forEach((slide) => {
+      const img = new Image();
+      img.className = 'hero__slide';
+      img.src = asset(slide.img + '-1400.jpg');
+      img.srcset = srcset(slide.img) + `, ${asset(slide.img + '-1800.jpg')} 1800w`;
+      img.sizes = '100vw';
+      img.decoding = 'async';
+      img.loading = 'lazy';
+      img.alt = '';                 /* decorative: slide 1 carries the description */
+      img.setAttribute('aria-hidden', 'true');
+      media.appendChild(img);
+      slides.push(img);
+    });
+
+    /* Enables the cross-fade transition only once the first frame is settled,
+       so the opening image appears instantly instead of fading up. */
+    requestAnimationFrame(() => media.classList.add('is-playing'));
+
+    let i = 0;
+    const hold = (typeof HERO_SLIDE_SECONDS === 'number' ? HERO_SLIDE_SECONDS : 6) * 1000;
+
+    const advance = () => {
+      slides[i].classList.remove('is-active');
+      i = (i + 1) % slides.length;
+      slides[i].classList.add('is-active');
+    };
+
+    /* The check lives inside the tick rather than in a visibilitychange
+       handler that tears the timer down: a page that first paints while
+       hidden would otherwise clear its only timer and never rebuild it. */
+    setInterval(() => { if (!document.hidden) advance(); }, hold);
   }
 
   /* ====================================================== 3. RENDER: HERO */
@@ -568,16 +606,73 @@
     `).join('');
   }
 
-  /* =========================================== 10. RENDER: DETAIL GALLERY */
-  function renderDetails() {
-    const grid = $('#detailsGrid');
-    if (!grid) return;
-    grid.innerHTML = DETAILS.map((d, i) => `
-      <div class="masonry__item masonry__item--${d.shape}" data-caption="${esc(d.caption)}"
-           data-reveal="scale" style="--reveal-delay:${(i % 4) * 80}ms;
-           background-image:url('${asset(d.src)}'); background-position:${d.pos}; background-size:${d.size};"
-           role="img" aria-label="${esc(d.caption)} — close-up detail"></div>
-    `).join('');
+  /* ============================================== 10. RENDER: WALL GUIDE */
+  /* Wall types we have not photographed on site yet are rendered through
+     ImageKit's AI edit. The edit is the FIRST step of the chain and every
+     srcset width is resized from that one result:
+
+         ?tr=w-1400,e-edit-prompt-<prompt>:w-900
+                    \__ generated once, cached __/  \__ plain resize __/
+
+     Running the prompt separately per width would generate a different room
+     for each entry in the srcset, and the picture would change as the
+     browser switched sources. */
+  function editedUrl(base, prompt, width) {
+    if (!ikEndpoint) return `assets/img/${base}-${width}.jpg`;   /* local fallback */
+    return `${ikEndpoint}${ikDir}/${base}.jpg` +
+           `?tr=w-1400,e-edit-prompt-${encodeURIComponent(prompt)}:w-${width},${ikTr}`;
+  }
+
+  function guideSources(item) {
+    if (item.edit) {
+      const { base, prompt } = item.edit;
+      return {
+        src: editedUrl(base, prompt, 900),
+        srcset: [480, 900, 1400].map((w) => `${editedUrl(base, prompt, w)} ${w}w`).join(', ')
+      };
+    }
+    return { src: asset(item.img + '-900.jpg'), srcset: srcset(item.img) };
+  }
+
+  function renderWallGuide() {
+    const grid = $('#wallGuide');
+    if (!grid || typeof WALL_GUIDE === 'undefined') return;
+
+    grid.innerHTML = WALL_GUIDE.map((g, i) => {
+      const s = guideSources(g);
+      return `
+      <article class="guide__item" data-reveal style="--reveal-delay:${(i % 2) * 90}ms">
+        <div class="guide__media">
+          <img src="${s.src}" srcset="${s.srcset}"
+               sizes="(max-width: 720px) 92vw, (max-width: 1100px) 46vw, 620px"
+               loading="lazy" decoding="async" alt="${esc(g.alt || g.title)}">
+        </div>
+        <div class="guide__body">
+          <h3 class="guide__title">${esc(g.title)}</h3>
+          <p class="guide__text" id="guideText${i}">${esc(g.text)}</p>
+          <button class="guide__more" type="button" aria-expanded="false" aria-controls="guideText${i}">
+            <span>Read more</span>
+          </button>
+          <a class="guide__cta" href="${waLink(
+            `Hello Media Wall Studio, I am interested in a ${g.title}. Could you advise on my room?`
+          )}" target="_blank" rel="noopener">
+            Ask about this wall
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>`;
+    }).join('');
+
+    /* Delegated so it survives a re-render, and harmless on desktop where
+       the button is display:none and can never be clicked. */
+    grid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.guide__more');
+      if (!btn) return;
+      const item = btn.closest('.guide__item');
+      const open = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', String(open));
+      btn.querySelector('span').textContent = open ? 'Show less' : 'Read more';
+    });
   }
 
   /* ============================================== 11. RENDER: TESTIMONIALS */
@@ -920,12 +1015,12 @@
     renderServices();
     renderProcess();
     renderMaterials();
-    renderDetails();
+    renderWallGuide();
     renderQuotes();
     renderSignature();
 
     initHeader();
-    initHeroVideo();
+    initHeroSlides();
     initModal();
     initShare();
     initConfigurator();

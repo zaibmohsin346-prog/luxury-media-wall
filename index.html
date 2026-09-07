@@ -147,13 +147,15 @@
 
 <!-- ======================================================== HERO ======= -->
 <section class="hero" id="home">
-  <div class="hero__media">
-    <img src="https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1800,q-auto,f-auto"
+  <!-- Slide 1 is the page's largest paint and is preloaded in the <head>, so
+       it ships in the markup. Slides 2+ come from HERO_SLIDES and are added
+       by main.js only after this one has painted. -->
+  <div class="hero__media" id="heroMedia">
+    <img class="hero__slide is-active"
+         src="https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1800,q-auto,f-auto"
          srcset="https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-900,q-auto,f-auto 900w, https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1400,q-auto,f-auto 1400w, https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1800,q-auto,f-auto 1800w"
          sizes="100vw" width="1792" height="2400" fetchpriority="high" decoding="async"
          alt="Luxury penthouse living room in Dubai with a backlit onyx media wall and walnut cabinetry">
-    <video class="hero__video" id="heroVideo" data-src="assets/video/media-wall-reel.mp4"
-           muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
   </div>
   <div class="hero__scrim"></div>
 
@@ -222,7 +224,10 @@
         A media wall is the one surface everybody in the room looks at. We treat it the way an
         architect treats a facade — proportion first, then material, then light.
       </p>
-      <p class="lede mt-6" data-reveal style="--reveal-delay:90ms">
+      <!-- Supporting detail. Hidden on phones (see sections.css) so the first
+           photographs are reached sooner; the same material is covered again
+           in Services and in each project's own specification. -->
+      <p class="lede lede--detail mt-6" data-reveal style="--reveal-delay:90ms">
         Media Wall Studio designs and builds bespoke television walls for villas, penthouses and
         apartments across the UAE. Every scheme starts with a site survey and a set of drawings,
         and ends with a wall where the joints line up, the lighting is balanced and not a single
@@ -488,19 +493,19 @@
   <div class="shell">
     <div class="section-head section-head--split">
       <div>
-        <p class="eyebrow" data-reveal>Close Up</p>
-        <h2 class="h1 mt-6 reveal-words" data-reveal="fade">Details matter</h2>
+        <p class="eyebrow" data-reveal>The Options</p>
+        <h2 class="h1 mt-6 reveal-words" data-reveal="fade">Types of media wall</h2>
       </div>
       <div class="section-head__aside">
         <p class="lede" data-reveal>
-          Veining, shadow gaps, cable routes, the underside of a floating cabinet.
-          The parts of the job nobody notices when they are done properly.
+          Eight approaches we build most often, and the practical notes that decide
+          which one suits a room - what each finish asks for, and where each one goes wrong.
         </p>
       </div>
     </div>
 
-    <div class="masonry" id="detailsGrid">
-      <!-- rendered from DETAILS in site-config.js -->
+    <div class="guide" id="wallGuide">
+      <!-- rendered from WALL_GUIDE in site-config.js -->
     </div>
   </div>
 </section>

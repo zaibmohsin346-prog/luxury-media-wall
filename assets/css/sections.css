@@ -505,6 +505,55 @@
   color: var(--champagne);
 }
 
+/* ============================== WALL GUIDE ============================== */
+/* Editorial two-column read: a wide photograph of the wall type with the
+   specification notes set beneath it. Deliberately long-form - this is the
+   section that answers "which one do I actually want", so the text is the
+   point and the picture is the evidence. */
+.guide {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+.guide__item {
+  display: flex; flex-direction: column;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  background: var(--white);
+}
+/* Every second item sits against the grid edge, so it keeps no right rule. */
+.guide__item:nth-child(2n) { border-right: 0; }
+
+.guide__media { position: relative; overflow: hidden; aspect-ratio: 16 / 10; background: var(--ivory-deep); }
+.guide__media img {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.01);
+  transition: transform 1.6s var(--ease);
+}
+.guide__item:hover .guide__media img { transform: scale(1.06); }
+
+.guide__body { padding: clamp(1.6rem, 2.6vw, 2.6rem); display: flex; flex-direction: column; flex: 1; }
+.guide__title {
+  font-family: var(--font-serif); font-size: clamp(1.24rem, 1.75vw, 1.6rem);
+  line-height: 1.2; color: var(--ink);
+}
+.guide__text {
+  margin-top: 1rem; font-size: .93rem; line-height: 1.78; color: var(--muted);
+}
+.guide__cta {
+  display: inline-flex; align-items: center; gap: .55rem; margin-top: auto; padding-top: 1.5rem;
+  font-size: .645rem; font-weight: 600; letter-spacing: .21em; text-transform: uppercase;
+  color: var(--ink); align-self: flex-start;
+  border-bottom: 1px solid var(--line); padding-bottom: .4rem;
+  transition: color .45s var(--ease), border-color .45s var(--ease);
+}
+.guide__cta svg { width: 14px; height: 14px; transition: transform .5s var(--ease); }
+/* The expander is a phone-only affordance; the desktop column shows the
+   full specification with no interaction. */
+.guide__more { display: none; }
+.guide__cta:hover { color: var(--champagne); border-color: var(--champagne); }
+.guide__cta:hover svg { transform: translateX(5px); }
+
 /* ======================= DETAIL GALLERY (MASONRY) ======================= */
 .masonry { columns: 4; column-gap: clamp(.7rem, 1.4vw, 1.15rem); }
 .masonry__item {
@@ -750,12 +799,92 @@ html:not(.js) .signoff__mark path { stroke-dashoffset: 0; }
 }
 
 @media (max-width: 720px) {
+  /* ---------------------------------------------------------------------
+     VERTICAL RHYTHM ON PHONES
+     The section padding is clamp(5rem, 11vw, 10.5rem). On a 375px screen
+     11vw is only 41px, so the clamp sits permanently on its 5rem floor -
+     a value chosen for desktop. That put 160px of empty space between
+     every one of 13 sections, roughly a fifth of a screen each time, and
+     it read as the page having stopped.
+     --------------------------------------------------------------------- */
+  :root { --section-y: 2.75rem; }
+  .section--tight { padding-block: 2.25rem; }
+  .section-head { margin-bottom: 1.9rem; }
+  .mt-14 { margin-top: 2.25rem; }
+  .mt-10 { margin-top: 1.75rem; }
+  .mb-10 { margin-bottom: 1.6rem; }
+
   .projects__grid { grid-template-columns: 1fr; }
   .svc__grid      { grid-template-columns: 1fr; }
   .ba__grid       { grid-template-columns: 1fr; }
   .process__grid  { grid-template-columns: 1fr; }
   .materials__grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-  .masonry { columns: 2; }
+  .masonry { columns: 1; }
+
+  /* One wall type at a time; the right-hand rule would otherwise cut the
+     single column in half. */
+  .guide { grid-template-columns: 1fr; }
+  .guide__item { border-right: 0; }
+  .guide__media { aspect-ratio: 4 / 3; }
+  .guide__text { font-size: .9rem; line-height: 1.72; }
+
+  /* Eight full specifications stacked in one column ran to 1,300px each -
+     a third of the whole page. The notes stay, but folded: four lines as a
+     taster, the rest one tap away. Everything is still in the markup, so
+     search engines and screen readers see the complete text either way. */
+  .guide__item:not(.is-open) .guide__text {
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4;
+    overflow: hidden;
+  }
+  .guide__more {
+    display: inline-flex; align-items: center; gap: .4rem; margin-top: .7rem;
+    font-size: .645rem; font-weight: 600; letter-spacing: .19em; text-transform: uppercase;
+    color: var(--champagne-dim, #a98c4f); background: none; border: 0; padding: 0;
+    font-family: inherit; cursor: pointer; align-self: flex-start;
+  }
+  .guide__more::after { content: "+"; font-size: .95rem; line-height: 1; }
+  .guide__item.is-open .guide__more::after { content: "\2212"; }   /* minus */
+  .guide__cta { padding-top: 1.15rem; }
+
+  /* ---------------------------------------------------------------------
+     PHONES: LET THE PHOTOGRAPHY BREATHE
+     On a desktop grid a card is one of three and the caption block is a
+     small part of it. On a 375px phone that same block ate roughly half
+     the picture, so the work itself read as a thumbnail.
+
+     Below, the card keeps only what identifies the project - number, title
+     and the tap cue. The description and the material tags are already on
+     the detail screen one tap away, so they are dropped here rather than
+     duplicated over the photograph.
+     --------------------------------------------------------------------- */
+  .project-card__media { aspect-ratio: 3 / 4; }        /* taller frame = bigger photo */
+  .project-card__veil {
+    /* Darkens only the caption band; the wall itself stays uncovered. */
+    background: linear-gradient(to top,
+      rgba(11,11,11,.90) 0%, rgba(11,11,11,.55) 26%,
+      rgba(11,11,11,.10) 52%, rgba(11,11,11,0) 70%);
+    opacity: 1;
+  }
+  .project-card__desc,
+  .project-card .tags { display: none; }
+  .project-card__body { padding: 1.15rem 1.1rem 1.15rem; }
+  .project-card__title { font-size: 1.24rem; }
+  .project-card__line { margin-top: .7rem; }
+  .project-card__cta { margin-top: .85rem; }
+
+  /* Section intros carry the same words as desktop but at a size that does
+     not push the first photograph below the fold. */
+  .lede { font-size: .93rem; line-height: 1.6; }
+  .lede--detail { display: none; }
+  .section-head__aside { margin-top: .9rem; }
+
+  /* Service cards: the photograph is the selling point, so the supporting
+     paragraph is capped at three lines rather than running to six. */
+  .svc-card__body p {
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+  .masonry__item::after { font-size: .62rem; }
   .intro__stats { grid-template-columns: 1fr; }
   .form { grid-template-columns: 1fr; }
   .cfg__swatches { grid-template-columns: repeat(3, 1fr); }
