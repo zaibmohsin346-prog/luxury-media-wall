@@ -12,7 +12,14 @@
           mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
 }
 .marquee__track { display: flex; width: max-content; animation: marquee 46s linear infinite; }
-.marquee:hover .marquee__track { animation-play-state: paused; }
+
+/* Pause on hover is a pointer affordance. Restricted to devices that
+   genuinely hover: Android Chrome can leave :hover stuck on an element
+   the finger passed over while scrolling, which paused the strip for the
+   rest of the visit with no way for the visitor to release it. */
+@media (hover: hover) and (pointer: fine) {
+  .marquee:hover .marquee__track { animation-play-state: paused; }
+}
 .marquee__group { display: flex; align-items: center; flex: none; }
 .marquee__group span {
   padding-inline: 2.1rem;
@@ -745,6 +752,14 @@ html:not(.js) .signoff__mark path { stroke-dashoffset: 0; }
 @media (prefers-reduced-motion: reduce) {
   .signoff__mark path { stroke-dashoffset: 0; }
   .js .signoff__mark.is-visible path { animation: none; }
+
+  /* The global reduced-motion rule collapses every animation to .001ms and
+     one iteration. For the marquee that meant it snapped to its end frame
+     (translateX(-50%)) and froze there, leaving the strip parked mid-word.
+     Stop it at the start instead, so it reads as a deliberate static row -
+     which is what someone asking for reduced motion should get. */
+  .marquee__track { animation: none !important; transform: none !important; }
+  .marquee { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 }
 
 /* ================================ SHARE ================================= */
