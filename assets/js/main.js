@@ -680,7 +680,7 @@
     const grid = $('#quotesGrid');
     if (!grid) return;
     grid.innerHTML = TESTIMONIALS.map((q, i) => `
-      <figure class="quote" data-reveal style="--reveal-delay:${i * 110}ms">
+      <figure class="quote" data-reveal style="--reveal-delay:${(i % 3) * 110}ms">
         <span class="quote__mark" aria-hidden="true">&ldquo;</span>
         <div class="quote__stars" aria-label="Five out of five stars">${ICONS.star.repeat(5)}</div>
         <blockquote><p>${esc(q.text)}</p></blockquote>
@@ -689,6 +689,24 @@
         </figcaption>
       </figure>
     `).join('');
+
+    /* Nine reviews stacked in a single mobile column would undo the page
+       length work, so phones get the first three and a button for the rest.
+       Desktop lays them out three-across and shows every one, where the
+       button is display:none and unreachable. */
+    if (TESTIMONIALS.length <= 3) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'quotes__more';
+    btn.setAttribute('aria-controls', 'quotesGrid');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.textContent = `Read all ${TESTIMONIALS.length} reviews`;
+    btn.addEventListener('click', () => {
+      const open = grid.classList.toggle('is-expanded');
+      btn.setAttribute('aria-expanded', String(open));
+      btn.textContent = open ? 'Show fewer reviews' : `Read all ${TESTIMONIALS.length} reviews`;
+    });
+    grid.insertAdjacentElement('afterend', btn);
   }
 
   /* =============================================== 12. WALL CONFIGURATOR */

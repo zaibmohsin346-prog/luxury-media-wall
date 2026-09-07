@@ -471,6 +471,26 @@ const TESTIMONIALS = [
   {
     text: 'Our old TV corner was a mess of cables. Now there is not a single wire visible and we have storage we actually use. Worth every dirham.',
     by: 'Apartment Owner', meta: 'Business Bay · Full-Height TV Wall'
+  },
+  {
+    text: 'We were nervous about the fireplace sitting under the screen, but they set out the whole elevation first and showed us the clearances on paper. It has been running all winter without an issue.',
+    by: 'Family Home', meta: 'Arabian Ranches · Fireplace Media Wall'
+  },
+  {
+    text: 'The site team arrived when they said they would and left the apartment clean every evening. That sounds like a small thing until you have lived through a fit-out that did not.',
+    by: 'Penthouse Owner', meta: 'Dubai Marina · Backlit Onyx Wall'
+  },
+  {
+    text: 'Our living room is narrow so we were worried a full wall unit would close it in. The floating design kept the floor clear and the room genuinely feels bigger than before.',
+    by: 'Apartment Owner', meta: 'JVC · Floating TV Unit'
+  },
+  {
+    text: 'They talked us out of the finish we originally asked for and showed us samples under our own evening lighting instead. They were right, and we appreciated being told.',
+    by: 'Villa Owner', meta: 'Jumeirah · Venetian Plaster Wall'
+  },
+  {
+    text: 'Two years on there is no movement in any of the joints and the doors still close the way they did on handover. That is the part you only find out about later.',
+    by: 'Townhouse Owner', meta: 'Town Square · Wooden Media Wall'
   }
 ];
 

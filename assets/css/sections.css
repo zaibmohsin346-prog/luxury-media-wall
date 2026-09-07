@@ -630,6 +630,9 @@
 
 /* ============================ TESTIMONIALS ============================== */
 .quotes__grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: clamp(1.2rem, 2.4vw, 2.2rem); }
+
+/* Phone-only control; the desktop grid shows every review at once. */
+.quotes__more { display: none; }
 .quote {
   position: relative; background: var(--white); border: 1px solid var(--line-soft);
   padding: clamp(1.9rem, 3vw, 2.7rem);
@@ -798,6 +801,16 @@ html:not(.js) .signoff__mark path { stroke-dashoffset: 0; }
   .svc__grid      { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .ba__grid       { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .quotes__grid   { grid-template-columns: 1fr; }
+
+  /* Three reviews, then the rest on request. */
+  .quotes__grid:not(.is-expanded) .quote:nth-child(n + 4) { display: none; }
+  .quotes__more {
+    display: block; margin: 1.6rem auto 0; padding: .95rem 1.6rem;
+    font-family: inherit; font-size: .645rem; font-weight: 600;
+    letter-spacing: .21em; text-transform: uppercase;
+    color: var(--ink); background: none; border: 1px solid var(--line);
+    cursor: pointer;
+  }
   .process__grid  { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .materials__grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
   .masonry { columns: 3; }
