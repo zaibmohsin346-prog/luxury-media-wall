@@ -1037,8 +1037,13 @@
     stage.innerHTML = PROJECTS.map((p, i) => `
       <button type="button" class="coverflow__card" data-slide="${i}" data-pos="off"
               aria-label="Project ${p.n}: ${esc(p.title)}">
-        <img src="${asset(p.img + '-480.jpg')}" srcset="${srcsetCard(p.img)}"
-             sizes="330px" loading="lazy" decoding="async" alt="${esc(p.alt)}">
+        <!-- The full 480/900/1400 set, not srcsetCard: this is a large
+             feature card, not a thumbnail, and the centre one is also
+             scaled up by the 3D transform. Capping at 900w left a retina
+             phone rendering a 440px card from a 900px file. -->
+        <img src="${asset(p.img + '-900.jpg')}" srcset="${srcset(p.img)}"
+             sizes="(max-width: 520px) 86vw, 440px"
+             loading="lazy" decoding="async" alt="${esc(p.alt)}">
         <span class="coverflow__veil"></span>
         <span class="coverflow__num">${p.n} <i>/</i> 0${total}</span>
         <span class="coverflow__body">

@@ -149,13 +149,13 @@
 
 .coverflow__stage {
   position: relative; display: flex; align-items: center; justify-content: center;
-  height: clamp(430px, 62vh, 540px);
+  height: clamp(540px, 78vh, 720px);
   margin-top: clamp(1.6rem, 3vw, 2.6rem);
-  perspective: 1400px;
+  perspective: 1600px;
 }
 
 .coverflow__card {
-  position: absolute; width: min(330px, 78vw); height: clamp(400px, 58vh, 500px);
+  position: absolute; width: min(440px, 86vw); height: clamp(500px, 72vh, 660px);
   padding: 0; border: 1px solid rgba(245,242,236,.13); background: #171311;
   overflow: hidden; cursor: pointer; color: inherit; font: inherit; text-align: left;
   transform-origin: center center;
@@ -266,7 +266,8 @@
   .coverflow__card[data-pos="l1"] { transform: translateX(-42%) scale(.8) rotateY(22deg); }
   .coverflow__card[data-pos="r2"] { transform: translateX(76%) scale(.62) rotateY(-34deg); opacity: .22; }
   .coverflow__card[data-pos="l2"] { transform: translateX(-76%) scale(.62) rotateY(34deg); opacity: .22; }
-  .coverflow__stage { height: clamp(390px, 58vh, 470px); }
+  .coverflow__stage { height: clamp(480px, 70vh, 600px); }
+  .coverflow__card { height: clamp(440px, 64vh, 560px); }
 }
 
 /* Motion here is decoration, not information: the cards land in place and
