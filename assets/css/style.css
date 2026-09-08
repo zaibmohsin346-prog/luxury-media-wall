@@ -35,7 +35,12 @@
   --shell:        1320px;
   --shell-narrow: 980px;
   --gutter:       clamp(1.25rem, 4vw, 3.5rem);
-  --section-y:    clamp(5rem, 11vw, 10.5rem);
+  /* Was clamp(5rem, 11vw, 10.5rem), which put 208px of empty space between
+     every one of fifteen sections at tablet width and 316px on a desktop -
+     roughly 3,000px of the page was nothing at all. Still generous enough
+     to separate one section from the next, without the reader having to
+     scroll through a blank screen to find the next thing. */
+  --section-y:    clamp(2.6rem, 5vw, 5.5rem);
 
   /* Motion */
   --ease:      cubic-bezier(.22, 1, .36, 1);
@@ -503,7 +508,7 @@ h1, h2, h3, h4 {
 }
 
 /* ====================== 08. SECTION FURNITURE =========================== */
-.section-head { display: grid; gap: 1.35rem; margin-bottom: clamp(2.8rem, 5.5vw, 4.6rem); }
+.section-head { display: grid; gap: 1.1rem; margin-bottom: clamp(1.6rem, 3vw, 2.9rem); }
 .section-head--split {
   grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
   gap: clamp(2rem, 5vw, 5rem); align-items: end;
@@ -520,37 +525,41 @@ h1, h2, h3, h4 {
 
 /* ============================ 22. FOOTER ================================ */
 .footer { background: var(--ink); color: var(--ivory); position: relative; }
+/* Tightened throughout: the footer is a reference block, not a reading
+   experience, so it wants density. Line spacing here was set for a wide
+   four-column desktop layout and became very airy once the columns
+   stacked. */
 .footer__top {
   display: grid; grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
-  gap: clamp(2.2rem, 4vw, 4rem);
-  padding-block: clamp(3.5rem, 7vw, 6rem);
+  gap: clamp(1.4rem, 2.6vw, 2.6rem);
+  padding-block: clamp(2.1rem, 4vw, 3.6rem);
 }
 .footer__brand .brand__name { font-size: 1.5rem; }
 .footer__tagline {
-  margin-top: 1.2rem; color: var(--muted-dark); font-size: .84rem;
-  letter-spacing: .05em; max-width: 34ch; line-height: 1.85;
+  margin-top: .7rem; color: var(--muted-dark); font-size: .82rem;
+  letter-spacing: .05em; max-width: 34ch; line-height: 1.6;
 }
 .footer__col h4 {
   font-family: var(--font-sans); font-size: .64rem; font-weight: 600;
   letter-spacing: .26em; text-transform: uppercase; color: var(--champagne);
-  margin-bottom: 1.5rem;
+  margin-bottom: .85rem;
 }
-.footer__col li + li { margin-top: .68rem; }
+.footer__col li + li { margin-top: .4rem; }
 .footer__col a, .footer__col span {
   font-size: .855rem; color: rgba(245,242,236,.68);
   transition: color .35s var(--ease-soft);
 }
 .footer__col a:hover, .footer__col a:focus-visible { color: var(--champagne); }
 .footer__phone {
-  font-family: var(--font-serif); font-size: 1.42rem; color: var(--ivory);
-  display: inline-block; margin-bottom: .4rem;
+  font-family: var(--font-serif); font-size: 1.24rem; color: var(--ivory);
+  display: inline-block; margin-bottom: .2rem;
   transition: color .35s var(--ease-soft);
 }
 .footer__phone:hover { color: var(--champagne); }
 
 .footer__bottom {
   border-top: 1px solid var(--line-dark);
-  padding-block: 1.7rem;
+  padding-block: 1.1rem;
   display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;
   font-size: .7rem; letter-spacing: .12em; color: rgba(245,242,236,.42);
 }
