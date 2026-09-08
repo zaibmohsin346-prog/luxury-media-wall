@@ -10,12 +10,22 @@
 
 /* ============================ 01. TOKENS ================================= */
 :root {
-  /* Brand */
-  --charcoal:      #171717;
-  --ink:           #111111;
+  /* Brand
+     Neutrals carry a little warmth rather than being pure greys: a true
+     #111 reads cold and digital next to photography this warm. */
+  --charcoal:      #1A1714;
+  --ink:           #12100D;
   --taupe:         #8A8176;
-  --champagne:     #C6A66B;
-  --champagne-dim: #A98C55;
+
+  /* The accent was #C6A66B - a pale, yellowish cream that went washy on the
+     dark panels and, at 2.0:1, was genuinely hard to read on the light
+     ones. Deeper and a touch more saturated: it reads as brass rather than
+     beige, and holds its own against both grounds. */
+  --champagne:     #BE9553;
+  /* The light-ground variant. Dark enough to clear 4.5:1 on ivory, which
+     the old #A98C55 did not - eyebrows and small caps were failing. */
+  --champagne-dim: #856A33;
+
   --ivory:         #F5F2EC;
   --white:         #FFFFFF;
 
@@ -24,12 +34,23 @@
   --line:          rgba(23, 23, 23, .12);
   --line-soft:     rgba(23, 23, 23, .07);
   --line-dark:     rgba(255, 255, 255, .12);
-  --muted:         #6E6A63;
-  --muted-dark:    rgba(245, 242, 236, .62);
+  /* Was #6E6A63, which cleared AA by a hair at 4.86:1. Darker, so body copy
+     on ivory sits closer to 7:1 and reads properly on a phone outdoors. */
+  --muted:         #5C574E;
+  --muted-dark:    rgba(245, 242, 236, .68);
 
-  /* Type */
-  --font-serif: "Playfair Display", "Times New Roman", Georgia, serif;
-  --font-sans:  "Inter", "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Type
+     Bodoni Moda replaces Playfair Display: a true didone, with the sharp
+     thick-to-thin contrast fashion houses set their mastheads in. It is
+     built for exactly the sizes this page uses. Playfair paired with Inter
+     is also the single most common combination on the web, which is part of
+     why the page read as a template.
+
+     Jost replaces Inter: a geometric sans in the Futura line - the lettering
+     architecture and interiors studios have used for a century. Against a
+     didone it behaves like a gallery caption under a masthead. */
+  --font-serif: "Bodoni Moda", "Didot", "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans:  "Jost", "Futura", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   /* Rhythm */
   --shell:        1320px;
