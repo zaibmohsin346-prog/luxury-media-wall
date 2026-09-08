@@ -254,9 +254,19 @@
 <!-- Coverflow carousel. Cards are dealt from PROJECTS by main.js; the centre
      card opens the same project modal the grid below uses, so there is one
      source of project detail rather than two. -->
-<section class="section coverflow" id="featured">
+<!-- Carries id="projects": this is now the only projects section, so the
+     nav, the hero button, the footer and the sitemap all still resolve. -->
+<section class="section coverflow" id="projects">
   <div class="shell">
-    <p class="eyebrow eyebrow--center text-center coverflow__eyebrow" data-reveal>Featured Work</p>
+    <div class="section-head">
+      <p class="eyebrow eyebrow--center text-center" data-reveal>Selected Work</p>
+      <h2 class="h1 text-center reveal-words" data-reveal="fade">Our media wall projects</h2>
+      <p class="lede text-center coverflow__lede" data-reveal>
+        Nine completed walls, nine different material stories. Drag or tap through them,
+        then open any one for the full specification — stone, joinery, lighting and the
+        details you cannot photograph.
+      </p>
+    </div>
 
     <div class="coverflow__stage" id="coverflowStage" role="group"
          aria-roledescription="carousel" aria-label="Featured media wall projects">
@@ -271,30 +281,6 @@
       <button type="button" class="coverflow__arrow" id="coverflowNext" aria-label="Next project">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
       </button>
-    </div>
-  </div>
-</section>
-
-<!-- ==================================================== PROJECTS ======= -->
-<section class="section bg-white" id="projects">
-  <div class="shell">
-    <div class="section-head section-head--split">
-      <div>
-        <p class="eyebrow" data-reveal>Selected Work</p>
-        <h2 class="h1 mt-6 reveal-words" data-reveal="fade">Our media wall projects</h2>
-      </div>
-      <div class="section-head__aside">
-        <p class="lede" data-reveal>
-          Nine completed walls, nine different material stories. Open any project to see the
-          full specification — stone, joinery, lighting and the details you cannot photograph.
-        </p>
-      </div>
-    </div>
-
-    <p class="count-rule mb-10" data-reveal>Projects 01 — 09</p>
-
-    <div class="projects__grid" id="projectsGrid">
-      <!-- rendered from PROJECTS in site-config.js -->
     </div>
   </div>
 </section>

@@ -228,44 +228,6 @@
     if (year) year.textContent = new Date().getFullYear();
   }
 
-  /* ================================================== 4. RENDER: PROJECTS */
-  function renderProjects() {
-    const grid = $('#projectsGrid');
-    if (!grid) return;
-
-    grid.innerHTML = PROJECTS.map((p, i) => `
-      <button type="button" class="project-card" data-project="${i}"
-              data-reveal style="--reveal-delay:${(i % 3) * 90}ms"
-              aria-label="View project ${p.n}: ${esc(p.title)}">
-        <span class="project-card__media">
-          <img src="${asset(p.img + `-480.jpg`)}"
-               srcset="${srcsetCard(p.img)}"
-               sizes="${CARD_SIZES}"
-               width="1792" height="2400"
-               loading="lazy" decoding="async"
-               alt="${esc(p.alt)}">
-          <span class="project-card__veil"></span>
-          <span class="project-card__num">${p.n} <i>/</i> 09</span>
-          <span class="project-card__body">
-            <span class="project-card__title">${esc(p.title)}</span>
-            <span class="project-card__line"></span>
-            <span class="project-card__reveal"><span>
-              <span class="project-card__desc">${esc(p.short)}</span>
-              <span class="tags">${p.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</span>
-              <span class="project-card__cta">View Project
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              </span>
-            </span></span>
-          </span>
-        </span>
-      </button>
-    `).join('');
-
-    grid.addEventListener('click', (e) => {
-      const card = e.target.closest('[data-project]');
-      if (card) openModal(Number(card.dataset.project));
-    });
-  }
 
   /* ===================================================== 5. PROJECT MODAL */
   let lastFocused = null;
@@ -1374,7 +1336,6 @@
   function boot() {
     rewriteStaticMedia();
     renderContactBits();
-    renderProjects();
     renderTransforms();
     initServicesFlow();
     renderProcess();
