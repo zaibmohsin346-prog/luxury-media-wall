@@ -43,6 +43,9 @@
   container-type: inline-size;
   background: var(--ink); color: var(--ivory);
   isolation: isolate;
+  /* Every child is absolutely positioned, so the band has no content to
+     stand it up. Tall enough for a card to arrive, pass and leave. */
+  height: clamp(360px, 52vh, 620px);
 }
 .showcase__stage {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
@@ -72,30 +75,15 @@
   to   { transform: translate3d(-44cqw, 0, 14cqw) rotateY(28deg); }
 }
 
-/* Holds the text legible over whatever photograph is passing behind it:
-   dark at the centre where the copy sits, clearing toward the edges so the
-   cards still read as they sweep out of frame. */
+/* With no copy set over the band, the scrim's only job is to feather the
+   top and bottom edges into the ink so cards enter and leave the frame
+   rather than being cut off by a hard border. The centre stays clear. */
 .showcase__scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background:
-    radial-gradient(ellipse 46% 40% at 50% 50%,
-      rgba(13,13,13,.94) 0%, rgba(13,13,13,.82) 45%,
-      rgba(13,13,13,.34) 74%, rgba(13,13,13,0) 92%),
-    linear-gradient(to bottom,
-      var(--ink) 0%, rgba(13,13,13,.25) 18%,
-      rgba(13,13,13,.25) 82%, var(--ink) 100%);
+  background: linear-gradient(to bottom,
+    var(--ink) 0%, rgba(13,13,13,.12) 15%,
+    rgba(13,13,13,.12) 85%, var(--ink) 100%);
 }
-.showcase > .shell { position: relative; z-index: 2; }
-
-/* On the dark ground the ivory statement panels have to invert. */
-.showcase .intro__stats { background: rgba(245,242,236,.14); }
-.showcase .intro__stats div { background: rgba(13,13,13,.72); }
-.showcase .intro__stats b { color: var(--ivory); }
-.showcase .intro__stats span { color: rgba(245,242,236,.62); }
-.showcase .h1 { color: var(--ivory); }
-.showcase .lede { color: rgba(245,242,236,.76); }
-.showcase .btn--outline { border-color: rgba(245,242,236,.34); color: var(--ivory); }
-.showcase .btn--outline:hover { border-color: var(--champagne); color: var(--champagne); }
 
 /* Because the geometry is expressed in cqw, a 375px container shrinks the
    whole corridor to match: cards spent most of their life under 40px wide,
@@ -106,30 +94,6 @@
     width: 42cqw; height: 58cqw; margin-left: -21cqw; margin-top: -29cqw;
   }
 
-  /* The statement panels were burying the corridor they sit in front of.
-     Stacked one per row they ran 447px - half the section - and each was
-     filled at 72% black, so the photography behind was effectively a
-     closed curtain.
-
-     Two columns halves that height, and the fill drops to a blur instead
-     of a block: the copy keeps its contrast against whatever photograph
-     is passing, but the picture still reads through it. */
-  .showcase .intro__stats { grid-template-columns: repeat(2, 1fr); margin-top: 2rem; }
-  .showcase .intro__stats div {
-    padding: 1.15rem 1rem;
-    background: rgba(13, 13, 13, .38);
-    -webkit-backdrop-filter: blur(7px);
-            backdrop-filter: blur(7px);
-  }
-  /* Open the middle of the scrim so the nearest card is not washed out. */
-  .showcase__scrim {
-    background:
-      radial-gradient(ellipse 62% 34% at 50% 46%,
-        rgba(13,13,13,.82) 0%, rgba(13,13,13,.55) 52%, rgba(13,13,13,0) 88%),
-      linear-gradient(to bottom,
-        var(--ink) 0%, rgba(13,13,13,.18) 14%,
-        rgba(13,13,13,.18) 86%, var(--ink) 100%);
-  }
   @keyframes showcaseR {
     from { transform: translate3d(-8cqw, 0, -120cqw) rotateY(-5deg); }
     to   { transform: translate3d(52cqw, 0, 12cqw) rotateY(-26deg); }
@@ -149,16 +113,6 @@
 
 /* ======================= INTRO / STUDIO STATEMENT ======================= */
 .intro { display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
-.intro__stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); margin-top: 3rem; }
-.intro__stats div { background: var(--ivory); padding: 1.7rem 1.4rem; }
-.intro__stats b {
-  display: block; font-family: var(--font-serif); font-weight: 400; line-height: 1;
-  font-size: clamp(1.9rem, 3.4vw, 2.7rem); color: var(--charcoal);
-}
-.intro__stats span {
-  display: block; margin-top: .6rem;
-  font-size: .63rem; letter-spacing: .21em; text-transform: uppercase; color: var(--muted);
-}
 
 /* =========================== PROJECT GRID =============================== */
 .projects__grid {
@@ -1030,7 +984,6 @@ html:not(.js) .signoff__mark path { stroke-dashoffset: 0; }
     overflow: hidden;
   }
   .masonry__item::after { font-size: .62rem; }
-  .intro__stats { grid-template-columns: 1fr; }
   .form { grid-template-columns: 1fr; }
   .cfg__swatches { grid-template-columns: repeat(3, 1fr); }
   .cfg__stage { aspect-ratio: 4 / 3; }

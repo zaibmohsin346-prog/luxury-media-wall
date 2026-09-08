@@ -206,25 +206,24 @@
   </div>
 </div>
 
-<!-- ======================================================= ABOUT ======= -->
-<section class="section showcase" id="about">
-  <!-- The portfolio drifts through this section one photograph at a time;
-       cards are dealt from SHOWCASE in site-config.js by main.js. -->
-  <div class="showcase__stage" aria-hidden="true">
+<!-- ==================================================== SHOWCASE ======= -->
+<!-- A purely visual band: the portfolio drifts past one photograph at a
+     time, with nothing set over it. Cards are dealt from SHOWCASE in
+     site-config.js by main.js; the band carries its own height because its
+     contents are all absolutely positioned. -->
+<div class="showcase" aria-hidden="true">
+  <div class="showcase__stage">
     <div class="showcase__inner" id="showcaseInner"></div>
   </div>
-  <div class="showcase__scrim" aria-hidden="true"></div>
+  <div class="showcase__scrim"></div>
+</div>
 
+<!-- ======================================================= ABOUT ======= -->
+<section class="section" id="about">
   <div class="shell intro">
     <div>
       <p class="eyebrow" data-reveal>Bespoke Interior Design</p>
       <h2 class="h1 mt-6 reveal-words" data-reveal="fade">Where function meets architecture</h2>
-      <div class="intro__stats" data-reveal>
-        <div><b>9</b><span>Signature Projects</span></div>
-        <div><b>6</b><span>Step Design Process</span></div>
-        <div><b>10</b><span>Material Families</span></div>
-        <div><b>1</b><span>Wall, Built For You</span></div>
-      </div>
     </div>
     <div>
       <p class="lede" data-reveal>
