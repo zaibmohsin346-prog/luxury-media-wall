@@ -122,6 +122,160 @@
 /* ======================= INTRO / STUDIO STATEMENT ======================= */
 .intro { display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
 
+/* ======================= COVERFLOW (featured work) ====================== */
+/* A 3D coverflow: the centre card faces the reader square-on, its
+   neighbours turn away into the depth on either side.
+
+   Every position is expressed as a `data-pos` value rather than an inline
+   style, so JS only decides WHICH slot a card occupies and the geometry
+   stays here where it can be tuned. Slots: c (centre), r1/r2 to the right,
+   l1/l2 to the left, and everything else parked out of sight. */
+.coverflow { position: relative; overflow: hidden; background: var(--ink); isolation: isolate; }
+
+/* The current photograph, blurred right down, lights the section from
+   behind - so the backdrop shifts colour with whatever is on screen. */
+.coverflow__ambience { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.coverflow__ambience img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(.22) blur(34px); transform: scale(1.18);
+  transition: opacity 1s var(--ease-soft);
+}
+.coverflow__ambience-veil {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at center, rgba(13,13,13,.32) 0%, rgba(13,13,13,.93) 100%);
+}
+.coverflow > .shell { position: relative; z-index: 1; }
+.coverflow__eyebrow { color: var(--champagne); }
+
+.coverflow__stage {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  height: clamp(430px, 62vh, 540px);
+  margin-top: clamp(1.6rem, 3vw, 2.6rem);
+  perspective: 1400px;
+}
+
+.coverflow__card {
+  position: absolute; width: min(330px, 78vw); height: clamp(400px, 58vh, 500px);
+  padding: 0; border: 1px solid rgba(245,242,236,.13); background: #171311;
+  overflow: hidden; cursor: pointer; color: inherit; font: inherit; text-align: left;
+  transform-origin: center center;
+  /* The single transition every slot change animates through. */
+  transition: transform .8s cubic-bezier(.25, 1, .5, 1),
+              opacity .8s cubic-bezier(.25, 1, .5, 1),
+              filter .8s cubic-bezier(.25, 1, .5, 1),
+              box-shadow .8s cubic-bezier(.25, 1, .5, 1);
+}
+.coverflow__card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* --- the five visible slots ------------------------------------------- */
+.coverflow__card[data-pos="c"] {
+  transform: translateX(0) scale(1) rotateY(0deg);
+  opacity: 1; z-index: 30; filter: brightness(1); cursor: default;
+  box-shadow: 0 25px 60px rgba(0,0,0,.9), 0 0 38px rgba(198,166,107,.22);
+}
+.coverflow__card[data-pos="r1"] { transform: translateX(60%) scale(.84) rotateY(-24deg); opacity: .66; z-index: 20; filter: brightness(.75); }
+.coverflow__card[data-pos="l1"] { transform: translateX(-60%) scale(.84) rotateY(24deg);  opacity: .66; z-index: 20; filter: brightness(.75); }
+.coverflow__card[data-pos="r2"] { transform: translateX(112%) scale(.68) rotateY(-38deg); opacity: .36; z-index: 10; filter: brightness(.55) blur(1px); }
+.coverflow__card[data-pos="l2"] { transform: translateX(-112%) scale(.68) rotateY(38deg); opacity: .36; z-index: 10; filter: brightness(.55) blur(1px); }
+/* Parked: still in the DOM and still animating in, but out of the way. */
+.coverflow__card[data-pos="off"] { transform: scale(.4); opacity: 0; z-index: 0; pointer-events: none; }
+
+/* --- caption ---------------------------------------------------------- */
+.coverflow__veil {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,.08) 26%,
+                              rgba(0,0,0,.68) 60%, rgba(0,0,0,.96) 100%);
+}
+.coverflow__num {
+  position: absolute; top: 1.1rem; right: 1.15rem; z-index: 3;
+  font-size: .64rem; font-weight: 600; letter-spacing: .2em; color: rgba(255,255,255,.9);
+}
+.coverflow__num i { font-style: normal; color: var(--champagne); }
+
+/* Only the centre card's caption is shown; the rest would be unreadable at
+   that angle and would fight the photograph. */
+.coverflow__body {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+  padding: 1.4rem 1.25rem 1.5rem; text-align: center;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .5s var(--ease) .1s, transform .5s var(--ease) .1s;
+}
+.coverflow__card[data-pos="c"] .coverflow__body { opacity: 1; transform: none; }
+
+/* The card is a real <button>, so its children are spans and every one of
+   them needs an explicit display value or the caption sets as one run-on
+   line of inline text. */
+.coverflow__veil,
+.coverflow__body,
+.coverflow__title,
+.coverflow__rule,
+.coverflow__desc { display: block; }
+.coverflow__num { display: inline-block; }
+
+.coverflow__title {
+  font-family: var(--font-serif); font-size: 1.3rem; line-height: 1.16; color: var(--white);
+  text-shadow: 0 3px 12px rgba(0,0,0,.95);
+}
+.coverflow__rule {
+  width: 34px; height: 2px; background: var(--champagne); margin: .65rem auto .55rem;
+  box-shadow: 0 0 8px rgba(198,166,107,.7);
+}
+.coverflow__desc {
+  font-size: .8rem; line-height: 1.45; color: rgba(255,255,255,.88);
+  max-width: 270px; margin: 0 auto .95rem; text-shadow: 0 2px 8px rgba(0,0,0,.9);
+}
+.coverflow__cta {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .58rem 1.2rem;
+  background: linear-gradient(135deg, var(--champagne) 0%, #a48256 100%);
+  color: #110d0c; font-size: .625rem; font-weight: 700;
+  letter-spacing: .17em; text-transform: uppercase;
+  box-shadow: 0 4px 14px rgba(0,0,0,.4), 0 0 15px rgba(198,166,107,.28);
+}
+.coverflow__cta svg { width: 13px; height: 13px; }
+
+/* --- controls --------------------------------------------------------- */
+.coverflow__controls {
+  display: flex; align-items: center; justify-content: center; gap: 1.15rem;
+  margin-top: clamp(1.4rem, 3vw, 2.2rem);
+}
+.coverflow__arrow {
+  width: 46px; height: 46px; border-radius: 50%; flex: none;
+  background: rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.2); color: var(--white);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  transition: border-color .3s var(--ease), color .3s var(--ease), background-color .3s var(--ease);
+}
+.coverflow__arrow svg { width: 19px; height: 19px; }
+.coverflow__arrow:hover { border-color: var(--champagne); color: var(--champagne); background: rgba(0,0,0,.72); }
+
+.coverflow__dots { display: flex; align-items: center; gap: .5rem; }
+.coverflow__dot {
+  height: 8px; width: 8px; border-radius: 9999px; border: 0; padding: 0; cursor: pointer;
+  background: rgba(255,255,255,.26);
+  transition: width .35s var(--ease), background-color .35s var(--ease), box-shadow .35s var(--ease);
+}
+.coverflow__dot[aria-current="true"] {
+  width: 28px; background: var(--champagne); box-shadow: 0 0 10px rgba(198,166,107,.7);
+}
+
+@media (max-width: 720px) {
+  /* The side cards have to tuck in much closer or they leave the screen
+     entirely and the coverflow reads as a single card. */
+  .coverflow__card[data-pos="r1"] { transform: translateX(42%) scale(.8) rotateY(-22deg); }
+  .coverflow__card[data-pos="l1"] { transform: translateX(-42%) scale(.8) rotateY(22deg); }
+  .coverflow__card[data-pos="r2"] { transform: translateX(76%) scale(.62) rotateY(-34deg); opacity: .22; }
+  .coverflow__card[data-pos="l2"] { transform: translateX(-76%) scale(.62) rotateY(34deg); opacity: .22; }
+  .coverflow__stage { height: clamp(390px, 58vh, 470px); }
+}
+
+/* Motion here is decoration, not information: the cards land in place and
+   the arrows still work. */
+@media (prefers-reduced-motion: reduce) {
+  .coverflow__card { transition: none; }
+  .coverflow__body { transition: none; }
+}
+
 /* =========================== PROJECT GRID =============================== */
 .projects__grid {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));

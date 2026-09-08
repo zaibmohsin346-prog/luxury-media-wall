@@ -250,6 +250,36 @@
   </div>
 </section>
 
+<!-- ==================================================== FEATURED ======= -->
+<!-- Coverflow carousel. Cards are dealt from PROJECTS by main.js; the centre
+     card opens the same project modal the grid below uses, so there is one
+     source of project detail rather than two. -->
+<section class="section on-dark coverflow" id="featured">
+  <div class="coverflow__ambience" aria-hidden="true">
+    <img id="coverflowAmbience" src="" alt="" decoding="async">
+    <span class="coverflow__ambience-veil"></span>
+  </div>
+
+  <div class="shell">
+    <p class="eyebrow eyebrow--center text-center coverflow__eyebrow" data-reveal>Featured Work</p>
+
+    <div class="coverflow__stage" id="coverflowStage" role="group"
+         aria-roledescription="carousel" aria-label="Featured media wall projects">
+      <!-- rendered from PROJECTS in site-config.js -->
+    </div>
+
+    <div class="coverflow__controls">
+      <button type="button" class="coverflow__arrow" id="coverflowPrev" aria-label="Previous project">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="coverflow__dots" id="coverflowDots"></div>
+      <button type="button" class="coverflow__arrow" id="coverflowNext" aria-label="Next project">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
 <!-- ==================================================== PROJECTS ======= -->
 <section class="section bg-white" id="projects">
   <div class="shell">

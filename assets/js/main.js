@@ -1016,7 +1016,140 @@
     host.setAttribute('data-reveal', 'fade');
   }
 
-  /* ======================================================== 19. SHOWCASE */
+  /* ======================================================= 19. COVERFLOW */
+  /* Featured-work carousel. The centre card opens the same project modal
+     the grid uses, so a project's detail lives in exactly one place.
+
+     Slot assignment is the whole trick: rather than moving cards, each one
+     is told which of five slots it currently occupies and CSS animates the
+     difference. Wrapping the offset means the strip is a true loop with no
+     jump at the seam. */
+  function initCoverflow() {
+    const stage = $('#coverflowStage');
+    const dotsBox = $('#coverflowDots');
+    const ambience = $('#coverflowAmbience');
+    if (!stage || typeof PROJECTS === 'undefined' || !PROJECTS.length) return;
+
+    const total = PROJECTS.length;
+    let index = 0;
+    let timer = null;
+
+    stage.innerHTML = PROJECTS.map((p, i) => `
+      <button type="button" class="coverflow__card" data-slide="${i}" data-pos="off"
+              aria-label="Project ${p.n}: ${esc(p.title)}">
+        <img src="${asset(p.img + '-480.jpg')}" srcset="${srcsetCard(p.img)}"
+             sizes="330px" loading="lazy" decoding="async" alt="${esc(p.alt)}">
+        <span class="coverflow__veil"></span>
+        <span class="coverflow__num">${p.n} <i>/</i> 0${total}</span>
+        <span class="coverflow__body">
+          <span class="coverflow__title">${esc(p.title)}</span>
+          <span class="coverflow__rule"></span>
+          <span class="coverflow__desc">${esc(p.short)}</span>
+          <span class="coverflow__cta">View Project
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7-7 7m7-7H3"/></svg>
+          </span>
+        </span>
+      </button>
+    `).join('');
+
+    dotsBox.innerHTML = PROJECTS.map((p, i) =>
+      `<button type="button" class="coverflow__dot" data-go="${i}"
+               aria-label="Show project ${p.n}"></button>`
+    ).join('');
+
+    const cards = $$('.coverflow__card', stage);
+    const dots = $$('.coverflow__dot', dotsBox);
+
+    function paint() {
+      cards.forEach((card, i) => {
+        /* Distance from the centre, wrapped so index 0 sits next to the
+           last card rather than the whole strip sliding back. */
+        let d = (i - index + total) % total;
+        if (d > total / 2) d -= total;
+
+        const pos = d === 0 ? 'c'
+                  : d === 1 ? 'r1' : d === 2 ? 'r2'
+                  : d === -1 ? 'l1' : d === -2 ? 'l2'
+                  : 'off';
+        card.dataset.pos = pos;
+        /* Only the front card is a tab stop; the others are reachable by
+           the arrows and dots, which are labelled. */
+        card.tabIndex = pos === 'c' ? 0 : -1;
+        card.setAttribute('aria-hidden', pos === 'off' ? 'true' : 'false');
+      });
+      dots.forEach((d, i) => d.setAttribute('aria-current', String(i === index)));
+      if (ambience) ambience.src = asset(PROJECTS[index].img + '-480.jpg');
+    }
+
+    const go = (i) => { index = (i + total) % total; paint(); };
+    const next = () => go(index + 1);
+    const prev = () => go(index - 1);
+
+    /* Autoplay restarts on every interaction, so a deliberate move is never
+       cut short by a tick that was already queued. */
+    const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
+    const play = () => {
+      stop();
+      if (REDUCED) return;
+      timer = setInterval(() => { if (!document.hidden) next(); }, 5000);
+    };
+    const nudge = (fn) => { fn(); play(); };
+
+    stage.addEventListener('click', (e) => {
+      const card = e.target.closest('.coverflow__card');
+      if (!card) return;
+      const i = Number(card.dataset.slide);
+      /* A side card steps into the middle; the middle one opens up. */
+      if (i === index) openModal(i);
+      else nudge(() => go(i));
+    });
+
+    dotsBox.addEventListener('click', (e) => {
+      const dot = e.target.closest('[data-go]');
+      if (dot) nudge(() => go(Number(dot.dataset.go)));
+    });
+
+    $('#coverflowNext').addEventListener('click', () => nudge(next));
+    $('#coverflowPrev').addEventListener('click', () => nudge(prev));
+
+    /* Hover pause is a pointer affordance only - a finger that brushed the
+       strip while scrolling would otherwise stop it for good. */
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      stage.addEventListener('mouseenter', stop);
+      stage.addEventListener('mouseleave', play);
+    }
+
+    /* Arrow keys, but only while the carousel is actually on screen, so
+       they do not hijack the rest of the page. */
+    let inView = false;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        inView = entries[0].isIntersecting;
+      }, { threshold: 0.35 }).observe(stage);
+    }
+    document.addEventListener('keydown', (e) => {
+      if (!inView || modalOpen) return;
+      if (e.key === 'ArrowLeft') nudge(prev);
+      if (e.key === 'ArrowRight') nudge(next);
+    });
+
+    /* Swipe. The vertical guard keeps a diagonal scroll from being read as
+       a horizontal flick. */
+    let sx = 0, sy = 0;
+    stage.addEventListener('touchstart', (e) => {
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+    }, { passive: true });
+    stage.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - sx;
+      const dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) nudge(() => (dx < 0 ? next() : prev()));
+    }, { passive: true });
+
+    paint();
+    play();
+  }
+
+  /* ======================================================== 20. SHOWCASE */
   /* Deals every photograph into the drifting corridor behind the studio
      statement. Each card runs the same animation; spacing them evenly by
      animation-delay across one cycle is what turns twelve independent
@@ -1076,6 +1209,7 @@
     initConfigurator();
     initVideo();
     initForm();
+    initCoverflow();
     renderShowcase();
     initMarquee();
     initFloat();
