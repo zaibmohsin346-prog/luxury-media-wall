@@ -54,7 +54,16 @@ const waLink = (message) =>
 const IMAGEKIT = {
   urlEndpoint: 'https://ik.imagekit.io/ojutq4xhq',
   folder:      'media-wall',  // set to '' if you upload to the root folder
-  transform:   'q-auto,f-auto'
+  transform:   'q-auto,f-auto',
+
+  /* Photographs that live only in assets/img and have NOT been uploaded to
+     the ImageKit library yet. Without this they would be rewritten to a CDN
+     URL that does not exist and the card would come back empty.
+
+     A new photo therefore works the moment it is dropped in. Upload it to
+     ImageKit later, delete its name from this list, and it moves to the CDN
+     with no other change. */
+  localOnly: ['service-bathroom', 'service-kitchen-dubai']
 };
 
 /* ------------------------------------------------------------------ MEDIA */
@@ -359,10 +368,19 @@ const SERVICES = [
     icon: 'unit',
     label: 'Kitchen Scope',
     title: 'Kitchen Renovations',
-    text: 'Cabinetry, counters, storage, lighting, surfaces and the practical upgrade details, planned around the kitchen you already have.',
-    img: 'assets/img/service-kitchen', focus: '50% 45%',
+    text: 'Handleless cabinetry, book-matched stone islands and splashbacks, integrated appliances and the concealed lighting that makes a working kitchen feel like part of the living room.',
+    img: 'assets/img/service-kitchen-dubai', focus: '50% 52%',
     cta: 'View kitchen service',
-    alt: 'Modern kitchen with a marble island, light oak cabinetry and pendant lighting'
+    alt: 'Open-plan Dubai kitchen with a book-matched Calacatta marble island, taupe handleless cabinetry and a Burj Al Arab view'
+  },
+  {
+    icon: 'stone',
+    label: 'Bathroom Scope',
+    title: 'Bathroom Renovations',
+    text: 'Large-format stone, floating vanities, backlit mirrors and walk-in showers - set out so the tile joints, the drainage falls and the niche heights all line up before anything is cut.',
+    img: 'assets/img/service-bathroom', focus: '50% 55%',
+    cta: 'View bathroom service',
+    alt: 'Luxury Dubai bathroom with a floating dark marble vanity, backlit mirrors, walk-in shower and a Burj Khalifa view'
   },
   {
     icon: 'storage',

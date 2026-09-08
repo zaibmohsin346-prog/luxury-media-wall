@@ -23,6 +23,7 @@
   const ikEndpoint = (IK.urlEndpoint || '').replace(/\/+$/, '');
   const ikDir = IK.folder ? '/' + String(IK.folder).replace(/^\/+|\/+$/g, '') : '';
   const ikTr = IK.transform || 'q-auto,f-auto';
+  const ikLocalOnly = IK.localOnly || [];
 
   function asset(path) {
     if (!ikEndpoint) return path;
@@ -37,6 +38,9 @@
     const name = local[1];
     const sized = name.match(/^(.+)-(\d+)\.(jpe?g|png)$/i);
     if (sized) {
+      /* Not in the ImageKit library yet - serve the local derivative rather
+         than a CDN URL that would 404. See IMAGEKIT.localOnly. */
+      if (ikLocalOnly.indexOf(sized[1]) > -1) return path;
       return `${ikEndpoint}${ikDir}/${sized[1]}.${sized[3]}?tr=w-${sized[2]},${ikTr}`;
     }
     /* No size suffix — video. Plain CDN delivery with no `tr=` so it does not
