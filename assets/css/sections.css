@@ -105,6 +105,31 @@
   .showcase__card {
     width: 42cqw; height: 58cqw; margin-left: -21cqw; margin-top: -29cqw;
   }
+
+  /* The statement panels were burying the corridor they sit in front of.
+     Stacked one per row they ran 447px - half the section - and each was
+     filled at 72% black, so the photography behind was effectively a
+     closed curtain.
+
+     Two columns halves that height, and the fill drops to a blur instead
+     of a block: the copy keeps its contrast against whatever photograph
+     is passing, but the picture still reads through it. */
+  .showcase .intro__stats { grid-template-columns: repeat(2, 1fr); margin-top: 2rem; }
+  .showcase .intro__stats div {
+    padding: 1.15rem 1rem;
+    background: rgba(13, 13, 13, .38);
+    -webkit-backdrop-filter: blur(7px);
+            backdrop-filter: blur(7px);
+  }
+  /* Open the middle of the scrim so the nearest card is not washed out. */
+  .showcase__scrim {
+    background:
+      radial-gradient(ellipse 62% 34% at 50% 46%,
+        rgba(13,13,13,.82) 0%, rgba(13,13,13,.55) 52%, rgba(13,13,13,0) 88%),
+      linear-gradient(to bottom,
+        var(--ink) 0%, rgba(13,13,13,.18) 14%,
+        rgba(13,13,13,.18) 86%, var(--ink) 100%);
+  }
   @keyframes showcaseR {
     from { transform: translate3d(-8cqw, 0, -120cqw) rotateY(-5deg); }
     to   { transform: translate3d(52cqw, 0, 12cqw) rotateY(-26deg); }
