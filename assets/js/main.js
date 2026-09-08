@@ -558,25 +558,6 @@
     `).join('');
   }
 
-  /* ================================================= 9. RENDER: MATERIALS */
-  function renderMaterials() {
-    const grid = $('#materialsGrid');
-    if (!grid) return;
-    grid.innerHTML = MATERIALS.map((m, i) => `
-      <article class="mat" tabindex="0" data-reveal style="--reveal-delay:${(i % 5) * 70}ms;
-               background-image:url('${asset(m.src)}'); background-position:${m.pos}; background-size:${m.size};"
-               aria-label="${esc(m.name)}. ${esc(m.desc)} Typical application: ${esc(m.use)}.">
-        <div class="mat__inner">
-          <h3 class="mat__name">${esc(m.name)}</h3>
-          <div class="mat__meta"><div>
-            <p class="mat__desc">${esc(m.desc)}</p>
-            <span class="mat__use">${esc(m.use)}</span>
-          </div></div>
-        </div>
-      </article>
-    `).join('');
-  }
-
   /* ============================================== 10. RENDER: WALL GUIDE */
   /* Wall types we have not photographed on site yet are rendered through
      ImageKit's AI edit. The edit is the FIRST step of the chain and every
@@ -994,14 +975,15 @@
 
      Transforms are written straight to the DOM every frame. Nothing about
      the intermediate numbers belongs in a re-render. */
-  function initServicesFlow() {
-    const frame = $('#servicesFrame');
-    const ring = $('#servicesRing');
-    const caption = $('#servicesCaption');
-    const dotsBox = $('#servicesDots');
-    if (!frame || typeof SERVICES === 'undefined' || !SERVICES.length) return;
+  function initCoverFlow(cfg) {
+    const frame   = $(cfg.frame);
+    const ring    = $(cfg.ring);
+    const caption = $(cfg.caption);
+    const dotsBox = $(cfg.dots);
+    const items   = cfg.items;
+    if (!frame || !items || !items.length) return;
 
-    const count = SERVICES.length;
+    const count = items.length;
 
     /* Geometry. Card width drives pitch, depth and perspective, so it is the
        only thing measured. */
@@ -1018,18 +1000,16 @@
     let drag = null;
     let selected = 0;
 
-    ring.innerHTML = SERVICES.map((s, i) => `
+    /* The caller owns what a card and a caption look like; everything below
+       this point is the ring maths, which is identical for both carousels. */
+    ring.innerHTML = items.map((item, i) => `
       <div class="cflow__card" role="group" aria-roledescription="slide"
-           aria-label="${i + 1} of ${count}">
-        <img src="${asset(s.img + '-900.jpg')}" srcset="${srcset(s.img)}"
-             sizes="(max-width: 720px) 68vw, 360px"
-             style="object-position:${s.focus || '50% 50%'}"
-             draggable="false" loading="lazy" decoding="async" alt="${esc(s.alt || s.title)}">
-      </div>
+           aria-label="${i + 1} of ${count}">${cfg.card(item, i)}</div>
     `).join('');
 
-    dotsBox.innerHTML = SERVICES.map((s, i) =>
-      `<button type="button" class="cflow__dot" data-go="${i}" aria-label="Show ${esc(s.title)}"></button>`
+    dotsBox.innerHTML = items.map((item, i) =>
+      `<button type="button" class="cflow__dot" data-go="${i}"
+               aria-label="Show ${esc(cfg.dotLabel(item))}"></button>`
     ).join('');
 
     const cards = $$('.cflow__card', ring);
@@ -1069,16 +1049,7 @@
     }
 
     function renderCaption() {
-      const s = SERVICES[selected];
-      caption.innerHTML = `
-        <span class="cflow__label">${esc(s.label || '')}</span>
-        <span class="cflow__title">${esc(s.title)}</span>
-        <p class="cflow__text">${esc(s.text)}</p>
-        <a class="cflow__cta" href="${waLink(
-          `Hello Media Wall Studio, I would like to enquire about ${s.title}.`
-        )}" target="_blank" rel="noopener">${esc(s.cta || 'Enquire')}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>`;
+      caption.innerHTML = cfg.caption_(items[selected], selected);
       dots.forEach((d, i) => d.setAttribute('aria-current', String(i === selected)));
     }
 
@@ -1148,8 +1119,8 @@
       if (e.key === 'ArrowRight') { e.preventDefault(); nudge(1); }
     });
 
-    $('#servicesPrev').addEventListener('click', () => nudge(-1));
-    $('#servicesNext').addEventListener('click', () => nudge(1));
+    $(cfg.prev).addEventListener('click', () => nudge(-1));
+    $(cfg.next).addEventListener('click', () => nudge(1));
     dotsBox.addEventListener('click', (e) => {
       const dot = e.target.closest('[data-go]');
       if (dot) goTo(Number(dot.dataset.go));
@@ -1167,6 +1138,60 @@
     else window.addEventListener('resize', measure);
 
     renderCaption();
+  }
+
+  /* --- the two carousels that ride on it -------------------------------- */
+  function initServicesFlow() {
+    if (typeof SERVICES === 'undefined') return;
+    initCoverFlow({
+      frame: '#servicesFrame', ring: '#servicesRing',
+      caption: '#servicesCaption', dots: '#servicesDots',
+      prev: '#servicesPrev', next: '#servicesNext',
+      items: SERVICES,
+      dotLabel: (s) => s.title,
+      card: (s) => `
+        <img src="${asset(s.img + '-900.jpg')}" srcset="${srcset(s.img)}"
+             sizes="(max-width: 720px) 68vw, 360px"
+             style="object-position:${s.focus || '50% 50%'}"
+             draggable="false" loading="lazy" decoding="async" alt="${esc(s.alt || s.title)}">`,
+      caption_: (s) => `
+        <span class="cflow__label">${esc(s.label || '')}</span>
+        <span class="cflow__title">${esc(s.title)}</span>
+        <p class="cflow__text">${esc(s.text)}</p>
+        <a class="cflow__cta" href="${waLink(
+          `Hello Media Wall Studio, I would like to enquire about ${s.title}.`
+        )}" target="_blank" rel="noopener">${esc(s.cta || 'Enquire')}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>`
+    });
+  }
+
+  function initMaterialsFlow() {
+    if (typeof MATERIALS === 'undefined') return;
+    initCoverFlow({
+      frame: '#materialsFrame', ring: '#materialsRing',
+      caption: '#materialsCaption', dots: '#materialsDots',
+      prev: '#materialsPrev', next: '#materialsNext',
+      items: MATERIALS,
+      dotLabel: (m) => m.name,
+      /* Materials are close crops of real joinery rather than whole rooms,
+         so each card is a positioned, zoomed background the way the old
+         swatch grid was - an <img> would show the entire room instead of
+         the grain. */
+      card: (m) => `
+        <span class="cflow__swatch" role="img" aria-label="${esc(m.name)}"
+              style="background-image:url('${asset(m.src)}');
+                     background-position:${m.pos}; background-size:${m.size};"></span>`,
+      caption_: (m) => `
+        <span class="cflow__label">${esc(m.use)}</span>
+        <span class="cflow__title">${esc(m.name)}</span>
+        <p class="cflow__text">${esc(m.desc)}</p>
+        <a class="cflow__cta" href="${waLink(
+          `Hello Media Wall Studio, I am interested in a media wall in ${m.name}.`
+        )}" target="_blank" rel="noopener">Enquire about ${esc(m.name)}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>`
+    });
   }
 
   /* ======================================================= 19. COVERFLOW */
@@ -1353,7 +1378,7 @@
     renderTransforms();
     initServicesFlow();
     renderProcess();
-    renderMaterials();
+    initMaterialsFlow();
     renderWallGuide();
     renderQuotes();
     renderSignature();

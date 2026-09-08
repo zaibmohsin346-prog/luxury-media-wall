@@ -529,8 +529,22 @@
       </div>
     </div>
 
-    <div class="materials__grid" id="materialsGrid">
-      <!-- rendered from MATERIALS in site-config.js -->
+    <!-- Same drag coverflow as Services, dealt from MATERIALS. -->
+    <div class="cflow" id="materialsFlow" role="region"
+         aria-roledescription="carousel" aria-label="Materials">
+      <div class="cflow__frame" id="materialsFrame" tabindex="0">
+        <div class="cflow__ring" id="materialsRing"></div>
+      </div>
+
+      <button type="button" class="cflow__arrow cflow__arrow--prev" id="materialsPrev" aria-label="Previous material">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button type="button" class="cflow__arrow cflow__arrow--next" id="materialsNext" aria-label="Next material">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+
+      <div class="cflow__caption" id="materialsCaption" aria-live="polite"></div>
+      <div class="cflow__dots" id="materialsDots"></div>
     </div>
   </div>
 </section>
