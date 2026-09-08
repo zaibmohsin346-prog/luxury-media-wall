@@ -543,35 +543,6 @@
     });
   }
 
-  /* ================================================== 7. RENDER: SERVICES */
-  function renderServices() {
-    const grid = $('#servicesGrid');
-    if (!grid) return;
-
-    grid.innerHTML = SERVICES.map((s, i) => `
-      <article class="svc-card${s.flagship ? ' svc-card--flagship' : ''}"
-               data-reveal style="--reveal-delay:${(i % 3) * 90}ms">
-        <div class="svc-card__media">
-          <img src="${asset(s.img + '-900.jpg')}"
-               srcset="${srcsetCard(s.img)}"
-               sizes="${CARD_SIZES}"
-               style="object-position:${s.focus || '50% 50%'}"
-               loading="lazy" decoding="async" alt="${esc(s.alt || s.title)}">
-        </div>
-        <div class="svc-card__body">
-          <span class="svc-card__label">${esc(s.label || '')}</span>
-          <h3>${esc(s.title)}</h3>
-          <p>${esc(s.text)}</p>
-          <a class="svc-card__cta" href="${waLink(
-            `Hello Media Wall Studio, I would like to enquire about ${s.title}. Could you tell me more?`
-          )}" target="_blank" rel="noopener">
-            ${esc(s.cta || 'Enquire')}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-    `).join('');
-  }
 
   /* =================================================== 8. RENDER: PROCESS */
   function renderProcess() {
@@ -1016,6 +987,188 @@
     host.setAttribute('data-reveal', 'fade');
   }
 
+  /* =============================================== 18b. SERVICES COVERFLOW */
+  /* A continuous-position coverflow: unlike the featured carousel, this one
+     is not snapped to slots. Position is a fractional card index, a drag
+     moves it by a fraction of a card, and a flick carries.
+
+     Transforms are written straight to the DOM every frame. Nothing about
+     the intermediate numbers belongs in a re-render. */
+  function initServicesFlow() {
+    const frame = $('#servicesFrame');
+    const ring = $('#servicesRing');
+    const caption = $('#servicesCaption');
+    const dotsBox = $('#servicesDots');
+    if (!frame || typeof SERVICES === 'undefined' || !SERVICES.length) return;
+
+    const count = SERVICES.length;
+
+    /* Geometry. Card width drives pitch, depth and perspective, so it is the
+       only thing measured. */
+    const ROTATE = 44;      /* degrees the first neighbour tilts */
+    const DEPTH = 0.6;      /* how far it recedes, as a fraction of card width */
+    const FALLOFF = 0.56;   /* below 1, the rake eases off as cards travel out */
+    const FADE = 0.1;       /* opacity lost per step from the centre */
+    const GAP = 0.05;       /* space between cards, as a fraction of width */
+
+    let pos = 0;            /* fractional card index at the centre */
+    let target = 0;         /* where the current settle is headed */
+    let width = 0;
+    let raf = null;
+    let drag = null;
+    let selected = 0;
+
+    ring.innerHTML = SERVICES.map((s, i) => `
+      <div class="cflow__card" role="group" aria-roledescription="slide"
+           aria-label="${i + 1} of ${count}">
+        <img src="${asset(s.img + '-900.jpg')}" srcset="${srcset(s.img)}"
+             sizes="(max-width: 720px) 68vw, 360px"
+             style="object-position:${s.focus || '50% 50%'}"
+             draggable="false" loading="lazy" decoding="async" alt="${esc(s.alt || s.title)}">
+      </div>
+    `).join('');
+
+    dotsBox.innerHTML = SERVICES.map((s, i) =>
+      `<button type="button" class="cflow__dot" data-go="${i}" aria-label="Show ${esc(s.title)}"></button>`
+    ).join('');
+
+    const cards = $$('.cflow__card', ring);
+    const dots = $$('.cflow__dot', dotsBox);
+
+    const indexAt = (p) => ((Math.round(p) % count) + count) % count;
+
+    function paint() {
+      if (!width) return;
+      const pitch = width * (1 + GAP);
+
+      cards.forEach((card, i) => {
+        /* Fold the distance into the shorter way round the ring. This is the
+           entire looping mechanism - no cloned nodes, no DOM shuffling. */
+        let offset = i - pos;
+        offset = ((offset % count) + count) % count;
+        if (offset > count / 2) offset -= count;
+
+        const distance = Math.abs(offset);
+        /* Tilt and recession both ease off with distance: doubling the
+           distance adds only about half again as much of each. A linear ramp
+           folds the second card shut; this keeps it readable. */
+        const ramp = Math.pow(distance, FALLOFF);
+        /* Capped short of edge-on so a far card never turns its back. */
+        const tilt = Math.min(ROTATE * ramp, 82) * Math.sign(offset);
+
+        card.style.transform =
+          `translateX(calc(-50% + ${offset * pitch}px)) ` +
+          `translateZ(${-DEPTH * width * ramp}px) rotateY(${-tilt}deg)`;
+
+        /* A card is teleported across the ring at exactly half a turn out, so
+           it has to have faded by then or the jump is visible. */
+        const edge = Math.min(1, Math.max(0, count / 2 - distance));
+        card.style.opacity = String(Math.max(0, 1 - FADE * distance) * edge);
+        card.style.zIndex = String(100 - Math.round(distance));
+      });
+    }
+
+    function renderCaption() {
+      const s = SERVICES[selected];
+      caption.innerHTML = `
+        <span class="cflow__label">${esc(s.label || '')}</span>
+        <span class="cflow__title">${esc(s.title)}</span>
+        <p class="cflow__text">${esc(s.text)}</p>
+        <a class="cflow__cta" href="${waLink(
+          `Hello Media Wall Studio, I would like to enquire about ${s.title}.`
+        )}" target="_blank" rel="noopener">${esc(s.cta || 'Enquire')}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>`;
+      dots.forEach((d, i) => d.setAttribute('aria-current', String(i === selected)));
+    }
+
+    function select(i) {
+      if (i === selected) return;
+      selected = i;
+      renderCaption();
+    }
+
+    function settle(to) {
+      if (raf !== null) cancelAnimationFrame(raf);
+      target = to;
+      select(indexAt(to));
+
+      if (REDUCED) { pos = to; paint(); raf = null; return; }
+
+      const step = () => {
+        const remaining = target - pos;
+        if (Math.abs(remaining) < 0.0004) { pos = target; paint(); raf = null; return; }
+        /* Exponential ease-out rather than a spring: no overshoot wanted. */
+        pos += remaining * 0.16;
+        paint();
+        raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }
+
+    /* Take the shorter way round rather than unwinding the whole ring. */
+    const goTo = (i) => settle(i + Math.round((target - i) / count) * count);
+    const nudge = (by) => settle(Math.round(target) + by);
+
+    /* ---- drag ---------------------------------------------------------- */
+    frame.addEventListener('pointerdown', (e) => {
+      if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
+      frame.setPointerCapture(e.pointerId);
+      target = pos;
+      drag = { id: e.pointerId, x: e.clientX, pos: pos, v: 0, t: performance.now() };
+    });
+
+    frame.addEventListener('pointermove', (e) => {
+      if (!drag || drag.id !== e.pointerId) return;
+      const pitch = width * (1 + GAP);
+      if (!pitch) return;
+      const now = performance.now();
+      const previous = pos;
+      pos = drag.pos - (e.clientX - drag.x) / pitch;
+      /* Cards per second, for the throw. */
+      drag.v = ((pos - previous) / Math.max(now - drag.t, 1)) * 1000;
+      drag.t = now;
+      select(indexAt(pos));
+      paint();
+    });
+
+    const endDrag = (e) => {
+      if (!drag || drag.id !== e.pointerId) return;
+      const v = drag.v;
+      drag = null;
+      /* Let a flick carry, but never more than two cards. */
+      const carried = Math.max(-2, Math.min(2, v * 0.18));
+      settle(Math.round(pos + carried));
+    };
+    frame.addEventListener('pointerup', endDrag);
+    frame.addEventListener('pointercancel', endDrag);
+
+    frame.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); nudge(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); nudge(1); }
+    });
+
+    $('#servicesPrev').addEventListener('click', () => nudge(-1));
+    $('#servicesNext').addEventListener('click', () => nudge(1));
+    dotsBox.addEventListener('click', (e) => {
+      const dot = e.target.closest('[data-go]');
+      if (dot) goTo(Number(dot.dataset.go));
+    });
+
+    /* ---- measure -------------------------------------------------------- */
+    const measure = () => {
+      const w = cards[0] && cards[0].offsetWidth;
+      if (!w) return;
+      width = w;
+      paint();
+    };
+    measure();
+    if ('ResizeObserver' in window) new ResizeObserver(measure).observe(frame);
+    else window.addEventListener('resize', measure);
+
+    renderCaption();
+  }
+
   /* ======================================================= 19. COVERFLOW */
   /* Featured-work carousel. The centre card opens the same project modal
      the grid uses, so a project's detail lives in exactly one place.
@@ -1027,7 +1180,6 @@
   function initCoverflow() {
     const stage = $('#coverflowStage');
     const dotsBox = $('#coverflowDots');
-    const ambience = $('#coverflowAmbience');
     if (!stage || typeof PROJECTS === 'undefined' || !PROJECTS.length) return;
 
     const total = PROJECTS.length;
@@ -1042,7 +1194,7 @@
              scaled up by the 3D transform. Capping at 900w left a retina
              phone rendering a 440px card from a 900px file. -->
         <img src="${asset(p.img + '-900.jpg')}" srcset="${srcset(p.img)}"
-             sizes="(max-width: 520px) 86vw, 440px"
+             sizes="(max-width: 640px) 90vw, 560px"
              loading="lazy" decoding="async" alt="${esc(p.alt)}">
         <span class="coverflow__veil"></span>
         <span class="coverflow__num">${p.n} <i>/</i> 0${total}</span>
@@ -1083,7 +1235,6 @@
         card.setAttribute('aria-hidden', pos === 'off' ? 'true' : 'false');
       });
       dots.forEach((d, i) => d.setAttribute('aria-current', String(i === index)));
-      if (ambience) ambience.src = asset(PROJECTS[index].img + '-480.jpg');
     }
 
     const go = (i) => { index = (i + total) % total; paint(); };
@@ -1200,7 +1351,7 @@
     renderContactBits();
     renderProjects();
     renderTransforms();
-    renderServices();
+    initServicesFlow();
     renderProcess();
     renderMaterials();
     renderWallGuide();

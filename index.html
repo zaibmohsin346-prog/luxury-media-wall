@@ -254,12 +254,7 @@
 <!-- Coverflow carousel. Cards are dealt from PROJECTS by main.js; the centre
      card opens the same project modal the grid below uses, so there is one
      source of project detail rather than two. -->
-<section class="section on-dark coverflow" id="featured">
-  <div class="coverflow__ambience" aria-hidden="true">
-    <img id="coverflowAmbience" src="" alt="" decoding="async">
-    <span class="coverflow__ambience-veil"></span>
-  </div>
-
+<section class="section coverflow" id="featured">
   <div class="shell">
     <p class="eyebrow eyebrow--center text-center coverflow__eyebrow" data-reveal>Featured Work</p>
 
@@ -342,8 +337,24 @@
       </div>
     </div>
 
-    <div class="svc__grid" id="servicesGrid">
-      <!-- rendered from SERVICES in site-config.js -->
+    <!-- Drag-driven coverflow. Position is continuous rather than snapped to
+         slots, so a drag tracks the finger and a flick carries. Cards are
+         dealt from SERVICES in site-config.js by main.js. -->
+    <div class="cflow" id="servicesFlow" role="region"
+         aria-roledescription="carousel" aria-label="Services">
+      <div class="cflow__frame" id="servicesFrame" tabindex="0">
+        <div class="cflow__ring" id="servicesRing"></div>
+      </div>
+
+      <button type="button" class="cflow__arrow cflow__arrow--prev" id="servicesPrev" aria-label="Previous service">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button type="button" class="cflow__arrow cflow__arrow--next" id="servicesNext" aria-label="Next service">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+
+      <div class="cflow__caption" id="servicesCaption" aria-live="polite"></div>
+      <div class="cflow__dots" id="servicesDots"></div>
     </div>
   </div>
 </section>
