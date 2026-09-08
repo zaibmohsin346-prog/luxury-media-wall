@@ -676,22 +676,25 @@
 .why__item p { margin-top: .5rem; font-size: .89rem; line-height: 1.72; color: var(--muted); }
 
 /* ========================== PROCESS TIMELINE ============================ */
-.process__grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; background: var(--line-dark); }
+/* Set on the light ground. The hairline between cells is the grid's own
+   background showing through a 1px gap, so it moves from the dark rule to
+   the light one along with everything else. */
+.process__grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; background: var(--line); }
 .step {
-  position: relative; background: var(--ink);
+  position: relative; background: var(--white);
   padding: clamp(1.9rem, 3vw, 2.7rem) clamp(1.4rem, 2.2vw, 2.1rem) clamp(2.4rem, 3.6vw, 3.2rem);
   overflow: hidden;
 }
 .step__num {
   font-family: var(--font-serif); font-size: clamp(2.5rem, 4.6vw, 3.6rem); line-height: 1;
-  color: rgba(245,242,236,.16);
+  color: rgba(23,23,23,.16);
   transition: color .7s var(--ease);
 }
 .step:hover .step__num { color: var(--champagne); }
-.step h3 { margin-top: 1.2rem; font-size: clamp(1.1rem, 1.5vw, 1.32rem); color: var(--ivory); }
-.step p { margin-top: .7rem; font-size: .875rem; line-height: 1.72; color: var(--muted-dark); }
+.step h3 { margin-top: 1.2rem; font-size: clamp(1.1rem, 1.5vw, 1.32rem); color: var(--ink); }
+.step p { margin-top: .7rem; font-size: .875rem; line-height: 1.72; color: var(--muted); }
 /* Progress bar drawn as the step scrolls into view */
-.step__bar { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: rgba(255,255,255,.09); }
+.step__bar { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: rgba(23,23,23,.09); }
 .step__bar::after {
   content: ""; position: absolute; inset: 0; background: var(--champagne);
   transform: scaleX(0); transform-origin: left center;
@@ -909,7 +912,9 @@
 .masonry__item--sq    { aspect-ratio: 1; }
 
 /* =============================== VIDEO ================================== */
-.video-band { position: relative; overflow: hidden; background: var(--ink); }
+/* The band is light; the video frame inside it stays dark, because the play
+   button, the scrim and the label all sit over footage. */
+.video-band { position: relative; overflow: hidden; background: var(--white); }
 .video-frame { position: relative; aspect-ratio: 16 / 9; background: #0b0b0b; overflow: hidden; }
 .video-frame video { width: 100%; height: 100%; object-fit: cover; }
 .video-frame__scrim {
@@ -940,12 +945,13 @@
   white-space: nowrap;
 }
 
-.video-chapters { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line-dark); margin-top: 1px; }
-.video-chapters div { background: var(--ink); padding: 1.4rem 1.2rem; }
+.video-chapters { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line); margin-top: 1px; }
+.video-chapters div { background: var(--white); padding: 1.4rem 1.2rem; }
 .video-chapters b {
-  display: block; font-size: .6rem; font-weight: 600; letter-spacing: .2em; color: var(--champagne);
+  display: block; font-size: .6rem; font-weight: 600; letter-spacing: .2em;
+  color: var(--champagne-dim, #a98c4f);
 }
-.video-chapters span { display: block; margin-top: .5rem; font-size: .82rem; color: var(--muted-dark); }
+.video-chapters span { display: block; margin-top: .5rem; font-size: .82rem; color: var(--muted); }
 
 /* ============================ TESTIMONIALS ============================== */
 .quotes__grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: clamp(1.2rem, 2.4vw, 2.2rem); }
