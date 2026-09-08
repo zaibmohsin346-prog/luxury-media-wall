@@ -96,6 +96,35 @@ const HERO_SLIDES = [
 /* Seconds each hero photograph holds before it fades into the next. */
 const HERO_SLIDE_SECONDS = 6;
 
+/* ------------------------------------------------------------- SHOWCASE */
+/* The drifting photograph corridor behind the studio statement. Cards are
+   dealt alternately to the left and right lane and travel from far behind
+   the page toward the reader, so the whole portfolio passes through the
+   section one photograph at a time.
+
+   Order matters: neighbours in this list appear on opposite sides at the
+   same moment, so alternating stone and timber keeps the pairing varied.
+
+   The three `before-*` photographs are deliberately left out - they are
+   plain undecorated walls, and the point of this section is finished work. */
+const SHOWCASE = [
+  { img: 'assets/img/project-01-marble-halo',       alt: 'Book-matched marble media wall with a recessed LED halo' },
+  { img: 'assets/img/project-02-warm-oak',          alt: 'Warm oak media wall with a floating cabinet run' },
+  { img: 'assets/img/project-08-backlit-onyx',      alt: 'Backlit onyx media wall' },
+  { img: 'assets/img/project-04-fluted-travertine', alt: 'Fluted travertine media wall' },
+  { img: 'assets/img/project-03-dark-luxury',       alt: 'Dark charcoal media wall with brass inlay' },
+  { img: 'assets/img/project-05-full-height',       alt: 'Full-height panelled television wall' },
+  { img: 'assets/img/project-07-fireplace',         alt: 'Marble media wall with a linear fireplace' },
+  { img: 'assets/img/project-06-minimal-light',     alt: 'Minimal light media wall with concealed cabling' },
+  { img: 'assets/img/hero-poster',                  alt: 'Penthouse living room with a backlit onyx media wall' },
+  { img: 'assets/img/service-wardrobe',             alt: 'Bespoke fitted wardrobe joinery' },
+  { img: 'assets/img/project-09-uae-penthouse',     alt: 'UAE penthouse media wall above the Dubai skyline' },
+  { img: 'assets/img/service-kitchen',              alt: 'Bespoke kitchen joinery' }
+];
+
+/* One full pass from the far distance to the foreground, in seconds. */
+const SHOWCASE_SECONDS = 22;
+
 /* --------------------------------------------------------------- PROJECTS */
 /* Nine separate projects, nine separate photographs. */
 const PROJECTS = [

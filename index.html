@@ -207,7 +207,14 @@
 </div>
 
 <!-- ======================================================= ABOUT ======= -->
-<section class="section" id="about">
+<section class="section showcase" id="about">
+  <!-- The portfolio drifts through this section one photograph at a time;
+       cards are dealt from SHOWCASE in site-config.js by main.js. -->
+  <div class="showcase__stage" aria-hidden="true">
+    <div class="showcase__inner" id="showcaseInner"></div>
+  </div>
+  <div class="showcase__scrim" aria-hidden="true"></div>
+
   <div class="shell intro">
     <div>
       <p class="eyebrow" data-reveal>Bespoke Interior Design</p>
