@@ -390,16 +390,25 @@ h1, h2, h3, h4 {
 
 .hero__scrim {
   position: absolute; inset: 0; z-index: 1;
-  /* Weighted so the headline band always clears the brightest photography.
-     The top-right stays open enough to read the room behind it. */
+  /* Shaped, not flooded. The previous version ran 94% black at the foot and
+     88% a quarter of the way up, with a 66% wash down the left on top of
+     that - the room behind it was effectively gone, and the hero read as a
+     dark rectangle rather than as photography.
+
+     Now the density sits only where type sits: a band under the copy, a
+     soft column down the left so the headline has a ground, and a light
+     lift at the very top for the header. The right two thirds of the frame
+     stay open, which is where the wall itself is. */
   background:
     linear-gradient(to top,
-      rgba(9,9,9,.94) 0%,
-      rgba(9,9,9,.88) 24%,
-      rgba(9,9,9,.66) 46%,
-      rgba(9,9,9,.34) 68%,
-      rgba(9,9,9,.52) 100%),
-    linear-gradient(to right, rgba(9,9,9,.66) 0%, rgba(9,9,9,.16) 58%, rgba(9,9,9,.34) 100%);
+      rgba(9,9,9,.88) 0%,
+      rgba(9,9,9,.60) 20%,
+      rgba(9,9,9,.24) 44%,
+      rgba(9,9,9,.04) 68%,
+      rgba(9,9,9,.30) 100%),
+    linear-gradient(to right,
+      rgba(9,9,9,.56) 0%, rgba(9,9,9,.20) 40%,
+      rgba(9,9,9,0) 68%);
 }
 
 .hero__inner {
@@ -415,8 +424,12 @@ h1, h2, h3, h4 {
 .hero__place::before { content: ""; width: 46px; height: 1px; background: currentColor; opacity: .6; }
 
 .hero h1 {
-  color: var(--white); max-width: 17ch;
-  text-shadow: 0 2px 40px rgba(0,0,0,.55);
+  color: var(--white); max-width: 15ch;
+  letter-spacing: -.015em;
+  /* Two shadows rather than one: a tight one that keeps the letterforms
+     crisp against a busy photograph, and a wide soft one that lifts the
+     whole block off the wall behind it without greying the image. */
+  text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 6px 46px rgba(0,0,0,.5);
 }
 .hero h1 .line { display: block; overflow: hidden; }
 .hero h1 .line > span { display: block; transform: translateY(105%); animation: lineUp 1.15s var(--ease) forwards; }
@@ -426,8 +439,9 @@ h1, h2, h3, h4 {
 @keyframes lineUp { to { transform: translateY(0); } }
 
 .hero__sub {
-  margin-top: 1.8rem; max-width: 52ch;
-  color: rgba(255,255,255,.8); font-size: clamp(.97rem, 1.2vw, 1.1rem); line-height: 1.75;
+  margin-top: 1.7rem; max-width: 46ch;
+  color: rgba(255,255,255,.86); font-size: clamp(.97rem, 1.2vw, 1.08rem); line-height: 1.75;
+  text-shadow: 0 1px 18px rgba(0,0,0,.55);
 }
 .hero__actions { margin-top: 2.4rem; display: flex; flex-wrap: wrap; gap: 1rem; }
 
@@ -457,20 +471,35 @@ h1, h2, h3, h4 {
 }
 
 /* Hero stat strip */
+/* Reads as a bar laid over the photograph rather than a black block cut out
+   of it: a hairline, a light frosting, and the room still visible through. */
 .hero__strip {
   position: relative; z-index: 3;
-  border-top: 1px solid rgba(255,255,255,.13);
+  border-top: 1px solid rgba(255,255,255,.16);
   display: grid; grid-template-columns: repeat(4, 1fr);
+  background: rgba(9,9,9,.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+          backdrop-filter: blur(14px) saturate(1.1);
 }
-.hero__strip div { padding: 1.5rem 1.2rem; border-right: 1px solid rgba(255,255,255,.13); }
+.hero__strip div {
+  position: relative;
+  padding: clamp(1.3rem, 2.2vh, 1.75rem) clamp(1rem, 2vw, 1.6rem);
+  border-right: 1px solid rgba(255,255,255,.13);
+}
 .hero__strip div:last-child { border-right: 0; }
+/* A champagne tick above each figure - the one place the accent appears in
+   the hero besides the eyebrow, so it ties the two ends together. */
+.hero__strip div::before {
+  content: ""; position: absolute; top: -1px; left: 0; width: 26px; height: 1px;
+  background: var(--champagne); opacity: .85;
+}
 .hero__strip b {
   display: block; font-weight: 400; line-height: 1;
-  font-family: var(--font-serif); font-size: clamp(1.3rem, 2.3vw, 1.9rem); color: var(--white);
+  font-family: var(--font-serif); font-size: clamp(1.35rem, 2.3vw, 2rem); color: var(--white);
 }
 .hero__strip span {
-  display: block; margin-top: .5rem;
-  font-size: .6rem; letter-spacing: .21em; text-transform: uppercase; color: rgba(255,255,255,.54);
+  display: block; margin-top: .55rem;
+  font-size: .595rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.62);
 }
 
 /* ====================== 08. SECTION FURNITURE =========================== */
@@ -624,6 +653,17 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 720px) {
+  /* The left column of the scrim exists to give the headline a ground while
+     leaving the right of the frame open. On a 375px screen it reached 255px
+     - 68% of everything - and stacked with the vertical gradient, so the
+     photograph disappeared entirely. There is no open right side on a
+     phone, so the column goes and the vertical band does the work alone. */
+  .hero__scrim {
+    background: linear-gradient(to top,
+      rgba(9,9,9,.9) 0%, rgba(9,9,9,.66) 26%,
+      rgba(9,9,9,.3) 52%, rgba(9,9,9,.12) 74%, rgba(9,9,9,.42) 100%);
+  }
+
   .hero__strip { grid-template-columns: repeat(2, 1fr); }
   .hero__strip div:nth-child(2) { border-right: 0; }
   .hero__strip div:nth-child(1), .hero__strip div:nth-child(2) { border-bottom: 1px solid rgba(255,255,255,.13); }
