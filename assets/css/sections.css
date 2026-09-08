@@ -45,7 +45,7 @@
   isolation: isolate;
   /* Every child is absolutely positioned, so the band has no content to
      stand it up. Tall enough for a card to arrive, pass and leave. */
-  height: clamp(360px, 52vh, 620px);
+  height: clamp(420px, 58vh, 700px);
 }
 .showcase__stage {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
@@ -55,7 +55,9 @@
 
 .showcase__card {
   position: absolute; left: 50%; top: 52%;
-  width: 18cqw; height: 25cqw; margin-left: -9cqw; margin-top: -12.5cqw;
+  /* Half the width and height are negated in the margins so the card stays
+     centred on its own path; change one and the other three must follow. */
+  width: 27cqw; height: 37cqw; margin-left: -13.5cqw; margin-top: -18.5cqw;
   overflow: hidden; backface-visibility: hidden;
   border: 1px solid rgba(245, 242, 236, .1);
   animation-duration: var(--showcase-dur, 22s);
@@ -91,7 +93,7 @@
    shorter corridor, so each picture arrives large enough to recognise. */
 @media (max-width: 720px) {
   .showcase__card {
-    width: 42cqw; height: 58cqw; margin-left: -21cqw; margin-top: -29cqw;
+    width: 58cqw; height: 78cqw; margin-left: -29cqw; margin-top: -39cqw;
   }
 
   @keyframes showcaseR {
