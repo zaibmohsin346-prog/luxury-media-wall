@@ -25,7 +25,13 @@ $codec = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() |
          Where-Object { $_.MimeType -eq 'image/jpeg' }
 
 # width => JPEG quality
-$targets = [ordered]@{ 480 = 72; 900 = 76; 1400 = 78 }
+#
+# Keys are STRINGS deliberately. On an [ordered] hashtable an integer index
+# is positional, not a key lookup, so $targets[480] returned $null, [int64]
+# $null came out as 0, and every derivative was written at JPEG quality 0 -
+# maximum compression. It went unnoticed while ImageKit was re-encoding from
+# its own copy and these files were never actually served.
+$targets = [ordered]@{ '480' = 82; '900' = 84; '1400' = 86 }
 
 if (-not (Test-Path $ImageDir)) {
   Write-Error "Image directory not found: $ImageDir  (run this from the project root)"
@@ -44,7 +50,8 @@ foreach ($file in $sources) {
   $img = [System.Drawing.Image]::FromFile($file.FullName)
   Write-Output "$($file.Name)  ($($img.Width)x$($img.Height))"
 
-  foreach ($width in $targets.Keys) {
+  foreach ($key in $targets.Keys) {
+    $width = [int]$key
     $tw = [Math]::Min($width, $img.Width)
     $th = [int][Math]::Round($img.Height * ($tw / $img.Width))
 
@@ -61,7 +68,7 @@ foreach ($file in $sources) {
     $ep = New-Object System.Drawing.Imaging.EncoderParameters(1)
     $ep.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter(
                       [System.Drawing.Imaging.Encoder]::Quality,
-                      [int64]$targets[$width])
+                      [int64]$targets[$key])
 
     $out = Join-Path $ImageDir ($file.BaseName + "-$width.jpg")
     $bmp.Save($out, $codec, $ep)

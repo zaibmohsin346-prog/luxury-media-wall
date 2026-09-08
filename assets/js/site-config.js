@@ -369,7 +369,7 @@ const SERVICES = [
     label: 'Kitchen Scope',
     title: 'Kitchen Renovations',
     text: 'Handleless cabinetry, book-matched stone islands and splashbacks, integrated appliances and the concealed lighting that makes a working kitchen feel like part of the living room.',
-    img: 'assets/img/service-kitchen-dubai', focus: '50% 52%',
+    img: 'assets/img/service-kitchen-dubai', focus: '50% 50%',
     cta: 'View kitchen service',
     alt: 'Open-plan Dubai kitchen with a book-matched Calacatta marble island, taupe handleless cabinetry and a Burj Al Arab view'
   },
@@ -378,7 +378,7 @@ const SERVICES = [
     label: 'Bathroom Scope',
     title: 'Bathroom Renovations',
     text: 'Large-format stone, floating vanities, backlit mirrors and walk-in showers - set out so the tile joints, the drainage falls and the niche heights all line up before anything is cut.',
-    img: 'assets/img/service-bathroom', focus: '50% 55%',
+    img: 'assets/img/service-bathroom', focus: '50% 50%',
     cta: 'View bathroom service',
     alt: 'Luxury Dubai bathroom with a floating dark marble vanity, backlit mirrors, walk-in shower and a Burj Khalifa view'
   },
