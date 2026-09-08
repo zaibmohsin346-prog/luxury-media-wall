@@ -877,9 +877,9 @@
   transition: color .45s var(--ease), border-color .45s var(--ease);
 }
 .guide__cta svg { width: 14px; height: 14px; transition: transform .5s var(--ease); }
-/* The expander is a phone-only affordance; the desktop column shows the
-   full specification with no interaction. */
-.guide__more { display: none; }
+/* Both expanders are phone-only; the desktop column shows every wall type
+   and its full specification with no interaction. */
+.guide__more, .guide__all { display: none; }
 .guide__cta:hover { color: var(--champagne); border-color: var(--champagne); }
 .guide__cta:hover svg { transform: translateX(5px); }
 
@@ -1127,8 +1127,15 @@ html:not(.js) .signoff__mark path { stroke-dashoffset: 0; }
   .ba__grid       { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .quotes__grid   { grid-template-columns: 1fr; }
 
-  /* Three reviews, then the rest on request. */
-  .quotes__grid:not(.is-expanded) .quote:nth-child(n + 4) { display: none; }
+  /* Two reviews, then the rest on request. Three cost 1,384px for copy a
+     visitor skims; the button is right there for anyone who wants more. */
+  .quotes__grid:not(.is-expanded) .quote:nth-child(n + 3) { display: none; }
+
+  /* Four claims, each a row of its own, ran the section past 1,200px.
+     Tighter padding and a smaller measure keep all four without the bulk. */
+  .why__item { gap: 1rem; padding-block: 1.05rem; }
+  .why__item h3 { font-size: 1rem; }
+  .why__item p { margin-top: .35rem; font-size: .84rem; line-height: 1.6; }
   .quotes__more {
     display: block; margin: 1.6rem auto 0; padding: .95rem 1.6rem;
     font-family: inherit; font-size: .645rem; font-weight: 600;
@@ -1160,9 +1167,9 @@ html:not(.js) .signoff__mark path { stroke-dashoffset: 0; }
      every one of 13 sections, roughly a fifth of a screen each time, and
      it read as the page having stopped.
      --------------------------------------------------------------------- */
-  :root { --section-y: 2.75rem; }
-  .section--tight { padding-block: 2.25rem; }
-  .section-head { margin-bottom: 1.9rem; }
+  :root { --section-y: 2.1rem; }
+  .section--tight { padding-block: 1.8rem; }
+  .section-head { margin-bottom: 1.5rem; }
   .mt-14 { margin-top: 2.25rem; }
   .mt-10 { margin-top: 1.75rem; }
   .mb-10 { margin-bottom: 1.6rem; }
@@ -1170,7 +1177,14 @@ html:not(.js) .signoff__mark path { stroke-dashoffset: 0; }
   .projects__grid { grid-template-columns: 1fr; }
   .svc__grid      { grid-template-columns: 1fr; }
   .ba__grid       { grid-template-columns: 1fr; }
-  .process__grid  { grid-template-columns: 1fr; }
+  /* Six steps in a single column ran 1,744px for six short paragraphs.
+     Two-across halves that; the copy is brief enough to take the narrower
+     measure without becoming a column of single words. */
+  .process__grid  { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .step { padding: 1.35rem 1rem 1.9rem; }
+  .step__num { font-size: 2.1rem; }
+  .step h3 { margin-top: .8rem; font-size: 1rem; }
+  .step p { margin-top: .5rem; font-size: .81rem; line-height: 1.6; }
   .materials__grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .masonry { columns: 1; }
 
@@ -1198,6 +1212,16 @@ html:not(.js) .signoff__mark path { stroke-dashoffset: 0; }
   .guide__more::after { content: "+"; font-size: .95rem; line-height: 1; }
   .guide__item.is-open .guide__more::after { content: "\2212"; }   /* minus */
   .guide__cta { padding-top: 1.15rem; }
+
+  /* Three of eight until asked. */
+  .guide:not(.is-expanded) .guide__item:nth-child(n + 4) { display: none; }
+  .guide__all {
+    display: block; margin: 1.5rem auto 0; padding: .95rem 1.6rem;
+    font-family: inherit; font-size: .645rem; font-weight: 600;
+    letter-spacing: .21em; text-transform: uppercase;
+    color: var(--ink); background: none; border: 1px solid var(--line);
+    cursor: pointer;
+  }
 
   /* ---------------------------------------------------------------------
      PHONES: LET THE PHOTOGRAPHY BREATHE

@@ -587,6 +587,24 @@
       btn.setAttribute('aria-expanded', String(open));
       btn.querySelector('span').textContent = open ? 'Show less' : 'Read more';
     });
+
+    /* Eight wall types ran 4,483px on a phone - a fifth of the whole page,
+       and the single biggest reason the scroll felt endless. Three are shown
+       and the rest are one tap away. Desktop lays them two-across and shows
+       every one, where the button is display:none. */
+    if (WALL_GUIDE.length <= 3) return;
+    const all = document.createElement('button');
+    all.type = 'button';
+    all.className = 'guide__all';
+    all.setAttribute('aria-controls', 'wallGuide');
+    all.setAttribute('aria-expanded', 'false');
+    all.textContent = `Show all ${WALL_GUIDE.length} wall types`;
+    all.addEventListener('click', () => {
+      const open = grid.classList.toggle('is-expanded');
+      all.setAttribute('aria-expanded', String(open));
+      all.textContent = open ? 'Show fewer' : `Show all ${WALL_GUIDE.length} wall types`;
+    });
+    grid.insertAdjacentElement('afterend', all);
   }
 
   /* ============================================== 11. RENDER: TESTIMONIALS */
