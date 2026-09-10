@@ -31,7 +31,7 @@ const CONTACT = {
 
   city:          'Dubai',
   country:       'United Arab Emirates',
-  email:         'hello@mediawallstudio.ae'
+  email:         'hello@luxurymediawall.com'
 };
 
 /* Pre-filled WhatsApp message for a specific project enquiry */
