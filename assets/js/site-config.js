@@ -134,6 +134,40 @@ const SHOWCASE = [
 /* One full pass from the far distance to the foreground, in seconds. */
 const SHOWCASE_SECONDS = 22;
 
+/* ------------------------------------------------------------------ REEL */
+/* The film in the "Watch the transformation" section.
+
+   It is not a video file. The original clip was 720x1280 - a portrait phone
+   recording being stretched across a 16:9 frame, which is why it looked
+   soft. These are the same full-resolution photographs the rest of the site
+   uses, played as a cinematic sequence: each frame cross-fades and drifts,
+   so it reads as a film while every frame stays genuinely sharp.
+
+   `hold` is seconds. `pos` is the object-position - most of the photography
+   is portrait, so this decides which band of the picture fills the 16:9
+   frame. `title`/`sub` appear over the first frame of a scene. */
+const REEL = [
+  { img: 'assets/img/hero-poster',                  pos: '50% 42%', hold: 1.6,
+    title: 'Luxury Media Walls', sub: 'Designed for Modern Dubai Living' },
+  { img: 'assets/img/project-01-marble-halo',       pos: '50% 40%', hold: 1.2 },
+  { img: 'assets/img/project-08-backlit-onyx',      pos: '50% 44%', hold: 1.2 },
+  { img: 'assets/img/project-07-fireplace',         pos: '50% 52%', hold: 1.2 },
+
+  { img: 'assets/img/service-bathroom',             pos: '50% 46%', hold: 2.0,
+    title: 'Luxury Bathrooms', sub: 'Elegant · Modern · Timeless' },
+  { img: 'assets/img/project-04-fluted-travertine', pos: '50% 42%', hold: 1.9 },
+
+  { img: 'assets/img/service-kitchen-dubai',        pos: '50% 48%', hold: 2.0,
+    title: 'Luxury Kitchens', sub: 'Style · Function · Perfection' },
+  { img: 'assets/img/project-05-full-height',       pos: '50% 44%', hold: 1.9 },
+
+  /* No image: the closing card fades to the studio ground for the reveal.
+     Phone comes from CONTACT so it can never drift out of sync. */
+  { end: true, hold: 2.4,
+    title: 'Media Wall Studio', sub: 'New Look · New Style',
+    phone: CONTACT.city.toUpperCase() + ' · ' + CONTACT.phoneDisplay }
+];
+
 /* --------------------------------------------------------------- PROJECTS */
 /* Nine separate projects, nine separate photographs. */
 const PROJECTS = [

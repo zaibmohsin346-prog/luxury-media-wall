@@ -574,10 +574,13 @@
     </div>
 
     <div class="video-frame" id="videoFrame" data-reveal>
-      <video id="reelVideo" data-ik data-src="assets/video/media-wall-reel.mp4"
-             poster="https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1400,q-auto,f-auto"
-             playsinline preload="none"
-             aria-label="Film of a media wall installation, from measuring to final reveal"></video>
+      <!-- The film is a photographic sequence, not a video file - see REEL in
+           site-config.js. Frames are added by main.js on first play so the
+           section costs nothing until someone asks for it. -->
+      <div class="reel" id="reel" aria-label="Film of our media wall, bathroom and kitchen work"></div>
+      <img class="video-frame__poster" id="reelPoster"
+           src="https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1400,q-auto,f-auto"
+           alt="Penthouse living room with a backlit onyx media wall" loading="lazy" decoding="async">
       <div class="video-frame__scrim"></div>
 
       <!-- Shown only while the film buffers -->

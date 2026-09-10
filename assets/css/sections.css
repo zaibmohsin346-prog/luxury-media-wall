@@ -917,6 +917,89 @@
 .video-band { position: relative; overflow: hidden; background: var(--white); }
 .video-frame { position: relative; aspect-ratio: 16 / 9; background: #0b0b0b; overflow: hidden; }
 .video-frame video { width: 100%; height: 100%; object-fit: cover; }
+.video-frame__poster {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  object-position: 50% 42%;
+  transition: opacity .6s var(--ease-soft);
+}
+.video-frame.is-playing .video-frame__poster { opacity: 0; }
+
+/* ---------------------------- THE FILM --------------------------------- */
+/* A photographic sequence rather than a video file: the source clip was a
+   720x1280 portrait recording stretched over a 16:9 frame. Each frame here
+   is the same full-resolution photograph the rest of the site serves, so
+   the film is sharp at any size. */
+.reel { position: absolute; inset: 0; z-index: 1; background: var(--ink); }
+
+.reel__frame {
+  position: absolute; inset: 0;
+  opacity: 0; transition: opacity .9s var(--ease-soft);
+}
+.reel__frame.is-on { opacity: 1; }
+.reel__frame img { width: 100%; height: 100%; object-fit: cover; }
+
+/* The drift. Started per frame in JS so every shot begins its move at the
+   moment it appears rather than partway through. */
+.reel__frame.is-on img { animation: reelDrift var(--reel-hold, 2s) linear both; }
+@keyframes reelDrift {
+  from { transform: scale(1.02); }
+  to   { transform: scale(1.11); }
+}
+
+/* Closing card: the sequence fades to the studio ground for the reveal. */
+.reel__frame--end { background: var(--ink); }
+
+.reel__caption {
+  position: absolute; left: 0; right: 0; bottom: 12%; z-index: 3;
+  text-align: center; padding-inline: 8%;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .8s var(--ease-soft), transform .8s var(--ease-soft);
+}
+.reel__caption.is-on { opacity: 1; transform: none; }
+.reel__caption--centre { top: 50%; bottom: auto; transform: translateY(calc(-50% + 14px)); }
+.reel__caption--centre.is-on { transform: translateY(-50%); }
+
+.reel__title {
+  display: block; font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 3.4vw, 3rem); line-height: 1.1; color: var(--white);
+  text-shadow: 0 2px 30px rgba(0,0,0,.7);
+}
+.reel__sub {
+  display: block; margin-top: .7rem;
+  font-size: clamp(.62rem, 1.1vw, .8rem); letter-spacing: .26em; text-transform: uppercase;
+  color: var(--champagne);
+  text-shadow: 0 2px 16px rgba(0,0,0,.8);
+}
+.reel__phone {
+  display: block; margin-top: 1.1rem;
+  font-size: clamp(.66rem, 1.2vw, .86rem); letter-spacing: .2em; color: rgba(255,255,255,.8);
+}
+
+/* A hairline that runs the length of the film, so its length is legible. */
+.reel__progress {
+  position: absolute; left: 0; bottom: 0; height: 2px; z-index: 4;
+  width: 100%; transform: scaleX(0); transform-origin: left center;
+  background: var(--champagne);
+}
+.reel.is-running .reel__progress { transition: transform linear; }
+
+/* Replay sits where the play button was. */
+.reel__replay {
+  position: absolute; inset: 0; z-index: 5; display: none;
+  place-items: center; cursor: pointer; border: 0; background: rgba(9,9,9,.42);
+  color: var(--white); font: inherit;
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+}
+.reel.is-done .reel__replay { display: grid; }
+.reel__replay span {
+  font-size: .64rem; letter-spacing: .24em; text-transform: uppercase;
+  border-bottom: 1px solid var(--champagne); padding-bottom: .4rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel__frame.is-on img { animation: none; transform: scale(1.02); }
+  .reel__frame, .reel__caption { transition-duration: .01ms; }
+}
 .video-frame__scrim {
   position: absolute; inset: 0; z-index: 2;
   background: linear-gradient(to top, rgba(9,9,9,.78), rgba(9,9,9,.12) 55%, rgba(9,9,9,.42));
