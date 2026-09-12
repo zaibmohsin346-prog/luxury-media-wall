@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MEDIA WALL STUDIO — Behaviour
+   LUXURY MEDIA WALL — Behaviour
    Vanilla ES2019+. No framework, no build step, no external libraries.
    Everything is progressive: if a browser lacks a feature the content still
    reads, it simply animates less.
@@ -58,6 +58,25 @@
   const srcsetCard = (base) =>
     `${asset(base + '-480.jpg')} 480w, ${asset(base + '-900.jpg')} 900w`;
   const CARD_SIZES = '(max-width: 720px) 92vw, (max-width: 1100px) 46vw, 400px';
+
+  /* ImageKit's AI upscaler, then a plain resize. Used for the before-shots,
+     whose masters are only 1084x1451 - requesting more pixels from those
+     just stretches them. e-upscale is the FIRST step of the chain, so it
+     runs once on the whole image and is cached, and every srcset width is
+     cut from that single result:
+
+         ?tr=e-upscale:w-1400,q-auto,f-auto
+             \_ once, cached _/ \_ resize _/
+
+     Falls back to the plain local derivative when ImageKit is off or the
+     image has not been uploaded there yet. */
+  function upscaledUrl(base, width) {
+    const name = String(base).replace(/^assets\/img\//, '');
+    if (!ikEndpoint || ikLocalOnly.indexOf(name) > -1) return asset(`${base}-${width}.jpg`);
+    return `${ikEndpoint}${ikDir}/${name}.jpg?tr=e-upscale:w-${width},${ikTr}`;
+  }
+  const srcsetUpscaled = (base) =>
+    [480, 900, 1400].map((w) => `${upscaledUrl(base, w)} ${w}w`).join(', ');
 
   /* Escape values that end up inside markup */
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({
@@ -260,7 +279,7 @@
     shareBtns.forEach((b) => { if (b) b.dataset.index = String(index); });
 
     $('#modalWa').href = waLink(
-      `Hello Media Wall Studio, I would like a design similar to Project ${p.n} — ${p.title}. Could you send me a quote?`
+      `Hello Luxury Media Wall, I would like a design similar to Project ${p.n} — ${p.title}. Could you send me a quote?`
     );
 
     modal.classList.add('is-open');
@@ -332,7 +351,7 @@
     if (site) {
       site.addEventListener('click', () => shareLink(
         site,
-        'Media Wall Studio',
+        'Luxury Media Wall',
         'Bespoke media walls and luxury TV walls in Dubai.',
         shareUrl()
       ));
@@ -340,7 +359,7 @@
     const siteWa = $('#shareSiteWa');
     if (siteWa) {
       siteWa.addEventListener('click', () => {
-        const msg = 'Media Wall Studio — bespoke media walls in Dubai: ' + shareUrl();
+        const msg = 'Luxury Media Wall — bespoke media walls in Dubai: ' + shareUrl();
         window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener');
       });
     }
@@ -352,7 +371,7 @@
         const i = Number(proj.dataset.index || 0);
         const p = PROJECTS[i];
         if (!p) return;
-        shareLink(proj, p.title + ' — Media Wall Studio', p.short, shareUrl('#project-' + p.n));
+        shareLink(proj, p.title + ' — Luxury Media Wall', p.short, shareUrl('#project-' + p.n));
       });
     }
     const projWa = $('#modalShareWa');
@@ -361,7 +380,7 @@
         const i = Number(projWa.dataset.index || 0);
         const p = PROJECTS[i];
         if (!p) return;
-        const msg = `${p.title} — Media Wall Studio\n${shareUrl('#project-' + p.n)}`;
+        const msg = `${p.title} — Luxury Media Wall\n${shareUrl('#project-' + p.n)}`;
         window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener');
       });
     }
@@ -429,12 +448,16 @@
              aria-label="Before and after: ${esc(t.title)}"
              aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"
              aria-valuetext="50% revealed">
-          <img class="ba-before" src="${asset(t.before + `-900.jpg`)}"
-               srcset="${srcsetCard(t.before)}"
+          <!-- Full 480/900/1400 sets, not srcsetCard: the slider runs up to
+               92vw on a phone, so the 900w thumbnail cap left it short of
+               pixels on any sharp screen. The before-shots also go through
+               the AI upscaler, because their masters are only 1084px wide. -->
+          <img class="ba-before" src="${upscaledUrl(t.before, 900)}"
+               srcset="${srcsetUpscaled(t.before)}"
                sizes="${CARD_SIZES}"
                alt="${esc(t.beforeAlt)}" loading="lazy" decoding="async">
           <img class="ba-stage__after" src="${asset(t.after + `-900.jpg`)}"
-               srcset="${srcsetCard(t.after)}"
+               srcset="${srcset(t.after)}"
                sizes="${CARD_SIZES}"
                alt="${esc(t.afterAlt)}" loading="lazy" decoding="async">
           <span class="ba-stage__label ba-stage__label--before">Before</span>
@@ -572,7 +595,7 @@
             <span>Read more</span>
           </button>
           <a class="guide__cta" href="${waLink(
-            `Hello Media Wall Studio, I am interested in a ${g.title}. Could you advise on my room?`
+            `Hello Luxury Media Wall, I am interested in a ${g.title}. Could you advise on my room?`
           )}" target="_blank" rel="noopener">
             Ask about this wall
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -1201,7 +1224,7 @@
         <span class="cflow__title">${esc(s.title)}</span>
         <p class="cflow__text">${esc(s.text)}</p>
         <a class="cflow__cta" href="${waLink(
-          `Hello Media Wall Studio, I would like to enquire about ${s.title}.`
+          `Hello Luxury Media Wall, I would like to enquire about ${s.title}.`
         )}" target="_blank" rel="noopener">${esc(s.cta || 'Enquire')}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>`
@@ -1229,7 +1252,7 @@
         <span class="cflow__title">${esc(m.name)}</span>
         <p class="cflow__text">${esc(m.desc)}</p>
         <a class="cflow__cta" href="${waLink(
-          `Hello Media Wall Studio, I am interested in a media wall in ${m.name}.`
+          `Hello Luxury Media Wall, I am interested in a media wall in ${m.name}.`
         )}" target="_blank" rel="noopener">Enquire about ${esc(m.name)}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>`

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MEDIA WALL STUDIO — Site configuration
+   LUXURY MEDIA WALL — Site configuration
    --------------------------------------------------------------------------
    EVERYTHING you are likely to want to change lives in this one file:
    the phone number, every image path, and all project / material copy.
@@ -164,7 +164,7 @@ const REEL = [
   /* No image: the closing card fades to the studio ground for the reveal.
      Phone comes from CONTACT so it can never drift out of sync. */
   { end: true, hold: 2.4,
-    title: 'Media Wall Studio', sub: 'New Look · New Style',
+    title: 'Luxury Media Wall', sub: 'New Look · New Style',
     phone: CONTACT.city.toUpperCase() + ' · ' + CONTACT.phoneDisplay }
 ];
 

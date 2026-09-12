@@ -1,4 +1,4 @@
-# Media Wall Studio — website
+# Luxury Media Wall — website
 
 A luxury interior-studio website for a UAE media wall / TV wall business.
 Static HTML, CSS and vanilla JavaScript. **No build step, no dependencies,
@@ -393,7 +393,7 @@ npx skills add supabase/agent-skills
 
 ## The drawn signature
 
-Between the enquiry form and the footer, "Media Wall Studio" draws itself in
+Between the enquiry form and the footer, "Luxury Media Wall" draws itself in
 champagne script when it scrolls into view.
 
 It started as a request to drop in a React component (`handwriting-svg.tsx`)
