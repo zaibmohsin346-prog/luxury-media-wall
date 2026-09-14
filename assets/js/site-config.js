@@ -72,8 +72,7 @@ const IMAGEKIT = {
 
 /* ------------------------------------------------------------------ MEDIA */
 const MEDIA = {
-  heroPoster: 'assets/img/hero-poster',        // -480 / -900 / -1400 / -1800
-  heroVideo:  'assets/video/hero-interior.mp4', // 1920x1080, muted loop over the poster
+  heroVideo:  'assets/video/hero-interior.mp4', // 1920x1080, the hero's only background
   reelVideo:  'assets/video/luxury-media-wall-film.mp4' // "Watch the transformation" section
 };
 

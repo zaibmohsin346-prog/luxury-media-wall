@@ -44,13 +44,8 @@
 <link rel="stylesheet" href="assets/css/sections.css">
 <link rel="stylesheet" href="assets/css/loader.css">
 
-<!-- Give the hero image a head start; it is the largest paint on the page.
-     Served from ImageKit and hard-coded rather than rewritten at runtime,
-     so the preload and the <img> below always request the same URL. -->
+<!-- Most photography is served from ImageKit. -->
 <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
-<link rel="preload" as="image" href="https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1800,q-auto,f-auto"
-      imagesrcset="https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-900,q-auto,f-auto 900w, https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1400,q-auto,f-auto 1400w, https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1800,q-auto,f-auto 1800w"
-      imagesizes="100vw" fetchpriority="high">
 
 <!-- Local business structured data -->
 <script type="application/ld+json">
@@ -147,16 +142,12 @@
 
 <!-- ======================================================== HERO ======= -->
 <section class="hero" id="home">
-  <!-- The photograph is the page's largest paint and is preloaded in the
-       <head>, so it ships in the markup. The hero film (MEDIA.heroVideo) is
-       attached by main.js after the page has loaded and fades in over it
-       once it is actually playing - a slow connection just keeps the photo. -->
+  <!-- The hero is the film alone (MEDIA.heroVideo). main.js sets the source
+       as soon as the page boots; it fades up from the dark ground on its
+       first frame and loops muted behind the headline. -->
   <div class="hero__media" id="heroMedia">
-    <img class="hero__slide is-active"
-         src="https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1800,q-auto,f-auto"
-         srcset="https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-900,q-auto,f-auto 900w, https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1400,q-auto,f-auto 1400w, https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1800,q-auto,f-auto 1800w"
-         sizes="100vw" width="1792" height="2400" fetchpriority="high" decoding="async"
-         alt="Luxury penthouse living room in Dubai with a backlit onyx media wall and walnut cabinetry">
+    <video class="hero__video" id="heroVideo" muted loop playsinline autoplay
+           preload="auto" aria-hidden="true"></video>
   </div>
   <div class="hero__scrim"></div>
 
@@ -443,6 +434,17 @@
         </p>
       </div>
     </div>
+  </div>
+
+  <!-- Showcase film across the full width of the section. main.js attaches
+       the source as it nears the viewport and plays it muted on a loop. -->
+  <div class="cfg-film" data-reveal>
+    <video id="cfgFilm" data-src="assets/video/showcase-film.mp4"
+           muted loop playsinline preload="none"
+           aria-label="Film of media wall materials - marble, timber and stone samples"></video>
+  </div>
+
+  <div class="shell">
 
     <div class="cfg">
       <!-- Your selection is matched against the real portfolio and the closest
@@ -465,17 +467,6 @@
       </div>
 
       <div class="cfg__panel">
-        <div class="cfg__group">
-          <h4>Wall Finish</h4>
-          <!-- Showcase film of finished walls. main.js attaches the source as
-               the section nears the viewport and plays it muted on a loop. -->
-          <div class="cfg__film">
-            <video id="cfgFilm" data-src="assets/video/showcase-film.mp4"
-                   muted loop playsinline preload="none"
-                   aria-label="Film of finished media walls in marble, timber and stone"></video>
-          </div>
-        </div>
-
         <div class="cfg__group">
           <h4>Features</h4>
           <div class="toggles">

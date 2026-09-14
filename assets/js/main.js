@@ -170,53 +170,49 @@
   }
 
   /* ======================================================= 2. HERO FILM */
-  /* A 1920x1080 muted loop over the hero photograph.
+  /* The hero is the 1920x1080 film alone, looping muted behind the headline.
 
-     The photograph is in the markup and preloaded, so it is still the
-     largest paint. The film is attached after load and only fades in on its
-     first `playing` event - if autoplay is blocked (Low Power Mode, data
-     saver) the visitor simply keeps the photograph. It pauses whenever the
-     hero is scrolled out of view.                                          */
+     The source is set at boot (not after load) because there is no photo to
+     fall back on - the dark hero ground shows for the moment before the
+     first frame, then the film fades up. With reduced motion or data saver
+     it stops on its opening frame rather than playing. It pauses whenever
+     the hero is scrolled out of view.                                     */
   function initHeroVideo() {
     const media = $('#heroMedia');
+    const video = $('#heroVideo');
     const src = (typeof MEDIA !== 'undefined') && MEDIA.heroVideo;
-    if (!media || !src) return;
+    if (!media || !video || !src) return;
 
     const conn = navigator.connection || {};
-    const cheap = conn.saveData === true || /2g/.test(conn.effectiveType || '');
+    const still = REDUCED || conn.saveData === true || /2g/.test(conn.effectiveType || '');
 
-    /* Reduced motion or a metered connection: the still photograph stays. */
-    if (REDUCED || cheap) return;
+    const reveal = () => media.classList.add('is-live');
+    video.addEventListener('playing', reveal, { once: true });
 
-    const video = document.createElement('video');
-    video.className = 'hero__video';
-    video.muted = true;             /* autoplay is only allowed muted */
-    video.loop = true;
-    video.playsInline = true;
-    video.preload = 'auto';
-    video.setAttribute('muted', '');
-    video.setAttribute('playsinline', '');
-    video.setAttribute('aria-hidden', 'true');
-    video.addEventListener('playing', () => media.classList.add('is-live'), { once: true });
+    if (still) {
+      video.autoplay = false;
+      video.removeAttribute('autoplay');
+      video.preload = 'metadata';
+      video.addEventListener('loadeddata', reveal, { once: true });
+      video.src = asset(src) + '#t=0.1';
+      return;
+    }
 
-    /* Attached only after load, so the film never competes with the
-       photograph for the page's first paint. */
-    const start = () => {
-      video.src = asset(src);
-      media.appendChild(video);
-      const p = video.play();
-      if (p && p.catch) p.catch(() => {});   /* blocked: the photo stays */
+    video.src = asset(src);
+    const p = video.play();
+    if (p && p.catch) p.catch(() => {
+      /* Autoplay refused (Low Power Mode): show the paused first frame. */
+      if (video.readyState >= 2) reveal();
+      else video.addEventListener('loadeddata', reveal, { once: true });
+    });
 
-      /* No point decoding 1080p frames nobody can see. */
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver((entries) => {
-          if (entries[0].isIntersecting) video.play().catch(() => {});
-          else video.pause();
-        }).observe(media);
-      }
-    };
-    if (document.readyState === 'complete') start();
-    else window.addEventListener('load', start, { once: true });
+    /* No point decoding 1080p frames nobody can see. */
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) video.play().catch(() => {});
+        else video.pause();
+      }).observe(media);
+    }
   }
 
   /* ====================================================== 3. RENDER: HERO */
@@ -745,8 +741,8 @@
     update();
   }
 
-  /* The showcase film in the configurator panel, where the finish swatches
-     used to be. Nothing downloads until the panel is ~400px away; it then
+  /* The full-width showcase film in the configurator section.
+     Nothing downloads until the film is ~400px away; it then
      plays muted on a loop and pauses whenever it is off screen. With reduced
      motion it stays on its opening frame with controls instead. */
   function initCfgFilm() {
