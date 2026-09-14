@@ -63,7 +63,11 @@ const IMAGEKIT = {
      A new photo therefore works the moment it is dropped in. Upload it to
      ImageKit later, delete its name from this list, and it moves to the CDN
      with no other change. */
-  localOnly: ['service-bathroom', 'service-kitchen-dubai', 'luxury-media-wall-film', 'hero-interior']
+  localOnly: ['service-bathroom', 'service-kitchen-dubai', 'luxury-media-wall-film', 'hero-interior',
+              'material-calacatta-marble', 'material-calacatta-gold', 'material-travertine',
+              'material-charcoal-stone', 'material-oak-fluted', 'material-walnut-fluted',
+              'material-white-fluted', 'material-smoked-oak', 'material-brass-walnut',
+              'material-microcement', 'material-black-profile']
 };
 
 /* ------------------------------------------------------------------ MEDIA */
@@ -408,20 +412,21 @@ const PROCESS = [
 ];
 
 /* -------------------------------------------------------------- MATERIALS */
-/* Close-up crops taken from the studio's own project photography.
-   `pos` and `size` are CSS background-position / background-size values —
-   nudge them to re-frame a swatch without editing any image file.        */
+/* One sample photograph per material, pre-cropped to the 4:5 coverflow card
+   (assets/img/material-*-480/900/1400.jpg). Order alternates stone and
+   timber so neighbouring cards never look alike.                          */
 const MATERIALS = [
-  { name: 'Natural Oak',     src: 'assets/img/project-02-warm-oak-900.jpg',           pos: '84% 22%', size: '300%', desc: 'Warm, open-grain oak veneer with a soft matt lacquer.',            use: 'Full-height joinery' },
-  { name: 'Dark Oak',        src: 'assets/img/project-07-fireplace-900.jpg',          pos: '94% 82%', size: '400%', desc: 'Deep-stained oak with a low-sheen finish that absorbs light.',      use: 'Feature panelling' },
-  { name: 'Walnut',          src: 'assets/img/project-03-dark-luxury-900.jpg',        pos: '90% 20%', size: '330%', desc: 'High-gloss walnut with a mirror polish and brass reveals.',         use: 'Tall units' },
-  { name: 'White Marble',    src: 'assets/img/project-01-marble-halo-900.jpg',        pos: '60% 24%', size: '300%', desc: 'Book-matched Calacatta with soft grey veining.',                    use: 'TV panel' },
-  { name: 'Beige Marble',    src: 'assets/img/project-05-full-height-900.jpg',        pos: '56% 52%', size: '340%', desc: 'Warm beige stone that keeps a room calm and neutral.',              use: 'Console tops' },
-  { name: 'Travertine',      src: 'assets/img/project-04-fluted-travertine-900.jpg',  pos: '92% 26%', size: '300%', desc: 'Natural travertine with an honest, open pore structure.',           use: 'Full walls' },
-  { name: 'Charcoal Stone',  src: 'assets/img/project-03-dark-luxury-900.jpg',        pos: '52% 34%', size: '360%', desc: 'Dark stone with fine crystalline movement under grazing light.',    use: 'Dramatic schemes' },
-  { name: 'Fluted Wood',     src: 'assets/img/project-04-fluted-travertine-900.jpg',  pos: '24% 40%', size: '320%', desc: 'Machined vertical flutes that catch light and add rhythm.',         use: 'Feature walls' },
-  { name: 'Matte Black',     src: 'assets/img/project-01-marble-halo-900.jpg',        pos: '52% 80%', size: '420%', desc: 'Matt black glass and lacquer for recessive, quiet detailing.',      use: 'Cabinet fronts' },
-  { name: 'Textured Panels', src: 'assets/img/project-08-backlit-onyx-900.jpg',       pos: '52% 30%', size: '300%', desc: 'Translucent backlit stone panels that glow from within.',           use: 'Statement centres' }
+  { name: 'Calacatta Marble',        img: 'assets/img/material-calacatta-marble', use: 'TV feature panel',    desc: 'High-gloss Calacatta panel with soft grey veining that brightens the whole room.' },
+  { name: 'Natural Oak Fluted',      img: 'assets/img/material-oak-fluted',       use: 'Feature walls',       desc: 'Precision-milled oak flutes that add rhythm and soften the acoustics.' },
+  { name: 'Roman Travertine',        img: 'assets/img/material-travertine',       use: 'Full walls',          desc: 'Natural beige travertine with an honest, open pore structure.' },
+  { name: 'Walnut Fluted',           img: 'assets/img/material-walnut-fluted',    use: 'Statement panelling', desc: 'Deep walnut slats in a satin finish for a warm, architectural wall.' },
+  { name: 'Calacatta Gold',          img: 'assets/img/material-calacatta-gold',   use: 'Full media walls',    desc: 'Warm white slab with gold-toned veining, made for walnut and LED shelving.' },
+  { name: 'Smoked Oak Veneer',       img: 'assets/img/material-smoked-oak',       use: 'Cabinet fronts',      desc: 'Dark smoked oak with a deep, open grain and a matt finish.' },
+  { name: 'Charcoal Stone',          img: 'assets/img/material-charcoal-stone',   use: 'Dramatic schemes',    desc: 'Matt charcoal stone with a split-face texture that comes alive under grazing light.' },
+  { name: 'Matte White Fluted',      img: 'assets/img/material-white-fluted',     use: 'Minimal interiors',   desc: 'Clean white flutes lifted by a concealed LED wash from above.' },
+  { name: 'Microcement',             img: 'assets/img/material-microcement',      use: 'Joint-free walls',    desc: 'Seamless light-grey microcement with a smooth, tactile surface.' },
+  { name: 'Brass & Walnut',          img: 'assets/img/material-brass-walnut',     use: 'Inlays & reveals',    desc: 'Brushed brass inlay set between dark walnut for a quiet luxury accent.' },
+  { name: 'Black Aluminium Profile', img: 'assets/img/material-black-profile',    use: 'Trims & frames',      desc: 'Brushed matt black aluminium with a polished edge for crisp detailing.' }
 ];
 
 /* ------------------------------------------------- DETAIL GALLERY (CROPS) */

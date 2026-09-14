@@ -1190,14 +1190,12 @@
       prev: '#materialsPrev', next: '#materialsNext',
       items: MATERIALS,
       dotLabel: (m) => m.name,
-      /* Materials are close crops of real joinery rather than whole rooms,
-         so each card is a positioned, zoomed background the way the old
-         swatch grid was - an <img> would show the entire room instead of
-         the grain. */
+      /* Each material is its own sample photograph, already cropped to the
+         4:5 card, so a plain responsive <img> shows the whole sample. */
       card: (m) => `
-        <span class="cflow__swatch" role="img" aria-label="${esc(m.name)}"
-              style="background-image:url('${asset(m.src)}');
-                     background-position:${m.pos}; background-size:${m.size};"></span>`,
+        <img src="${asset(m.img + '-900.jpg')}" srcset="${srcsetCard(m.img)}"
+             sizes="(max-width: 720px) 68vw, 360px" alt="${esc(m.name)} sample"
+             loading="lazy" decoding="async" draggable="false">`,
       caption_: (m) => `
         <span class="cflow__label">${esc(m.use)}</span>
         <span class="cflow__title">${esc(m.name)}</span>
