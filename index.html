@@ -438,7 +438,7 @@
       </div>
       <div class="section-head__aside">
         <p class="lede" data-reveal>
-          Switch the finish, turn the lighting on and off, and add the elements you want.
+          Turn the lighting on and off and add the elements you want.
           A rough sketch of your wall, built in the browser.
         </p>
       </div>
@@ -462,13 +462,18 @@
           </button>
         </div>
 
-        <div class="cfg__caption" id="cfgCaption">Finish &nbsp;<b>Marble</b></div>
       </div>
 
       <div class="cfg__panel">
         <div class="cfg__group">
           <h4>Wall Finish</h4>
-          <div class="cfg__swatches" id="cfgSwatches"><!-- rendered from FINISHES --></div>
+          <!-- Showcase film of finished walls. main.js attaches the source as
+               the section nears the viewport and plays it muted on a loop. -->
+          <div class="cfg__film">
+            <video id="cfgFilm" data-src="assets/video/showcase-film.mp4"
+                   muted loop playsinline preload="none"
+                   aria-label="Film of finished media walls in marble, timber and stone"></video>
+          </div>
         </div>
 
         <div class="cfg__group">

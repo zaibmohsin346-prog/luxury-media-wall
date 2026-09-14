@@ -63,7 +63,7 @@ const IMAGEKIT = {
      A new photo therefore works the moment it is dropped in. Upload it to
      ImageKit later, delete its name from this list, and it moves to the CDN
      with no other change. */
-  localOnly: ['service-bathroom', 'service-kitchen-dubai', 'luxury-media-wall-film', 'hero-interior',
+  localOnly: ['service-bathroom', 'service-kitchen-dubai', 'luxury-media-wall-film', 'hero-interior', 'showcase-film',
               'material-calacatta-marble', 'material-calacatta-gold', 'material-travertine',
               'material-charcoal-stone', 'material-oak-fluted', 'material-walnut-fluted',
               'material-white-fluted', 'material-smoked-oak', 'material-brass-walnut',
@@ -451,8 +451,6 @@ const DETAILS = [
 ];
 
 /* ----------------------------------------------------------- CONFIGURATOR */
-/* The interactive wall builder. Each finish points at a real material crop
-   so the preview shows genuine stone and timber, not a flat colour.      */
 /* What each completed project actually contains. The configurator scores the
    visitor's selection against this and shows the closest real build, so the
    preview is always a photograph of delivered work rather than a mock-up.
@@ -467,15 +465,6 @@ const DESIGN_TRAITS = [
   { p: 6, finish: 'marble',   has: ['led', 'cabinet', 'fire', 'shelves', 'tall'] },
   { p: 7, finish: 'stone',    has: ['led', 'cabinet', 'tall', 'shelves'] },
   { p: 8, finish: 'stone',    has: ['led', 'cabinet', 'tall'] }
-];
-
-const FINISHES = [
-  { id: 'marble',    label: 'Marble',    src: 'assets/img/project-01-marble-halo-900.jpg',       pos: '58% 24%', size: '210%', flute: 0, fallback: '#d8d2c6' },
-  { id: 'wood',      label: 'Wood',      src: 'assets/img/project-02-warm-oak-900.jpg',          pos: '82% 26%', size: '230%', flute: 0, fallback: '#9a7f5f' },
-  { id: 'fluted',    label: 'Fluted',    src: 'assets/img/project-04-fluted-travertine-900.jpg', pos: '26% 36%', size: '200%', flute: 1, fallback: '#b6a893' },
-  { id: 'stone',     label: 'Stone',     src: 'assets/img/project-04-fluted-travertine-900.jpg', pos: '92% 28%', size: '220%', flute: 0, fallback: '#a89a86' },
-  { id: 'beige',     label: 'Beige',     src: 'assets/img/project-05-full-height-900.jpg',       pos: '56% 50%', size: '220%', flute: 0, fallback: '#cfc3ad' },
-  { id: 'charcoal',  label: 'Charcoal',  src: 'assets/img/project-03-dark-luxury-900.jpg',       pos: '52% 34%', size: '220%', flute: 0, fallback: '#3b332c' }
 ];
 
 /* --------------------------------------------------------------- QUOTES */

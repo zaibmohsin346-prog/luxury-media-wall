@@ -660,25 +660,15 @@
   /* =============================================== 12. WALL CONFIGURATOR */
   function initConfigurator() {
     const stage = $('#cfgStage');
-    const swatches = $('#cfgSwatches');
-    if (!stage || !swatches) return;
+    if (!stage) return;
 
-    const caption = $('#cfgCaption');
-
-    swatches.innerHTML = FINISHES.map((f, i) => `
-      <button type="button" class="swatch${i === 0 ? ' is-active' : ''}" data-finish="${f.id}"
-              style="background-image:url('${asset(f.src)}'); background-position:${f.pos}; background-size:${f.size};"
-              aria-pressed="${i === 0}">
-        <span>${esc(f.label)}</span>
-      </button>
-    `).join('');
+    initCfgFilm();
 
     const photo   = $('#cfgPhoto');
     const title   = $('#cfgMatchTitle');
     const spec    = $('#cfgMatchSpec');
     const openBtn = $('#cfgMatchOpen');
 
-    let finish = FINISHES[0].id;
     let matched = 0;
 
     const wanted = () => $$('[data-toggle]')
@@ -690,9 +680,9 @@
       fire: 'fireplace', shelves: 'open shelving'
     };
 
-    /* Score every completed project against the selection: the finish carries
-       most of the weight, then each requested feature present adds, each one
-       missing subtracts. Highest score wins. */
+    /* Score every completed project against the selected features: each
+       requested feature present adds, each one missing subtracts. Highest
+       score wins. */
     const ALL_FEATURES = ['led', 'cabinet', 'tall', 'fire', 'shelves'];
 
     function bestMatch() {
@@ -706,7 +696,7 @@
 
       let best = pool[0], bestScore = -Infinity;
       pool.forEach((t) => {
-        let s = t.finish === finish ? 4 : 0;
+        let s = 0;
         ALL_FEATURES.forEach((f) => {
           const asked = want.indexOf(f) > -1;
           const present = t.has.indexOf(f) > -1;
@@ -743,23 +733,6 @@
       openBtn.setAttribute('aria-label', 'View the full specification for ' + p.title);
     }
 
-    const applyFinish = (id) => {
-      finish = id;
-      $$('.swatch', swatches).forEach((b) => {
-        const on = b.dataset.finish === id;
-        b.classList.toggle('is-active', on);
-        b.setAttribute('aria-pressed', String(on));
-      });
-      const f = FINISHES.find((x) => x.id === id) || FINISHES[0];
-      if (caption) caption.innerHTML = `Finish &nbsp;<b>${esc(f.label)}</b>`;
-      update();
-    };
-
-    swatches.addEventListener('click', (e) => {
-      const btn = e.target.closest('[data-finish]');
-      if (btn) applyFinish(btn.dataset.finish);
-    });
-
     $$('[data-toggle]').forEach((btn) => {
       btn.addEventListener('click', () => {
         btn.setAttribute('aria-pressed', String(btn.getAttribute('aria-pressed') !== 'true'));
@@ -769,7 +742,44 @@
 
     openBtn.addEventListener('click', () => openModal(matched));
 
-    applyFinish(FINISHES[0].id);
+    update();
+  }
+
+  /* The showcase film in the configurator panel, where the finish swatches
+     used to be. Nothing downloads until the panel is ~400px away; it then
+     plays muted on a loop and pauses whenever it is off screen. With reduced
+     motion it stays on its opening frame with controls instead. */
+  function initCfgFilm() {
+    const video = $('#cfgFilm');
+    if (!video) return;
+
+    let attached = false;
+    const attach = () => {
+      if (attached) return;
+      attached = true;
+      if (REDUCED) {
+        video.controls = true;
+        video.preload = 'metadata';
+        video.src = asset(video.dataset.src) + '#t=0.1';
+        return;
+      }
+      video.src = asset(video.dataset.src);
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      attach();
+      if (!REDUCED) video.play().catch(() => {});
+      return;
+    }
+    new IntersectionObserver((entries) => {
+      const e = entries[0];
+      if (e.isIntersecting) {
+        attach();
+        if (!REDUCED) video.play().catch(() => {});
+      } else if (attached) {
+        video.pause();
+      }
+    }, { rootMargin: '400px 0px' }).observe(video);
   }
 
   /* ========================================================== 13. THE FILM */
