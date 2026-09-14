@@ -169,68 +169,54 @@
     }
   }
 
-  /* =============================================== 2. HERO IMAGE SEQUENCE */
-  /* The hero plays as a slow cross-fade between full-resolution photographs
-     rather than a video file. Three reasons it is done this way:
+  /* ======================================================= 2. HERO FILM */
+  /* A 1920x1080 muted loop over the hero photograph.
 
-       - Resolution. Each frame is the same 1800px master used everywhere
-         else on the site, so the hero is genuinely sharp on a retina phone.
-         A video would have to be re-encoded per breakpoint to match it.
-       - Reach. Autoplaying video is blocked or throttled on plenty of
-         phones and on Low Power Mode. An image cross-fade always runs.
-       - Weight. Four photographs stream in progressively; only the first
-         one blocks the largest paint.
-
-     Slide 1 is already in the markup. The rest are appended after the first
-     frame has painted, so they never compete with the LCP image.          */
-  function initHeroSlides() {
+     The photograph is in the markup and preloaded, so it is still the
+     largest paint. The film is attached after load and only fades in on its
+     first `playing` event - if autoplay is blocked (Low Power Mode, data
+     saver) the visitor simply keeps the photograph. It pauses whenever the
+     hero is scrolled out of view.                                          */
+  function initHeroVideo() {
     const media = $('#heroMedia');
-    if (!media || typeof HERO_SLIDES === 'undefined') return;
-
-    const first = media.querySelector('.hero__slide');
-    if (!first) return;
+    const src = (typeof MEDIA !== 'undefined') && MEDIA.heroVideo;
+    if (!media || !src) return;
 
     const conn = navigator.connection || {};
     const cheap = conn.saveData === true || /2g/.test(conn.effectiveType || '');
 
-    /* One photograph, a still hero by request, reduced motion, or a metered
-       connection: leave the single frame exactly as the markup shipped it. */
-    if (HERO_SLIDES.length < 2 || REDUCED || cheap) return;
+    /* Reduced motion or a metered connection: the still photograph stays. */
+    if (REDUCED || cheap) return;
 
-    const rest = HERO_SLIDES.slice(1);
-    const slides = [first];
+    const video = document.createElement('video');
+    video.className = 'hero__video';
+    video.muted = true;             /* autoplay is only allowed muted */
+    video.loop = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('aria-hidden', 'true');
+    video.addEventListener('playing', () => media.classList.add('is-live'), { once: true });
 
-    rest.forEach((slide) => {
-      const img = new Image();
-      img.className = 'hero__slide';
-      img.src = asset(slide.img + '-1400.jpg');
-      img.srcset = srcset(slide.img) + `, ${asset(slide.img + '-1800.jpg')} 1800w`;
-      img.sizes = '100vw';
-      img.decoding = 'async';
-      img.loading = 'lazy';
-      img.alt = '';                 /* decorative: slide 1 carries the description */
-      img.setAttribute('aria-hidden', 'true');
-      media.appendChild(img);
-      slides.push(img);
-    });
+    /* Attached only after load, so the film never competes with the
+       photograph for the page's first paint. */
+    const start = () => {
+      video.src = asset(src);
+      media.appendChild(video);
+      const p = video.play();
+      if (p && p.catch) p.catch(() => {});   /* blocked: the photo stays */
 
-    /* Enables the cross-fade transition only once the first frame is settled,
-       so the opening image appears instantly instead of fading up. */
-    requestAnimationFrame(() => media.classList.add('is-playing'));
-
-    let i = 0;
-    const hold = (typeof HERO_SLIDE_SECONDS === 'number' ? HERO_SLIDE_SECONDS : 6) * 1000;
-
-    const advance = () => {
-      slides[i].classList.remove('is-active');
-      i = (i + 1) % slides.length;
-      slides[i].classList.add('is-active');
+      /* No point decoding 1080p frames nobody can see. */
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) video.play().catch(() => {});
+          else video.pause();
+        }).observe(media);
+      }
     };
-
-    /* The check lives inside the tick rather than in a visibilitychange
-       handler that tears the timer down: a page that first paints while
-       hidden would otherwise clear its only timer and never rebuild it. */
-    setInterval(() => { if (!document.hidden) advance(); }, hold);
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start, { once: true });
   }
 
   /* ====================================================== 3. RENDER: HERO */
@@ -1413,7 +1399,7 @@
     renderSignature();
 
     initHeader();
-    initHeroSlides();
+    initHeroVideo();
     initModal();
     initShare();
     initConfigurator();

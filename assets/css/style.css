@@ -414,6 +414,14 @@ h1, h2, h3, h4 {
 .hero__slide.is-active { opacity: 1; animation: heroDrift 26s ease-in-out infinite alternate; }
 .hero__media:not(.is-playing) .hero__slide.is-active { transition: none; }
 
+/* The hero film sits over the photograph and fades in only once frames are
+   actually playing, so there is never a black flash. */
+.hero__video {
+  position: absolute; inset: 0;
+  opacity: 0; transition: opacity 1.4s var(--ease-soft);
+}
+.hero__media.is-live .hero__video { opacity: 1; }
+
 .hero__scrim {
   position: absolute; inset: 0; z-index: 1;
   /* Shaped, not flooded. The previous version ran 94% black at the foot and

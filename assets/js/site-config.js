@@ -63,47 +63,15 @@ const IMAGEKIT = {
      A new photo therefore works the moment it is dropped in. Upload it to
      ImageKit later, delete its name from this list, and it moves to the CDN
      with no other change. */
-  localOnly: ['service-bathroom', 'service-kitchen-dubai', 'luxury-media-wall-film']
+  localOnly: ['service-bathroom', 'service-kitchen-dubai', 'luxury-media-wall-film', 'hero-film']
 };
 
 /* ------------------------------------------------------------------ MEDIA */
 const MEDIA = {
   heroPoster: 'assets/img/hero-poster',        // -480 / -900 / -1400 / -1800
-  heroVideo:  'assets/video/media-wall-reel.mp4',
+  heroVideo:  'assets/video/hero-film.mp4',     // 1920x1080, muted loop over the poster
   reelVideo:  'assets/video/luxury-media-wall-film.mp4' // "Watch the transformation" section
 };
-
-/* ----------------------------------------------------------- HERO SLIDES */
-/* The hero plays as a slow cinematic sequence: each photograph cross-fades
-   into the next while drifting gently, so the opening frame has motion on
-   every device - phones included - at full photographic resolution.
-
-   The first entry is the poster above; it is preloaded in the <head> and is
-   the page's largest paint, so it must stay first. The rest are fetched
-   only after the first frame has painted.
-
-   Add, remove or reorder freely. One entry alone = a single still hero. */
-const HERO_SLIDES = [
-  {
-    img: 'assets/img/hero-poster',
-    alt: 'Luxury penthouse living room in Dubai with a backlit onyx media wall and walnut cabinetry'
-  },
-  {
-    img: 'assets/img/project-01-marble-halo',
-    alt: 'Book-matched marble media wall with a recessed LED halo and floating oak console'
-  },
-  {
-    img: 'assets/img/project-07-fireplace',
-    alt: 'Marble media wall with a linear fireplace below the television and lit display shelving'
-  },
-  {
-    img: 'assets/img/project-03-dark-luxury',
-    alt: 'Dark charcoal media wall with brass inlay detailing in a modern Dubai apartment'
-  }
-];
-
-/* Seconds each hero photograph holds before it fades into the next. */
-const HERO_SLIDE_SECONDS = 6;
 
 /* ------------------------------------------------------------- SHOWCASE */
 /* The drifting photograph corridor behind the studio statement. Cards are
