@@ -45,6 +45,9 @@
     }
     /* No size suffix — video. Plain CDN delivery with no `tr=` so it does not
        consume video-processing credits; ImageKit still optimises the file. */
+    /* A video not yet uploaded to the ImageKit library is served from
+       assets/video rather than rewritten to a CDN URL that would 404. */
+    if (ikLocalOnly.indexOf(name.replace(/\.[^.]+$/, '')) > -1) return path;
     return `${ikEndpoint}${ikDir}/${name}`;
   }
 
@@ -784,108 +787,70 @@
   }
 
   /* ========================================================== 13. THE FILM */
-  /* A photographic sequence rather than a video file. The original clip was
-     720x1280 - a portrait phone recording stretched over a 16:9 frame, which
-     is why it looked soft - and there is no way to add detail that was never
-     recorded. These frames are the same full-resolution photographs the rest
-     of the site serves, so the film is sharp at any size, starts instantly,
-     and costs nothing until someone presses play.
+  /* The studio film, a 16:9 H.264 file from assets/video.
 
-     Timing is a chain of timeouts rather than one interval: each frame
-     declares its own hold, so a scene can breathe while a cut can snap. */
-  function initReel() {
+     Nothing is downloaded until the frame is ~600px from the viewport: the
+     source is attached then, with a #t= fragment so the browser paints the
+     film's own opening shot as its poster. A visitor who never scrolls this
+     far costs nothing, and the frame is never a black rectangle.
+
+     Sound plays on the first press, because a click is a user gesture that
+     browsers accept for unmuted playback. If a browser still refuses, it
+     falls back to muted rather than doing nothing. */
+  function initFilm() {
     const frame = $('#videoFrame');
-    const reel = $('#reel');
+    const video = $('#filmVideo');
     const btn = $('#videoPlay');
-    if (!frame || !reel || typeof REEL === 'undefined' || !REEL.length) return;
+    if (!frame || !video || !btn) return;
 
-    const total = REEL.reduce((n, s) => n + s.hold, 0);
-    let timers = [];
-    let built = false;
+    const loader = $('#videoLoader');
+    const showLoader = (on) => { if (loader) loader.classList.toggle('is-on', on); };
 
-    function build() {
-      if (built) return;
-      built = true;
+    let attached = false;
+    const attach = () => {
+      if (attached) return;
+      attached = true;
+      video.src = asset(video.dataset.src) + '#t=0.1';
+    };
 
-      reel.innerHTML = REEL.map((s, i) => {
-        const caption = s.title ? `
-          <span class="reel__caption${s.end ? ' reel__caption--centre' : ''}" data-cap="${i}">
-            <span class="reel__title">${esc(s.title)}</span>
-            <span class="reel__sub">${esc(s.sub || '')}</span>
-            ${s.phone ? `<span class="reel__phone">${esc(s.phone)}</span>` : ''}
-          </span>` : '';
-        const picture = s.end ? '' : `
-          <img src="${asset(s.img + '-1400.jpg')}" srcset="${srcset(s.img)}"
-               sizes="(max-width: 720px) 100vw, 1200px"
-               style="object-position:${s.pos || '50% 50%'}"
-               loading="lazy" decoding="async" alt="">`;
-        return `<div class="reel__frame${s.end ? ' reel__frame--end' : ''}" data-i="${i}"
-                     style="--reel-hold:${s.hold}s">${picture}${caption}</div>`;
-      }).join('') +
-      `<span class="reel__progress" id="reelProgress"></span>
-       <button class="reel__replay" type="button" id="reelReplay"><span>Play again</span></button>`;
-
-      $('#reelReplay').addEventListener('click', play);
-    }
-
-    function clear() {
-      timers.forEach(clearTimeout);
-      timers = [];
-    }
-
-    function play() {
-      build();
-      clear();
-      reel.classList.remove('is-done');
-      reel.classList.add('is-running');
-      frame.classList.add('is-playing');
-
-      const frames = $$('.reel__frame', reel);
-      const caps = $$('.reel__caption', reel);
-      frames.forEach((f) => f.classList.remove('is-on'));
-      caps.forEach((c) => c.classList.remove('is-on'));
-
-      /* Restart the drift by re-adding the class on the next frame, or a
-         replay would inherit the finished animation and sit still. */
-      const bar = $('#reelProgress');
-      bar.style.transition = 'none';
-      bar.style.transform = 'scaleX(0)';
-
-      let at = 0;
-      REEL.forEach((s, i) => {
-        timers.push(setTimeout(() => {
-          frames.forEach((f) => f.classList.remove('is-on'));
-          frames[i].classList.add('is-on');
-          const cap = frames[i].querySelector('.reel__caption');
-          if (cap) setTimeout(() => cap.classList.add('is-on'), 260);
-        }, at * 1000));
-        at += s.hold;
-      });
-
-      requestAnimationFrame(() => {
-        bar.style.transition = `transform ${total}s linear`;
-        bar.style.transform = 'scaleX(1)';
-      });
-
-      timers.push(setTimeout(() => {
-        reel.classList.remove('is-running');
-        reel.classList.add('is-done');
-      }, total * 1000));
-    }
-
-    if (btn) btn.addEventListener('click', play);
-
-    /* Leaving the section stops the film rather than letting it run on out
-       of sight and finish before the reader comes back. */
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver((entries) => {
-        if (!entries[0].isIntersecting && reel.classList.contains('is-running')) {
-          clear();
-          reel.classList.remove('is-running');
-          reel.classList.add('is-done');
-        }
-      }, { threshold: 0.15 }).observe(frame);
+      const io = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) { attach(); io.disconnect(); }
+      }, { rootMargin: '600px 0px' });
+      io.observe(frame);
+    } else {
+      attach();
     }
+
+    btn.addEventListener('click', () => {
+      attach();
+      video.controls = true;
+      frame.classList.add('is-playing');
+      /* Only show the loader if it is still not ready after a moment -
+         flashing a spinner for 100ms is worse than showing nothing. */
+      if (video.readyState < 3) {
+        setTimeout(() => { if (video.readyState < 3) showLoader(true); }, 250);
+      }
+      const p = video.play();
+      if (p && p.catch) p.catch(() => { video.muted = true; video.play(); });
+    });
+
+    ['playing', 'canplay', 'error'].forEach((ev) =>
+      video.addEventListener(ev, () => showLoader(false))
+    );
+    ['waiting', 'stalled'].forEach((ev) =>
+      video.addEventListener(ev, () => {
+        if (frame.classList.contains('is-playing')) showLoader(true);
+      })
+    );
+
+    /* Back to the poster state, parked on the opening shot, ready to replay. */
+    video.addEventListener('ended', () => {
+      frame.classList.remove('is-playing');
+      video.controls = false;
+      video.currentTime = 0.1;
+      showLoader(false);
+    });
   }
 
   /* ==================================================== 14. ENQUIRY FORM */
@@ -1452,7 +1417,7 @@
     initModal();
     initShare();
     initConfigurator();
-    initReel();
+    initFilm();
     initForm();
     initCoverflow();
     renderShowcase();

@@ -574,13 +574,14 @@
     </div>
 
     <div class="video-frame" id="videoFrame" data-reveal>
-      <!-- The film is a photographic sequence, not a video file - see REEL in
-           site-config.js. Frames are added by main.js on first play so the
-           section costs nothing until someone asks for it. -->
-      <div class="reel" id="reel" aria-label="Film of our media wall, bathroom and kitchen work"></div>
-      <img class="video-frame__poster" id="reelPoster"
-           src="https://ik.imagekit.io/ojutq4xhq/media-wall/hero-poster.jpg?tr=w-1400,q-auto,f-auto"
-           alt="Penthouse living room with a backlit onyx media wall" loading="lazy" decoding="async">
+      <!-- The studio film: 16:9 H.264 served from assets/video. main.js only
+           attaches the source as this frame nears the viewport, so visitors
+           who never scroll this far never download it. A #t= fragment then
+           paints the film's own opening shot, so the frame is never black. -->
+      <video class="video-frame__video" id="filmVideo"
+             data-src="assets/video/luxury-media-wall-film.mp4"
+             preload="metadata" playsinline
+             aria-label="Film of a marble and walnut media wall with LED-lit shelving"></video>
       <div class="video-frame__scrim"></div>
 
       <!-- Shown only while the film buffers -->
