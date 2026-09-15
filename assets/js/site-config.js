@@ -111,173 +111,11 @@ const SHOWCASE = [
 const SHOWCASE_SECONDS = 34;
 
 /* --------------------------------------------------------------- PROJECTS */
-/* Separate projects, one photograph each. Append new work at the end:
-   DESIGN_TRAITS refers to the first nine by index. */
+/* Separate projects, one photograph each. DESIGN_TRAITS below refers to
+   these by index, so keep the two lists in the same order. */
 const PROJECTS = [
   {
     n: '01',
-    img: 'assets/img/project-01-marble-halo',
-    title: 'Modern Marble Media Wall',
-    short: 'A book-matched marble slab with a recessed LED halo, floating oak console and lit display shelving.',
-    tags: ['Marble', 'Oak', 'LED Halo'],
-    location: 'Downtown Dubai, UAE',
-    materials: 'Calacatta porcelain slab / Light oak veneer / Black tinted glass',
-    style: 'Minimal contemporary',
-    lighting: 'Recessed warm-white halo behind the TV recess, linear shelf lighting, floor wash beneath the console',
-    features: [
-      'Floating console with concealed soft-close storage',
-      'Recessed television niche with LED halo',
-      'Full cable management inside the wall build-up',
-      'Backlit display shelving to the return wall'
-    ],
-    alt: 'Modern marble media wall with a recessed LED halo around the television and a floating oak console'
-  },
-  {
-    n: '02',
-    img: 'assets/img/project-02-warm-oak',
-    title: 'Warm Oak Media Wall',
-    short: 'Full-height oak joinery framing a marble television panel, with warm linear light washing every edge.',
-    tags: ['Natural Oak', 'Marble', 'Linear LED'],
-    location: 'Jumeirah, Dubai, UAE',
-    materials: 'Natural oak veneer / Statuario porcelain / Bronze-tinted glass fronts',
-    style: 'Warm contemporary',
-    lighting: 'Concealed cove above the panel, continuous linear LED beneath the console and inside each niche',
-    features: [
-      'Floor-to-ceiling oak joinery with push-to-open fronts',
-      'Marble television panel with shadow-gap detailing',
-      'Integrated display niche with stone back panel',
-      'Concealed AV rack with ventilated glass doors'
-    ],
-    alt: 'Warm oak media wall with a marble television panel and continuous concealed LED lighting'
-  },
-  {
-    n: '03',
-    img: 'assets/img/project-03-dark-luxury',
-    title: 'Dark Luxury Media Wall',
-    short: 'Deep brown marble inlaid with brass linework, set against high-gloss walnut cabinetry.',
-    tags: ['Dark Marble', 'Brass Inlay', 'Gloss Walnut'],
-    location: 'Palm Jumeirah, Dubai, UAE',
-    materials: 'Emperador marble / Polished brass inlay / High-gloss walnut',
-    style: 'Art-deco contemporary',
-    lighting: 'Dramatic grazing light across the stone, warm niche lighting within the walnut units',
-    features: [
-      'Hand-set brass inlay to a bespoke geometric pattern',
-      'High-gloss walnut tall units with integrated lighting',
-      'Marble-topped floating console with glass fronts',
-      'Concealed equipment bay with IR pass-through'
-    ],
-    alt: 'Dark luxury media wall in brown marble with brass inlay and high-gloss walnut cabinetry'
-  },
-  {
-    n: '04',
-    img: 'assets/img/project-04-fluted-travertine',
-    title: 'Fluted Travertine Media Wall',
-    short: 'Floor-to-ceiling fluted travertine, grazed by hidden light, with a micro-cement television panel.',
-    tags: ['Travertine', 'Fluted Panel', 'Hidden LED'],
-    location: 'Al Barari, Dubai, UAE',
-    materials: 'Fluted travertine / Micro-cement panel / Bronze and smoked glass',
-    style: 'Textural minimalism',
-    lighting: 'Hidden perimeter grazing light that rakes across the flutes, plus a halo behind the TV panel',
-    features: [
-      'Vertical fluted stone across the full wall height',
-      'Recessed micro-cement television panel',
-      'Bronze-framed floating console with smoked glass',
-      'Lit display niches carved into the stone'
-    ],
-    alt: 'Fluted travertine media wall with hidden grazing light and a bronze floating console'
-  },
-  {
-    n: '05',
-    img: 'assets/img/project-05-full-height',
-    title: 'Full-Height Luxury TV Wall',
-    short: 'Wall-to-wall cabinetry that hides everything, wrapped around a slim marble television panel.',
-    tags: ['Full Height', 'Custom Joinery', 'Hidden Storage'],
-    location: 'Dubai Hills Estate, UAE',
-    materials: 'Light oak veneer / Statuario porcelain / Smoked glass fronts',
-    style: 'Architectural minimalism',
-    lighting: 'Recessed cove above the marble, continuous under-console LED and interior cabinet lighting',
-    features: [
-      'Floor-to-ceiling storage on both sides of the television',
-      'Slim marble panel with shadow-gap reveal',
-      'Ventilated AV bay behind smoked glass',
-      'Handleless push-to-open throughout'
-    ],
-    alt: 'Full-height luxury TV wall with light oak cabinetry either side of a marble television panel'
-  },
-  {
-    n: '06',
-    img: 'assets/img/project-06-minimal-light',
-    title: 'Minimal Light Media Wall',
-    short: 'The quietest scheme in the portfolio: a pale stone panel, a floating console and one soft line of light.',
-    tags: ['Minimal', 'Pale Stone', 'Floating Unit'],
-    location: 'Business Bay, Dubai, UAE',
-    materials: 'Pale marble-effect porcelain / Bleached oak / Bronze glass',
-    style: 'Soft minimalism',
-    lighting: 'A single concealed cove above the panel and one continuous line beneath the console',
-    features: [
-      'Slim floating console spanning the full wall',
-      'Pale stone panel with a concealed cove above',
-      'Integrated side unit with a lit stone niche',
-      'Completely handleless, completely cable-free'
-    ],
-    alt: 'Minimal light media wall with a pale stone panel and a slim floating console'
-  },
-  {
-    n: '07',
-    img: 'assets/img/project-07-fireplace',
-    title: 'Media Wall With Fireplace',
-    short: 'A linear electric fire set into marble, flanked by fluted dark oak and lit glass display cabinets.',
-    tags: ['Fireplace', 'Marble', 'Fluted Oak'],
-    location: 'Emirates Hills, Dubai, UAE',
-    materials: 'Calacatta marble / Fluted dark oak / Bronze-framed glass',
-    style: 'Contemporary classic',
-    lighting: 'Linear flame effect, lit glass vitrines and a warm wash across the marble',
-    features: [
-      'Linear electric fireplace with a solid marble hearth shelf',
-      'Fluted dark oak panelling across the full run',
-      'Bronze-framed glass display cabinets with LED shelving',
-      'Concealed ventilation and full cable management'
-    ],
-    alt: 'Media wall with a linear electric fireplace set into marble, framed by fluted dark oak'
-  },
-  {
-    n: '08',
-    img: 'assets/img/project-08-backlit-onyx',
-    title: 'Backlit Onyx Media Wall',
-    short: 'A translucent onyx slab lit from behind, framed by curved gloss walnut and leather-wrapped drawers.',
-    tags: ['Backlit Onyx', 'Walnut', 'Curved Joinery'],
-    location: 'DIFC, Dubai, UAE',
-    materials: 'Backlit honey onyx / Gloss walnut / Wrapped leather fronts',
-    style: 'Warm modern luxury',
-    lighting: 'Edge-lit LED panel behind the onyx, track spotlighting and interior vitrine lighting',
-    features: [
-      'Translucent onyx slab on a dimmable backlit panel',
-      'Curved high-gloss walnut tall units with brass reveals',
-      'Leather-wrapped drawer fronts with inlaid handles',
-      'Fully concealed AV and dimming control'
-    ],
-    alt: 'Backlit onyx media wall glowing behind the television, framed by curved gloss walnut units'
-  },
-  {
-    n: '09',
-    img: 'assets/img/project-09-uae-penthouse',
-    title: 'UAE Penthouse Media Wall',
-    short: 'A full living-room composition for a high-floor penthouse, balanced against the Dubai skyline.',
-    tags: ['Penthouse', 'Onyx', 'Full Fit-Out'],
-    location: 'Downtown Dubai penthouse, UAE',
-    materials: 'Backlit onyx / Gloss walnut / Leather / Polished marble flooring',
-    style: 'Complete living-room fit-out',
-    lighting: 'Layered scheme: backlit stone, magnetic track spots, cove lighting and dimmable scene control',
-    features: [
-      'Full living-room design around the media wall',
-      'Curved tall units answering the room geometry',
-      'Scene-based lighting control across the whole space',
-      'Coordinated stone, joinery and furniture package'
-    ],
-    alt: 'Penthouse living room with a backlit onyx media wall and the Dubai skyline beyond'
-  },
-  {
-    n: '10',
     img: 'assets/img/showcase-fireplace-marble',
     title: 'Marble Fireplace Media Wall',
     short: 'Book-matched Calacatta gold slabs around a flush linear fire, flanked by walnut niches.',
@@ -295,7 +133,7 @@ const PROJECTS = [
     alt: 'Book-matched marble media wall with a linear fireplace and walnut display niches'
   },
   {
-    n: '11',
+    n: '02',
     img: 'assets/img/showcase-black-fluted',
     title: 'Black Fluted Media Wall',
     short: 'Matt black flutes framed in brushed brass, beside a floor-to-ceiling lit display unit.',
@@ -313,7 +151,7 @@ const PROJECTS = [
     alt: 'Black fluted media wall with brass trim and lit walnut display shelving'
   },
   {
-    n: '12',
+    n: '03',
     img: 'assets/img/showcase-white-floating',
     title: 'White Floating TV Unit',
     short: 'A quiet matt white unit with lit oak niches, kept low so the sea view does the talking.',
@@ -331,7 +169,7 @@ const PROJECTS = [
     alt: 'White floating TV unit with lit oak niches overlooking the Dubai coast'
   },
   {
-    n: '13',
+    n: '04',
     img: 'assets/img/showcase-led-stone',
     title: 'Linear LED Stone Wall',
     short: 'Charcoal stone panels cut by bent LED lines around a walnut-slatted TV recess.',
@@ -349,7 +187,7 @@ const PROJECTS = [
     alt: 'Charcoal stone and walnut slat media wall with linear LED detailing'
   },
   {
-    n: '14',
+    n: '05',
     img: 'assets/img/showcase-beige-arched',
     title: 'Curved Beige Media Wall',
     short: 'Rounded tall cabinets with arched lit niches either side of a lime-plaster TV wall.',
@@ -367,7 +205,7 @@ const PROJECTS = [
     alt: 'Soft beige TV wall framed by curved cabinets with lit arched niches'
   },
   {
-    n: '15',
+    n: '06',
     img: 'assets/img/showcase-walnut-display',
     title: 'Walnut Display Media Wall',
     short: 'Full-width walnut joinery with glass-fronted display cabinets around a travertine TV panel.',
@@ -385,7 +223,7 @@ const PROJECTS = [
     alt: 'Walnut media wall with glass display cabinets and a travertine centre panel'
   },
   {
-    n: '16',
+    n: '07',
     img: 'assets/img/showcase-travertine',
     title: 'Full-Height Travertine Wall',
     short: 'Large-format travertine from floor to ceiling over a floating walnut and stone console.',
@@ -403,7 +241,7 @@ const PROJECTS = [
     alt: 'Full-height travertine TV wall with a floating walnut unit and LED base'
   },
   {
-    n: '17',
+    n: '08',
     img: 'assets/img/showcase-stone-black',
     title: 'Split-Face Stone Media Wall',
     short: 'Rough split-face stone behind a backlit screen, grounded by a matt black cabinet.',
@@ -421,7 +259,7 @@ const PROJECTS = [
     alt: 'Split-face stone feature wall with a backlit television and black cabinet'
   },
   {
-    n: '18',
+    n: '09',
     img: 'assets/img/showcase-panelled-gold',
     title: 'Panelled Cream and Brass Wall',
     short: 'Cream panelling with thin brass inlays, a backlit TV frame and walnut side cabinets.',
@@ -439,7 +277,7 @@ const PROJECTS = [
     alt: 'Cream panelled media wall with brass inlays and walnut side cabinets'
   },
   {
-    n: '19',
+    n: '10',
     img: 'assets/img/showcase-room-divider',
     title: 'Double-Sided TV Room Divider',
     short: 'A freestanding walnut and travertine unit that splits living and dining in an open plan.',
@@ -457,7 +295,7 @@ const PROJECTS = [
     alt: 'Double-sided walnut and travertine TV unit dividing an open-plan penthouse'
   },
   {
-    n: '20',
+    n: '11',
     img: 'assets/img/showcase-fluted-oak',
     title: 'Light Oak Fluted Media Wall',
     short: 'Pale oak flutes and lit plaster niches over a floating oak console with a travertine base.',
@@ -475,7 +313,7 @@ const PROJECTS = [
     alt: 'Light oak fluted media wall with lit niches and a floating oak unit'
   },
   {
-    n: '21',
+    n: '12',
     img: 'assets/img/showcase-hotel-walnut',
     title: 'Hotel-Style Walnut Media Wall',
     short: 'Walnut, woven fabric panels and brass lines, finished like a five-star suite.',
@@ -493,7 +331,7 @@ const PROJECTS = [
     alt: 'Hotel-style walnut media wall with fabric panels and lit glass shelves'
   },
   {
-    n: '22',
+    n: '13',
     img: 'assets/img/showcase-vertical-garden',
     title: 'Vertical Garden Media Wall',
     short: 'A lit living plant wall beside a travertine TV panel, over a long walnut console.',
@@ -511,7 +349,7 @@ const PROJECTS = [
     alt: 'Walnut and travertine media wall with an integrated vertical garden'
   },
   {
-    n: '23',
+    n: '14',
     img: 'assets/img/showcase-asymmetric',
     title: 'Asymmetric Stone and Walnut Wall',
     short: 'Offset travertine and charcoal blocks with floating walnut shelves and a long wall-hung unit.',
@@ -529,7 +367,7 @@ const PROJECTS = [
     alt: 'Asymmetric media wall in travertine, charcoal and walnut with floating shelves'
   },
   {
-    n: '24',
+    n: '15',
     img: 'assets/img/showcase-curved-walnut',
     title: 'Curved Fluted Walnut Wall',
     short: 'A sweeping curved walnut wall with a recessed screen and a matching curved console.',
@@ -547,7 +385,7 @@ const PROJECTS = [
     alt: 'Curved fluted walnut media wall with a sweeping low cabinet'
   },
   {
-    n: '25',
+    n: '16',
     img: 'assets/img/showcase-concrete-walnut',
     title: 'Concrete and Walnut Media Wall',
     short: 'Raw concrete cladding with a tall walnut panel and cast shelving for a loft feel.',
@@ -565,7 +403,7 @@ const PROJECTS = [
     alt: 'Board-formed concrete TV wall with walnut panelling and lit shelving'
   },
   {
-    n: '26',
+    n: '17',
     img: 'assets/img/showcase-ribbed-oak',
     title: 'Ribbed Oak Media Wall',
     short: 'Deep ribbed oak across the whole wall with lit display niches and a white console.',
@@ -583,7 +421,7 @@ const PROJECTS = [
     alt: 'Ribbed oak media wall with lit display niches and a white floating unit'
   },
   {
-    n: '27',
+    n: '18',
     img: 'assets/img/showcase-mirror-travertine',
     title: 'Mirror and Travertine Media Wall',
     short: 'Walnut and travertine at the centre, framed by bronze mirror panels that widen the room.',
@@ -601,7 +439,7 @@ const PROJECTS = [
     alt: 'Walnut and travertine TV wall framed by bronze mirror panels'
   },
   {
-    n: '28',
+    n: '19',
     img: 'assets/img/showcase-floating-oak',
     title: 'Floating Oak Shelf Media Wall',
     short: 'Oak panels and lit floating shelves over a 4 m wall-hung oak console.',
@@ -803,15 +641,25 @@ const DETAILS = [
    preview is always a photograph of delivered work rather than a mock-up.
    `p` is the index in PROJECTS. */
 const DESIGN_TRAITS = [
-  { p: 0, finish: 'marble',   has: ['led', 'cabinet', 'shelves'] },
-  { p: 1, finish: 'wood',     has: ['led', 'cabinet', 'tall'] },
-  { p: 2, finish: 'charcoal', has: ['led', 'cabinet', 'tall'] },
-  { p: 3, finish: 'fluted',   has: ['led', 'cabinet', 'shelves'] },
-  { p: 4, finish: 'beige',    has: ['led', 'cabinet', 'tall'] },
-  { p: 5, finish: 'marble',   has: ['led', 'cabinet'] },
-  { p: 6, finish: 'marble',   has: ['led', 'cabinet', 'fire', 'shelves', 'tall'] },
-  { p: 7, finish: 'stone',    has: ['led', 'cabinet', 'tall', 'shelves'] },
-  { p: 8, finish: 'stone',    has: ['led', 'cabinet', 'tall'] }
+  { p: 0,  has: ['led', 'cabinet', 'fire', 'shelves'] },
+  { p: 1,  has: ['led', 'cabinet', 'tall', 'shelves'] },
+  { p: 2,  has: ['led', 'cabinet'] },
+  { p: 3,  has: ['led', 'cabinet', 'shelves'] },
+  { p: 4,  has: ['led', 'cabinet', 'tall', 'shelves'] },
+  { p: 5,  has: ['led', 'cabinet', 'tall', 'shelves'] },
+  { p: 6,  has: ['led', 'cabinet', 'shelves'] },
+  { p: 7,  has: ['led', 'cabinet', 'shelves'] },
+  { p: 8,  has: ['led', 'cabinet', 'tall'] },
+  { p: 9,  has: ['led', 'cabinet', 'tall', 'shelves'] },
+  { p: 10, has: ['led', 'cabinet', 'shelves'] },
+  { p: 11, has: ['led', 'cabinet', 'shelves'] },
+  { p: 12, has: ['led', 'cabinet'] },
+  { p: 13, has: ['led', 'cabinet', 'shelves'] },
+  { p: 14, has: ['led', 'cabinet', 'shelves'] },
+  { p: 15, has: ['led', 'cabinet', 'tall', 'shelves'] },
+  { p: 16, has: ['led', 'cabinet', 'tall', 'shelves'] },
+  { p: 17, has: ['led', 'cabinet', 'tall'] },
+  { p: 18, has: ['led', 'cabinet', 'shelves'] }
 ];
 
 /* --------------------------------------------------------------- QUOTES */
