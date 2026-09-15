@@ -658,7 +658,7 @@
     const stage = $('#cfgStage');
     if (!stage) return;
 
-    initCfgFilm();
+    initLoopFilm('#cfgFilm');
 
     const photo   = $('#cfgPhoto');
     const title   = $('#cfgMatchTitle');
@@ -741,12 +741,13 @@
     update();
   }
 
-  /* The full-width showcase film in the configurator section.
+  /* A muted, looping film (the configurator showcase and the Why Choose Us
+     panel).
      Nothing downloads until the film is ~400px away; it then
      plays muted on a loop and pauses whenever it is off screen. With reduced
      motion it stays on its opening frame with controls instead. */
-  function initCfgFilm() {
-    const video = $('#cfgFilm');
+  function initLoopFilm(sel) {
+    const video = $(sel);
     if (!video) return;
 
     let attached = false;
@@ -1407,6 +1408,7 @@
     initModal();
     initShare();
     initConfigurator();
+    initLoopFilm('#whyVideo');
     initFilm();
     initForm();
     initCoverflow();

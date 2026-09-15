@@ -63,7 +63,7 @@ const IMAGEKIT = {
      A new photo therefore works the moment it is dropped in. Upload it to
      ImageKit later, delete its name from this list, and it moves to the CDN
      with no other change. */
-  localOnly: ['service-bathroom', 'service-kitchen-dubai', 'luxury-media-wall-film', 'hero-interior', 'showcase-film',
+  localOnly: ['service-bathroom', 'service-kitchen-dubai', 'luxury-media-wall-film', 'hero-interior', 'showcase-film', 'why-film',
               'material-calacatta-marble', 'material-calacatta-gold', 'material-travertine',
               'material-charcoal-stone', 'material-oak-fluted', 'material-walnut-fluted',
               'material-white-fluted', 'material-smoked-oak', 'material-brass-walnut',

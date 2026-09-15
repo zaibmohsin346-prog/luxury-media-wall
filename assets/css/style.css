@@ -629,8 +629,8 @@ h1, h2, h3, h4 {
 }
 .on-dark .mask-reveal::after { background: var(--ink); }
 .js .mask-reveal.is-visible::after { transform: translateX(101%); }
-.js .mask-reveal img { transform: scale(1.16); transition: transform 1.9s var(--ease); }
-.js .mask-reveal.is-visible img { transform: scale(1); }
+.js .mask-reveal img, .js .mask-reveal video { transform: scale(1.16); transition: transform 1.9s var(--ease); }
+.js .mask-reveal.is-visible img, .js .mask-reveal.is-visible video { transform: scale(1); }
 
 /* Word-by-word heading reveal */
 .reveal-words .word { display: inline-block; overflow: hidden; vertical-align: bottom; }
@@ -651,7 +651,7 @@ h1, h2, h3, h4 {
   }
   .js [data-reveal] { opacity: 1; transform: none; }
   .mask-reveal::after { display: none; }
-  .mask-reveal img, .hero__media img { transform: none; }
+  .mask-reveal img, .mask-reveal video { transform: none; }
   .hero h1 .line > span { transform: none; }
   .hero__fade { opacity: 1; }
   .wa-float { transform: none; opacity: 1; }

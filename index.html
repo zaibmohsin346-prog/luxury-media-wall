@@ -341,11 +341,11 @@
 <section class="section">
   <div class="shell why">
     <div class="why__media mask-reveal" data-reveal>
-      <img data-ik src="assets/img/project-03-dark-luxury-900.jpg"
-           srcset="assets/img/project-03-dark-luxury-480.jpg 480w, assets/img/project-03-dark-luxury-900.jpg 900w, assets/img/project-03-dark-luxury-1400.jpg 1400w"
-           sizes="(max-width: 1100px) 92vw, 620px" width="1792" height="2400"
-           loading="lazy" decoding="async"
-           alt="Detail of a dark luxury media wall in brown marble with brass inlay and gloss walnut joinery">
+      <!-- Muted looping film; main.js attaches the source as it nears the
+           viewport and pauses it off screen. -->
+      <video id="whyVideo" data-src="assets/video/why-film.mp4"
+             muted loop playsinline preload="none"
+             aria-label="Film of a luxury media wall in marble, walnut and brass"></video>
       <div class="why__badge">
         <b>Made to measure</b>
         <span>Nothing off the shelf</span>
