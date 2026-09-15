@@ -896,7 +896,8 @@
 /* The band is light; the video frame inside it stays dark, because the play
    button, the scrim and the label all sit over footage. */
 .video-band { position: relative; overflow: hidden; background: var(--white); }
-.video-frame { position: relative; aspect-ratio: 16 / 9; background: #0b0b0b; overflow: hidden; }
+/* Edge to edge across the section; 16:9 but never taller than the screen. */
+.video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 92vh; background: #0b0b0b; overflow: hidden; }
 .video-frame video { width: 100%; height: 100%; object-fit: cover; }
 .video-frame__scrim {
   position: absolute; inset: 0; z-index: 2;
@@ -926,7 +927,7 @@
   white-space: nowrap;
 }
 
-.video-chapters { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line); margin-top: 1px; }
+.video-chapters { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line); margin-top: clamp(1.5rem, 3vw, 2.5rem); }
 .video-chapters div { background: var(--white); padding: 1.4rem 1.2rem; }
 .video-chapters b {
   display: block; font-size: .6rem; font-weight: 600; letter-spacing: .2em;
