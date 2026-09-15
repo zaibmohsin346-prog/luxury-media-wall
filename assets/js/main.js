@@ -660,7 +660,6 @@
 
     initLoopFilm('#cfgFilm');
 
-    const photo   = $('#cfgPhoto');
     const title   = $('#cfgMatchTitle');
     const spec    = $('#cfgMatchSpec');
     const openBtn = $('#cfgMatchOpen');
@@ -710,16 +709,6 @@
       const p = PROJECTS[t.p];
       if (!p) return;
       matched = t.p;
-
-      /* Cross-fade rather than snap */
-      photo.style.opacity = '0';
-      const next = new Image();
-      next.onload = () => {
-        photo.src = next.src;
-        photo.alt = p.alt;
-        photo.style.opacity = '1';
-      };
-      next.src = asset(p.img + '-1400.jpg');
 
       title.textContent = p.title;
       const want = wanted();

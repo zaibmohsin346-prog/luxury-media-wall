@@ -698,17 +698,18 @@
 .step.is-visible .step__bar::after { transform: scaleX(1); }
 
 /* ============================ CONFIGURATOR ============================== */
-.cfg { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, .65fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: start; }
+.cfg { display: grid; grid-template-columns: minmax(0, 1fr); }
 
+/* Edge to edge across the section, 16:9 but never taller than the screen.
+   The readout's text lines up with the page content, not the screen edge. */
 .cfg__stage {
-  position: relative; aspect-ratio: 4 / 3; overflow: hidden;
+  position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 92vh; overflow: hidden;
   background: #14120f; isolation: isolate;
-  box-shadow: var(--shadow-lg);
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
 }
 .cfg__photo {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: 50% 45%;
-  opacity: 0; transition: opacity .55s var(--ease-soft);
 }
 .cfg__scrim {
   position: absolute; inset: 0; z-index: 2;
@@ -717,7 +718,7 @@
 
 .cfg__readout {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
-  padding: clamp(1.3rem, 2.6vw, 2.2rem);
+  padding: clamp(1.3rem, 2.6vw, 2.2rem) max(var(--gutter), calc((100% - var(--shell)) / 2 + var(--gutter)));
 }
 .cfg__readout-label {
   display: block;
@@ -758,7 +759,9 @@
 }
 .cfg-film video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.toggles { display: grid; gap: .1rem; }
+/* Full width below the photograph, so the switches sit in columns. */
+.toggles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); column-gap: clamp(1.5rem, 3vw, 3rem); row-gap: .1rem; }
+.cfg__panel .btn--wide { justify-self: start; width: auto; min-width: min(100%, 320px); }
 .toggle {
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
   width: 100%; padding: .82rem 0; border-bottom: 1px solid var(--line-dark);

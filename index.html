@@ -441,14 +441,14 @@
            aria-label="Film of media wall materials - marble, timber and stone samples"></video>
   </div>
 
-  <div class="shell">
-
-    <div class="cfg">
-      <!-- Your selection is matched against the real portfolio and the closest
-           build is shown. A photograph of work we actually delivered beats a
-           drawing of one. -->
+  <!-- Full-bleed photograph, edge to edge. The readout still names the
+       closest completed build for the features switched on below. -->
       <div class="cfg__stage" id="cfgStage" data-reveal="scale">
-        <img class="cfg__photo" id="cfgPhoto" src="" alt="" decoding="async">
+        <img class="cfg__photo" id="cfgPhoto"
+             src="assets/img/cfg-beige-marble-1400.jpg"
+             srcset="assets/img/cfg-beige-marble-900.jpg 900w, assets/img/cfg-beige-marble-1400.jpg 1400w, assets/img/cfg-beige-marble-2000.jpg 2000w, assets/img/cfg-beige-marble-2600.jpg 2600w"
+             sizes="100vw" width="2600" height="1451" loading="lazy" decoding="async"
+             alt="Beige marble media wall with a recessed LED line, wall-mounted television and walnut cabinet">
         <div class="cfg__scrim" aria-hidden="true"></div>
 
         <div class="cfg__readout" id="cfgReadout" role="status" aria-live="polite">
@@ -463,6 +463,9 @@
 
       </div>
 
+  <div class="shell">
+
+    <div class="cfg">
       <div class="cfg__panel">
         <div class="cfg__group">
           <h4>Features</h4>
