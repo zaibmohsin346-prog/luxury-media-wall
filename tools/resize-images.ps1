@@ -39,7 +39,7 @@ if (-not (Test-Path $ImageDir)) {
 }
 
 $sources = Get-ChildItem "$ImageDir\*.jpg" |
-           Where-Object { $_.Name -notmatch '-(480|900|1400|1800)\.jpg$' }
+           Where-Object { $_.Name -notmatch '-[0-9]{3,4}\.jpg$' }
 
 if (-not $sources) {
   Write-Output "Nothing to do - no full-size .jpg files found in $ImageDir."
