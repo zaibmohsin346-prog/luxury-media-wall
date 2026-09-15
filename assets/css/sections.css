@@ -245,7 +245,8 @@
 .coverflow__arrow svg { width: 19px; height: 19px; }
 .coverflow__arrow:hover { border-color: var(--champagne); color: var(--champagne); }
 
-.coverflow__dots { display: flex; align-items: center; gap: .5rem; }
+/* Wraps and centres once there are more projects than fit on one line. */
+.coverflow__dots { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .5rem; max-width: 100%; }
 .coverflow__dot {
   height: 8px; width: 8px; border-radius: 9999px; border: 0; padding: 0; cursor: pointer;
   background: rgba(23,23,23,.2);

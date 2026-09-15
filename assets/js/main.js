@@ -24,6 +24,9 @@
   const ikDir = IK.folder ? '/' + String(IK.folder).replace(/^\/+|\/+$/g, '') : '';
   const ikTr = IK.transform || 'q-auto,f-auto';
   const ikLocalOnly = IK.localOnly || [];
+  /* An exact base name, or a trailing * for a whole family ('showcase-*'). */
+  const isLocalOnly = (base) => ikLocalOnly.some((n) =>
+    n.slice(-1) === '*' ? base.indexOf(n.slice(0, -1)) === 0 : n === base);
 
   function asset(path) {
     if (!ikEndpoint) return path;
@@ -40,14 +43,14 @@
     if (sized) {
       /* Not in the ImageKit library yet - serve the local derivative rather
          than a CDN URL that would 404. See IMAGEKIT.localOnly. */
-      if (ikLocalOnly.indexOf(sized[1]) > -1) return path;
+      if (isLocalOnly(sized[1])) return path;
       return `${ikEndpoint}${ikDir}/${sized[1]}.${sized[3]}?tr=w-${sized[2]},${ikTr}`;
     }
     /* No size suffix — video. Plain CDN delivery with no `tr=` so it does not
        consume video-processing credits; ImageKit still optimises the file. */
     /* A video not yet uploaded to the ImageKit library is served from
        assets/video rather than rewritten to a CDN URL that would 404. */
-    if (ikLocalOnly.indexOf(name.replace(/\.[^.]+$/, '')) > -1) return path;
+    if (isLocalOnly(name.replace(/\.[^.]+$/, ''))) return path;
     return `${ikEndpoint}${ikDir}/${name}`;
   }
 
@@ -75,7 +78,7 @@
      image has not been uploaded there yet. */
   function upscaledUrl(base, width) {
     const name = String(base).replace(/^assets\/img\//, '');
-    if (!ikEndpoint || ikLocalOnly.indexOf(name) > -1) return asset(`${base}-${width}.jpg`);
+    if (!ikEndpoint || isLocalOnly(name)) return asset(`${base}-${width}.jpg`);
     return `${ikEndpoint}${ikDir}/${name}.jpg?tr=e-upscale:w-${width},${ikTr}`;
   }
   const srcsetUpscaled = (base) =>
@@ -251,7 +254,7 @@
     $('#modalImg').src = asset(p.img + '-900.jpg');
     $('#modalImg').srcset = srcset(p.img);
     $('#modalImg').alt = p.alt;
-    $('#modalBadge').innerHTML = `Project <i>${p.n}</i> / 09`;
+    $('#modalBadge').innerHTML = `Project <i>${p.n}</i> / ${String(PROJECTS.length).padStart(2, '0')}`;
     $('#modalTitle').textContent = p.title;
     $('#modalIntro').textContent = p.short;
     $('#modalLocation').textContent = p.location;
@@ -1232,7 +1235,7 @@
              sizes="(max-width: 640px) 90vw, 560px"
              loading="lazy" decoding="async" alt="${esc(p.alt)}">
         <span class="coverflow__veil"></span>
-        <span class="coverflow__num">${p.n} <i>/</i> 0${total}</span>
+        <span class="coverflow__num">${p.n} <i>/</i> ${String(total).padStart(2, '0')}</span>
         <span class="coverflow__body">
           <span class="coverflow__title">${esc(p.title)}</span>
           <span class="coverflow__rule"></span>

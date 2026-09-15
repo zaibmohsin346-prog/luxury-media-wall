@@ -63,7 +63,7 @@ const IMAGEKIT = {
      A new photo therefore works the moment it is dropped in. Upload it to
      ImageKit later, delete its name from this list, and it moves to the CDN
      with no other change. */
-  localOnly: ['service-bathroom', 'service-kitchen-dubai', 'luxury-media-wall-film', 'hero-interior', 'showcase-film', 'why-film',
+  localOnly: ['showcase-*', 'service-bathroom', 'service-kitchen-dubai', 'luxury-media-wall-film', 'hero-interior', 'showcase-film', 'why-film',
               'material-calacatta-marble', 'material-calacatta-gold', 'material-travertine',
               'material-charcoal-stone', 'material-oak-fluted', 'material-walnut-fluted',
               'material-white-fluted', 'material-smoked-oak', 'material-brass-walnut',
@@ -79,34 +79,40 @@ const MEDIA = {
 /* ------------------------------------------------------------- SHOWCASE */
 /* The drifting photograph corridor behind the studio statement. Cards are
    dealt alternately to the left and right lane and travel from far behind
-   the page toward the reader, so the whole portfolio passes through the
-   section one photograph at a time.
+   the page toward the reader, so the whole set passes through the section
+   one photograph at a time.
 
    Order matters: neighbours in this list appear on opposite sides at the
-   same moment, so alternating stone and timber keeps the pairing varied.
-
-   The three `before-*` photographs are deliberately left out - they are
-   plain undecorated walls, and the point of this section is finished work. */
+   same moment, so light and dark schemes alternate to keep pairs varied. */
 const SHOWCASE = [
-  { img: 'assets/img/project-01-marble-halo',       alt: 'Book-matched marble media wall with a recessed LED halo' },
-  { img: 'assets/img/project-02-warm-oak',          alt: 'Warm oak media wall with a floating cabinet run' },
-  { img: 'assets/img/project-08-backlit-onyx',      alt: 'Backlit onyx media wall' },
-  { img: 'assets/img/project-04-fluted-travertine', alt: 'Fluted travertine media wall' },
-  { img: 'assets/img/project-03-dark-luxury',       alt: 'Dark charcoal media wall with brass inlay' },
-  { img: 'assets/img/project-05-full-height',       alt: 'Full-height panelled television wall' },
-  { img: 'assets/img/project-07-fireplace',         alt: 'Marble media wall with a linear fireplace' },
-  { img: 'assets/img/project-06-minimal-light',     alt: 'Minimal light media wall with concealed cabling' },
-  { img: 'assets/img/hero-poster',                  alt: 'Penthouse living room with a backlit onyx media wall' },
-  { img: 'assets/img/service-wardrobe',             alt: 'Bespoke fitted wardrobe joinery' },
-  { img: 'assets/img/project-09-uae-penthouse',     alt: 'UAE penthouse media wall above the Dubai skyline' },
-  { img: 'assets/img/service-kitchen',              alt: 'Bespoke kitchen joinery' }
+  { img: 'assets/img/showcase-fireplace-marble',  alt: 'Book-matched marble media wall with a linear fireplace and walnut display niches' },
+  { img: 'assets/img/showcase-black-fluted',      alt: 'Black fluted media wall with brass trim and lit walnut display shelving' },
+  { img: 'assets/img/showcase-white-floating',    alt: 'White floating TV unit with lit oak niches overlooking the Dubai coast' },
+  { img: 'assets/img/showcase-led-stone',         alt: 'Charcoal stone and walnut slat media wall with linear LED detailing' },
+  { img: 'assets/img/showcase-beige-arched',      alt: 'Soft beige TV wall framed by curved cabinets with lit arched niches' },
+  { img: 'assets/img/showcase-walnut-display',    alt: 'Walnut media wall with glass display cabinets and a travertine centre panel' },
+  { img: 'assets/img/showcase-travertine',        alt: 'Full-height travertine TV wall with a floating walnut unit and LED base' },
+  { img: 'assets/img/showcase-stone-black',       alt: 'Split-face stone feature wall with a backlit television and black cabinet' },
+  { img: 'assets/img/showcase-panelled-gold',     alt: 'Cream panelled media wall with brass inlays and walnut side cabinets' },
+  { img: 'assets/img/showcase-room-divider',      alt: 'Double-sided walnut and travertine TV unit dividing an open-plan penthouse' },
+  { img: 'assets/img/showcase-fluted-oak',        alt: 'Light oak fluted media wall with lit niches and a floating oak unit' },
+  { img: 'assets/img/showcase-hotel-walnut',      alt: 'Hotel-style walnut media wall with fabric panels and lit glass shelves' },
+  { img: 'assets/img/showcase-vertical-garden',   alt: 'Walnut and travertine media wall with an integrated vertical garden' },
+  { img: 'assets/img/showcase-asymmetric',        alt: 'Asymmetric media wall in travertine, charcoal and walnut with floating shelves' },
+  { img: 'assets/img/showcase-curved-walnut',     alt: 'Curved fluted walnut media wall with a sweeping low cabinet' },
+  { img: 'assets/img/showcase-concrete-walnut',   alt: 'Board-formed concrete TV wall with walnut panelling and lit shelving' },
+  { img: 'assets/img/showcase-ribbed-oak',        alt: 'Ribbed oak media wall with lit display niches and a white floating unit' },
+  { img: 'assets/img/showcase-mirror-travertine', alt: 'Walnut and travertine TV wall framed by bronze mirror panels' },
+  { img: 'assets/img/showcase-floating-oak',      alt: 'Oak panelled media wall with floating lit shelves and a long oak unit' }
 ];
 
-/* One full pass from the far distance to the foreground, in seconds. */
-const SHOWCASE_SECONDS = 22;
+/* One full pass from the far distance to the foreground, in seconds. Scaled
+   with the number of photographs so the spacing between cards stays even. */
+const SHOWCASE_SECONDS = 34;
 
 /* --------------------------------------------------------------- PROJECTS */
-/* Nine separate projects, nine separate photographs. */
+/* Separate projects, one photograph each. Append new work at the end:
+   DESIGN_TRAITS refers to the first nine by index. */
 const PROJECTS = [
   {
     n: '01',
@@ -269,6 +275,348 @@ const PROJECTS = [
       'Coordinated stone, joinery and furniture package'
     ],
     alt: 'Penthouse living room with a backlit onyx media wall and the Dubai skyline beyond'
+  },
+  {
+    n: '10',
+    img: 'assets/img/showcase-fireplace-marble',
+    title: 'Marble Fireplace Media Wall',
+    short: 'Book-matched Calacatta gold slabs around a flush linear fire, flanked by walnut niches.',
+    tags: ['Marble', 'Fireplace', 'Walnut'],
+    location: 'Downtown Dubai, UAE',
+    materials: 'Book-matched Calacatta gold porcelain / Walnut veneer / Honed grey stone cladding',
+    style: 'Classic contemporary',
+    lighting: 'Warm LED strips inside each niche, recessed downlights, wash beneath the floating hearth',
+    features: [
+      '1.8 m linear electric fire with a heat-rated recess',
+      'Television recessed flush with the marble face',
+      'Four lit display niches in walnut',
+      'Floating hearth bench with concealed drawers'
+    ],
+    alt: 'Book-matched marble media wall with a linear fireplace and walnut display niches'
+  },
+  {
+    n: '11',
+    img: 'assets/img/showcase-black-fluted',
+    title: 'Black Fluted Media Wall',
+    short: 'Matt black flutes framed in brushed brass, beside a floor-to-ceiling lit display unit.',
+    tags: ['Fluted', 'Black Oak', 'Brass'],
+    location: 'Business Bay, Dubai, UAE',
+    materials: 'Black-stained oak flutes / Brushed brass trim / Slate-effect porcelain / Walnut',
+    style: 'Dark modern',
+    lighting: 'Vertical LED channels in the display frame, glass shelves lit from above',
+    features: [
+      'Brass-framed fluted panel behind the TV',
+      'Tall walnut display unit with glass shelves',
+      'Slatted walnut door hiding the AV rack',
+      'Low black oak console with push-to-open drawers'
+    ],
+    alt: 'Black fluted media wall with brass trim and lit walnut display shelving'
+  },
+  {
+    n: '12',
+    img: 'assets/img/showcase-white-floating',
+    title: 'White Floating TV Unit',
+    short: 'A quiet matt white unit with lit oak niches, kept low so the sea view does the talking.',
+    tags: ['Minimal', 'White', 'Oak'],
+    location: 'Umm Suqeim, Dubai, UAE',
+    materials: 'Matt white lacquer / Natural oak veneer / Smooth plaster wall',
+    style: 'Soft minimal',
+    lighting: 'Backlit television halo, warm LED strips inside the oak niches',
+    features: [
+      'Wall-hung unit clear of the floor',
+      'Two lit open niches in natural oak',
+      'Handle-less drawers with soft close',
+      'Cables run inside the wall to the TV'
+    ],
+    alt: 'White floating TV unit with lit oak niches overlooking the Dubai coast'
+  },
+  {
+    n: '13',
+    img: 'assets/img/showcase-led-stone',
+    title: 'Linear LED Stone Wall',
+    short: 'Charcoal stone panels cut by bent LED lines around a walnut-slatted TV recess.',
+    tags: ['Stone', 'LED', 'Walnut'],
+    location: 'Dubai Marina, UAE',
+    materials: 'Charcoal slate-effect panels / Walnut slats / Anthracite lacquer',
+    style: 'Contemporary statement',
+    lighting: 'Recessed aluminium LED profiles with bent corners, backlit slats, floor wash under the unit',
+    features: [
+      'Custom-bent LED profiles set into the stone',
+      'Walnut slat surround behind the TV',
+      'Open lit bays for AV equipment',
+      'Scene control on one wall keypad'
+    ],
+    alt: 'Charcoal stone and walnut slat media wall with linear LED detailing'
+  },
+  {
+    n: '14',
+    img: 'assets/img/showcase-beige-arched',
+    title: 'Curved Beige Media Wall',
+    short: 'Rounded tall cabinets with arched lit niches either side of a lime-plaster TV wall.',
+    tags: ['Curved', 'Plaster', 'Oak'],
+    location: 'Palm Jumeirah, Dubai, UAE',
+    materials: 'Textured lime plaster / Matt cream lacquer / Natural oak / Travertine top',
+    style: 'Warm organic',
+    lighting: 'Backlit television halo, LED lighting inside each arched niche',
+    features: [
+      'Two curved tall units with arched display niches',
+      'Floating console with rounded ends',
+      'Hand-applied plaster feature wall',
+      'Concealed storage behind full-height doors'
+    ],
+    alt: 'Soft beige TV wall framed by curved cabinets with lit arched niches'
+  },
+  {
+    n: '15',
+    img: 'assets/img/showcase-walnut-display',
+    title: 'Walnut Display Media Wall',
+    short: 'Full-width walnut joinery with glass-fronted display cabinets around a travertine TV panel.',
+    tags: ['Walnut', 'Travertine', 'Display'],
+    location: 'Zabeel, Dubai, UAE',
+    materials: 'Walnut veneer / Bronze-framed glass doors / Honed travertine / Brass inlay',
+    style: 'Luxury classic',
+    lighting: 'LED strips under every shelf, downlights washing the travertine',
+    features: [
+      'Glass-fronted display cabinets on both sides',
+      'Travertine panel set into the joinery',
+      'Six-drawer walnut base with brass inlay',
+      'Shelf lighting on a separate dimmer'
+    ],
+    alt: 'Walnut media wall with glass display cabinets and a travertine centre panel'
+  },
+  {
+    n: '16',
+    img: 'assets/img/showcase-travertine',
+    title: 'Full-Height Travertine Wall',
+    short: 'Large-format travertine from floor to ceiling over a floating walnut and stone console.',
+    tags: ['Travertine', 'Walnut', 'Villa'],
+    location: 'Jumeirah, Dubai, UAE',
+    materials: 'Vein-cut travertine slabs / Walnut veneer / Travertine top',
+    style: 'Natural minimal',
+    lighting: 'Floor wash under the floating console, LED lighting in the open bays',
+    features: [
+      'Travertine laid in a matched grid to the ceiling',
+      'Floating console with a stone top',
+      'Three lit open display bays',
+      'Television mounted on a flush bracket'
+    ],
+    alt: 'Full-height travertine TV wall with a floating walnut unit and LED base'
+  },
+  {
+    n: '17',
+    img: 'assets/img/showcase-stone-black',
+    title: 'Split-Face Stone Media Wall',
+    short: 'Rough split-face stone behind a backlit screen, grounded by a matt black cabinet.',
+    tags: ['Stone', 'Black', 'Backlit'],
+    location: 'Downtown Dubai penthouse, UAE',
+    materials: 'Split-face grey stone / Matt black lacquer / Walnut side reveals',
+    style: 'Dark luxury',
+    lighting: 'Backlit halo behind the TV, LED wash under the cabinet grazing the stone',
+    features: [
+      'Split-face stone cladding floor to ceiling',
+      'Long matt black cabinet with open AV shelves',
+      'Walnut reveals on both sides of the wall',
+      'Grazing light to bring out the stone texture'
+    ],
+    alt: 'Split-face stone feature wall with a backlit television and black cabinet'
+  },
+  {
+    n: '18',
+    img: 'assets/img/showcase-panelled-gold',
+    title: 'Panelled Cream and Brass Wall',
+    short: 'Cream panelling with thin brass inlays, a backlit TV frame and walnut side cabinets.',
+    tags: ['Panelled', 'Brass', 'Walnut'],
+    location: 'Dubai Marina, UAE',
+    materials: 'Cream lacquered panels / Brass inlay strips / Walnut veneer / Fluted glass',
+    style: 'Art deco modern',
+    lighting: 'Backlit TV frame, LED outline to the wall edges, lit glass cabinet tops',
+    features: [
+      'Geometric panelling with brass inlay',
+      'Raised frame around the television',
+      'Pair of walnut and cream side cabinets',
+      'Floating walnut console with underlight'
+    ],
+    alt: 'Cream panelled media wall with brass inlays and walnut side cabinets'
+  },
+  {
+    n: '19',
+    img: 'assets/img/showcase-room-divider',
+    title: 'Double-Sided TV Room Divider',
+    short: 'A freestanding walnut and travertine unit that splits living and dining in an open plan.',
+    tags: ['Divider', 'Walnut', 'Travertine'],
+    location: 'DIFC, Dubai, UAE',
+    materials: 'Walnut veneer / Vein-cut travertine / Bronze-tinted glass',
+    style: 'Open-plan contemporary',
+    lighting: 'LED strips under every shelf, lit TV recess',
+    features: [
+      'Shelving usable from both sides',
+      'Television recessed into the travertine',
+      'Deep base drawers for media storage',
+      'Power and data brought up through the floor'
+    ],
+    alt: 'Double-sided walnut and travertine TV unit dividing an open-plan penthouse'
+  },
+  {
+    n: '20',
+    img: 'assets/img/showcase-fluted-oak',
+    title: 'Light Oak Fluted Media Wall',
+    short: 'Pale oak flutes and lit plaster niches over a floating oak console with a travertine base.',
+    tags: ['Fluted', 'Oak', 'Niches'],
+    location: 'Business Bay, Dubai, UAE',
+    materials: 'Natural oak flutes / Lime plaster / Travertine skirting / Oak veneer',
+    style: 'Light Scandinavian',
+    lighting: 'Vertical LED lines beside the flutes, LED strips inside the niches, floor wash',
+    features: [
+      'Television framed inside the fluted panel',
+      'Two lit wall niches for display',
+      'Floating oak console with an open media bay',
+      'Travertine band at the base of the wall'
+    ],
+    alt: 'Light oak fluted media wall with lit niches and a floating oak unit'
+  },
+  {
+    n: '21',
+    img: 'assets/img/showcase-hotel-walnut',
+    title: 'Hotel-Style Walnut Media Wall',
+    short: 'Walnut, woven fabric panels and brass lines, finished like a five-star suite.',
+    tags: ['Walnut', 'Fabric', 'Brass'],
+    location: 'Downtown Dubai, UAE',
+    materials: 'Walnut veneer / Woven fabric wall panels / Brass inlay / Glass shelves',
+    style: 'Hotel luxury',
+    lighting: 'LED lines above and below the TV panel, lit glass niches, cove lighting',
+    features: [
+      'Fabric panels above and below the television',
+      'Brass-lined walnut frame',
+      'Two lit glass display niches',
+      'Floating walnut console with fluted front'
+    ],
+    alt: 'Hotel-style walnut media wall with fabric panels and lit glass shelves'
+  },
+  {
+    n: '22',
+    img: 'assets/img/showcase-vertical-garden',
+    title: 'Vertical Garden Media Wall',
+    short: 'A lit living plant wall beside a travertine TV panel, over a long walnut console.',
+    tags: ['Garden', 'Travertine', 'Walnut'],
+    location: 'Dubai Hills Estate villa, UAE',
+    materials: 'Live planting / Travertine / Walnut slats / Walnut veneer',
+    style: 'Biophilic modern',
+    lighting: 'Plant-safe LED frame around the garden, backlit walnut slats',
+    features: [
+      'Framed vertical garden with drip irrigation',
+      'Travertine panel behind the television',
+      'Walnut slat backdrop across the wall',
+      '4 m floating console with open bays'
+    ],
+    alt: 'Walnut and travertine media wall with an integrated vertical garden'
+  },
+  {
+    n: '23',
+    img: 'assets/img/showcase-asymmetric',
+    title: 'Asymmetric Stone and Walnut Wall',
+    short: 'Offset travertine and charcoal blocks with floating walnut shelves and a long wall-hung unit.',
+    tags: ['Asymmetric', 'Travertine', 'Walnut'],
+    location: 'Sheikh Zayed Road, Dubai, UAE',
+    materials: 'Travertine / Charcoal lacquer / Walnut veneer / Walnut slats',
+    style: 'Architectural contemporary',
+    lighting: 'Vertical LED joints between blocks, lit floating shelves, floor wash',
+    features: [
+      'Offset panel layout off the TV centre line',
+      'Stack of lit floating walnut shelves',
+      'Wall-hung walnut unit with LED underlight',
+      'Slatted walnut returns on both walls'
+    ],
+    alt: 'Asymmetric media wall in travertine, charcoal and walnut with floating shelves'
+  },
+  {
+    n: '24',
+    img: 'assets/img/showcase-curved-walnut',
+    title: 'Curved Fluted Walnut Wall',
+    short: 'A sweeping curved walnut wall with a recessed screen and a matching curved console.',
+    tags: ['Curved', 'Walnut', 'Fluted'],
+    location: 'Downtown Dubai, UAE',
+    materials: 'Curved fluted walnut / Walnut veneer / Lime plaster',
+    style: 'Sculptural modern',
+    lighting: 'LED strip under the curved wall, lit shelves at both ends of the console',
+    features: [
+      'Curved wall built on a formed substrate',
+      'Television recessed into the flutes',
+      'Curved console following the wall line',
+      'Open shelving at each end'
+    ],
+    alt: 'Curved fluted walnut media wall with a sweeping low cabinet'
+  },
+  {
+    n: '25',
+    img: 'assets/img/showcase-concrete-walnut',
+    title: 'Concrete and Walnut Media Wall',
+    short: 'Raw concrete cladding with a tall walnut panel and cast shelving for a loft feel.',
+    tags: ['Concrete', 'Walnut', 'Loft'],
+    location: 'Palm Jumeirah, Dubai, UAE',
+    materials: 'Micro-concrete wall panels / Walnut veneer / Cast concrete shelving',
+    style: 'Industrial warm',
+    lighting: 'LED strips in every concrete shelf, floor wash under the console',
+    features: [
+      'Concrete-effect cladding with exposed tie holes',
+      'Tall walnut feature panel',
+      'Built-in lit concrete shelving column',
+      'Floating six-door walnut console'
+    ],
+    alt: 'Board-formed concrete TV wall with walnut panelling and lit shelving'
+  },
+  {
+    n: '26',
+    img: 'assets/img/showcase-ribbed-oak',
+    title: 'Ribbed Oak Media Wall',
+    short: 'Deep ribbed oak across the whole wall with lit display niches and a white console.',
+    tags: ['Ribbed', 'Oak', 'Niches'],
+    location: 'Dubai Creek Harbour, UAE',
+    materials: 'Solid oak ribs / Oak veneer niches / Matt white lacquer',
+    style: 'Warm contemporary',
+    lighting: 'LED lines running up the ribs, lit niche shelves',
+    features: [
+      'Ribbed oak cladding floor to ceiling',
+      'Two tall lit display niches',
+      'Long white console on an oak plinth',
+      'Black steel shelf lines across the wall'
+    ],
+    alt: 'Ribbed oak media wall with lit display niches and a white floating unit'
+  },
+  {
+    n: '27',
+    img: 'assets/img/showcase-mirror-travertine',
+    title: 'Mirror and Travertine Media Wall',
+    short: 'Walnut and travertine at the centre, framed by bronze mirror panels that widen the room.',
+    tags: ['Mirror', 'Travertine', 'Walnut'],
+    location: 'Downtown Dubai, UAE',
+    materials: 'Bronze mirror / Travertine / Walnut veneer / Brass trims',
+    style: 'Modern classic',
+    lighting: 'LED strips inside the console bays, chandelier and cove lighting',
+    features: [
+      'Full-height bronze mirror panels with brass trim',
+      'Walnut-framed television surround',
+      'Floating console with lit open bays',
+      'Travertine panels on both sides of the TV'
+    ],
+    alt: 'Walnut and travertine TV wall framed by bronze mirror panels'
+  },
+  {
+    n: '28',
+    img: 'assets/img/showcase-floating-oak',
+    title: 'Floating Oak Shelf Media Wall',
+    short: 'Oak panels and lit floating shelves over a 4 m wall-hung oak console.',
+    tags: ['Oak', 'Shelving', 'Floating'],
+    location: 'Downtown Dubai, UAE',
+    materials: 'Natural oak panels / Oak veneer / Venetian plaster / Marble floor',
+    style: 'Soft modern',
+    lighting: 'LED strips under each floating shelf and under the console',
+    features: [
+      'Floating oak shelves with hidden fixings',
+      'Oak panels behind and beside the TV',
+      '4 m wall-hung console with open bays',
+      'Venetian plaster to the rest of the wall'
+    ],
+    alt: 'Oak panelled media wall with floating lit shelves and a long oak unit'
   }
 ];
 
