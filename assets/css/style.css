@@ -393,15 +393,17 @@ h1, h2, h3, h4 {
   font-family: var(--font-serif); font-size: 1.5rem; color: var(--champagne);
 }
 .drawer__ico { width: 19px; height: 19px; flex: none; }
+/* WhatsApp's own green, so the action is recognised at a glance rather than
+   read as another gold button. */
 .drawer__wa {
   margin-left: auto; flex: none;
   width: 42px; height: 42px; border-radius: 50%;
   display: inline-grid; place-items: center;
-  border: 1px solid rgba(245, 242, 236, .22); color: var(--champagne);
-  transition: background-color .4s var(--ease), color .4s var(--ease), border-color .4s var(--ease);
+  background: #25D366; border: 0; color: #fff;
+  transition: background-color .4s var(--ease), transform .4s var(--ease);
 }
-.drawer__wa svg { width: 20px; height: 20px; fill: currentColor; }
-.drawer__wa:hover { background: var(--champagne); color: var(--ink); border-color: var(--champagne); }
+.drawer__wa svg { width: 21px; height: 21px; fill: currentColor; }
+.drawer__wa:hover, .drawer__wa:focus-visible { background: #1faf54; transform: translateY(-2px); }
 .drawer__meta { font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted-dark); }
 
 /* ============================= 07. HERO ================================= */
