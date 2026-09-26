@@ -385,7 +385,23 @@ h1, h2, h3, h4 {
   border-top: 1px solid var(--line-dark); padding-top: 1.7rem;
   display: flex; flex-direction: column; gap: .9rem;
 }
-.drawer__phone { font-family: var(--font-serif); font-size: 1.5rem; color: var(--champagne); }
+/* A number reads as a call link (phone icon), with a WhatsApp icon button
+   pushed to the opposite edge so the two actions are never confused. */
+.drawer__line { display: flex; align-items: center; gap: 1rem; }
+.drawer__phone {
+  display: inline-flex; align-items: center; gap: .65rem;
+  font-family: var(--font-serif); font-size: 1.5rem; color: var(--champagne);
+}
+.drawer__ico { width: 19px; height: 19px; flex: none; }
+.drawer__wa {
+  margin-left: auto; flex: none;
+  width: 42px; height: 42px; border-radius: 50%;
+  display: inline-grid; place-items: center;
+  border: 1px solid rgba(245, 242, 236, .22); color: var(--champagne);
+  transition: background-color .4s var(--ease), color .4s var(--ease), border-color .4s var(--ease);
+}
+.drawer__wa svg { width: 20px; height: 20px; fill: currentColor; }
+.drawer__wa:hover { background: var(--champagne); color: var(--ink); border-color: var(--champagne); }
 .drawer__meta { font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted-dark); }
 
 /* ============================= 07. HERO ================================= */
