@@ -15,7 +15,7 @@
 .showcase {
   position: relative; overflow: hidden;
   container-type: inline-size;
-  background: var(--ink); color: var(--ivory);
+  background: var(--white); color: var(--ink);
   isolation: isolate;
   /* Every child is absolutely positioned, so the band has no content to
      stand it up. Tall enough for a card to arrive, pass and leave. */
@@ -33,7 +33,7 @@
      centred on its own path; change one and the other three must follow. */
   width: 38cqw; height: 52cqw; margin-left: -19cqw; margin-top: -26cqw;
   overflow: hidden; backface-visibility: hidden;
-  border: 1px solid rgba(245, 242, 236, .1);
+  border: 1px solid rgba(23, 23, 23, .08);
   animation-duration: var(--showcase-dur, 22s);
   animation-timing-function: linear;
   animation-iteration-count: infinite;
@@ -63,8 +63,8 @@
 .showcase__scrim {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(to bottom,
-    var(--ink) 0%, rgba(13,13,13,.12) 15%,
-    rgba(13,13,13,.12) 85%, var(--ink) 100%);
+    var(--white) 0%, rgba(255,255,255,.06) 15%,
+    rgba(255,255,255,.06) 85%, var(--white) 100%);
 }
 
 /* Because the geometry is expressed in cqw, a 375px container shrinks the
@@ -509,7 +509,7 @@
 .modal__close {
   position: absolute; top: 0; right: 0; z-index: 6;
   width: 54px; height: 54px; display: grid; place-items: center;
-  background: var(--ink); color: var(--ivory);
+  background: var(--white); color: var(--ink);
   transition: background-color .4s var(--ease), transform .5s var(--ease);
 }
 .modal__close:hover { background: var(--champagne); color: var(--ink); transform: rotate(90deg); }
